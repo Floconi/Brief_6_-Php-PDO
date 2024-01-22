@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="css/output.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/0a3766d4f1.js" crossorigin="anonymous"></script>
+    <script src="js/script.js" defer></script>
 </head>
 <body>
     <header class="flex justify-center">
