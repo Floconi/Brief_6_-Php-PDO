@@ -107,7 +107,82 @@ if (isset($_GET['filtre_domaine'])){
         </select> 
       </fieldset>
     </div>
-    <h2> Filtre sur l'affichage Affichage 
+    <div>
+    <h2> Filtre sur l'affichage Affichage  </h2>
+
+
+      <div class = "flex"> 
+        <?php 
+          $nom_table = "favori"
+        ?>
+        <div class = " flex flex-col w-max">
+          <button type="button" class="bg-green-600 text-white p-2 rounded "><?php echo $nom_table ?></button>
+        </div>
+          <div class = "m-8 flex flex-col w-max">
+          
+            <?php 
+
+              $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+              $collone= $result->fetchAll(PDO::FETCH_ASSOC);
+
+              $index = 0;
+              foreach ($collone as $uneCollone){ ?>
+                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " name="<?php echo $nom_table."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
+
+
+
+              <?php }
+
+            ?>
+          </div>
+          <?php 
+          $nom_table = "categorie"
+        ?>
+        <div class = " flex flex-col w-max">
+        <button type="button" class="bg-green-600 text-white p-2 rounded"><?php echo $nom_table ?></button>
+        </div> 
+        <div class = "m-8 flex flex-col w-max">
+          
+            <?php 
+
+              $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+              $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+              $index = 0;
+              foreach ($collone as $uneCollone){ ?>
+                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " name="<?php echo $nom_table_favori."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
+
+
+
+              <?php }
+
+            ?>
+          </div>
+          <?php 
+          $nom_table = "domaine"
+        ?>
+        <div class = " flex flex-col w-max">
+        <button type="button" class="bg-green-600 text-white p-2 rounded"><?php echo $nom_table ?></button>
+        </div> 
+        <div class = "m-8 flex flex-col w-max">
+          
+            <?php 
+
+              $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+              $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+              $index = 0;
+              foreach ($collone as $uneCollone){ ?>
+                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " name="<?php echo $nom_table_favori."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
+
+
+
+              <?php }
+
+            ?>
+          </div>
+        </div>
+
 
 
     
