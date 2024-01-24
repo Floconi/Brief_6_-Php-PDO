@@ -164,11 +164,11 @@ if (isset($_GET['filtre_domaine'])){
 
   
   if (isset($_GET['condition_categorie'])){
-    if ($_GET['condition_categorie'] == "ou"){
-      $condition_categorie = "OR";
-    }else{
-    $condition_categorie = "AND";
-  }; 
+      if ($_GET['condition_categorie'] == "ou"){
+        $condition_categorie = "OR";
+      }else{
+        $condition_categorie = "AND";
+      }; 
 
   }
 
@@ -181,7 +181,7 @@ if (isset($_GET['filtre_domaine'])){
   }
 
 
-  $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.nom_domaine,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie'  FROM favori "; /* Début création de la requete sql */
+  $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie'  FROM favori "; /* Début création de la requete sql */
   $filtre = false;
   $filtre_cat = false;
   $filtre_dom = false; 
@@ -213,7 +213,7 @@ if (isset($_GET['filtre_domaine'])){
     $Requete_SQL = $Requete_SQL." categorie.id_categorie = ".$table_id_categorie[$index]." ";
 
     if ($index != count($table_id_categorie)-1 ){
-      $Requete_SQL = $Requete_SQL.$condition_categorie;
+      $Requete_SQL = $Requete_SQL."OR";
       
     }
 
@@ -236,7 +236,7 @@ if (isset($_GET['filtre_domaine'])){
 
   if ($filtre_cat == false && $filtre_dom == false){
 
-    $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.nom_domaine,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom";
+    $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom";
 
   }
   $Requete_SQL = $Requete_SQL." GROUP BY favori.id_favori ORDER BY favori.id_favori ASC";
@@ -294,7 +294,57 @@ if (isset($_GET['filtre_domaine'])){
             </tr>
             <?php 
                 foreach($favoris as $favori) {
-                 
+                  $afficherligne = true;
+                  $condition_categorie = "";
+                  if (isset($_GET['condition_categorie'])){
+                    if ($_GET['condition_categorie'] == "ou"){
+                      $condition_categorie = "OR";
+                    }else{
+                      $condition_categorie = "AND";
+                     
+                    };
+                  }
+
+                  if ($condition_categorie == "AND"){
+
+                    foreach ($table_id_categorie as $uneCategorie){ 
+                      echo $uneCategorie;
+
+                      echo stristr($favori['liste_id_cat'], $uneCategorie);
+                      echo "<br>";
+                      if(stristr($favori['liste_id_cat'], $uneCategorie) === false){
+                        echo "false";
+                        $afficherligne = false;
+                      } 
+                    }
+
+                    if ($afficherligne == true) { ?>
+                      <tr class="border-solid  old:bg-white even:bg-orange-200 hover:bg-green-200 ">
+                      <td class=" font-bold border border-b-black  h-full"><?php echo  $favori['id_favori'] ?></td>
+                      <td class="border border-b-black"><?php echo  $favori['libelle'] ?></td>
+                      <td class="border border-b-black"><?php echo  $favori['date_creation'] ?></td>
+                      <td class="border border-b-black"><a href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                      <td class="border border-b-black"><?php echo  $favori['nom_domaine'] ?></td>
+                      <td class="border border-b-black"><?php 
+                      
+                      $TabCatégorie = explode("|",$favori['liste_categorie']);
+                      foreach ($TabCatégorie as $uneCategorie){
+                      echo  $uneCategorie."<br>";
+                      }?></td>
+                      <td class="flex border border-b-black">
+                        <button class="bg-orange-500 p-3 rounded mr-2" >
+                        <i class="fa-solid fa-pen-clip"></i>
+                        </button>
+                        <button class="bg-red-500 p-3 rounded" >
+                        <i class="fa-solid fa-file-circle-xmark"></i>
+                        </button>
+                      </tr>
+
+                    <?php } 
+                    
+
+
+                  }else{
                     ?>
                     <tr class="border-solid  old:bg-white even:bg-orange-200 hover:bg-green-200 ">
                     <td class=" font-bold border border-b-black  h-full"><?php echo  $favori['id_favori'] ?></td>
@@ -316,6 +366,13 @@ if (isset($_GET['filtre_domaine'])){
                       <i class="fa-solid fa-file-circle-xmark"></i>
                       </button>
                     </tr>
+
+                  <?php } ?>
+
+                  
+                  
+                 
+                    
     
 
                 <?php } ?>
