@@ -15,7 +15,7 @@ if (isset($_GET['filtre_domaine'])){
 ?>
   
  
-  <section class="filtre flex flex-col justify-center mb-3">
+  <section class=" bg-red-500   filtre flex flex-col justify-center mb-3">
 
   <div class="flex justify-center" >
  
@@ -31,7 +31,7 @@ if (isset($_GET['filtre_domaine'])){
 
 
 
-  <form  method="get" action="">
+  <form  method="get" action="index.php">
     <h2 class="flex justify-center"> Filtres sur les données <h2>
     <div class="filtre_données flex "> 
       <?php 
@@ -181,7 +181,7 @@ if (isset($_GET['filtre_domaine'])){
   }
 
 
-  $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie'  FROM favori "; /* Début création de la requete sql */
+  $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.id_domaine, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie'  FROM favori "; /* Début création de la requete sql */
   $filtre = false;
   $filtre_cat = false;
   $filtre_dom = false; 
@@ -236,7 +236,7 @@ if (isset($_GET['filtre_domaine'])){
 
   if ($filtre_cat == false && $filtre_dom == false){
 
-    $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom";
+    $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.id_domaine, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom";
 
   }
   $Requete_SQL = $Requete_SQL." GROUP BY favori.id_favori ORDER BY favori.id_favori ASC";
@@ -282,7 +282,7 @@ if (isset($_GET['filtre_domaine'])){
     </section>
 
     <section id="bookmarks">
-        <table class=" table_favori">
+        <table class="flex justify-center table_favori">
             <tr class="odd:bg-white even:bg-slate-50">
                 <th class="border border-black bg-gray-400 hover:bg-red-900">ID favori</th>
                 <th class="border border-black  bg-gray-400">Libellé</th>
@@ -351,7 +351,19 @@ if (isset($_GET['filtre_domaine'])){
                     <td class="border border-b-black"><?php echo  $favori['libelle'] ?></td>
                     <td class="border border-b-black"><?php echo  $favori['date_creation'] ?></td>
                     <td class="border border-b-black"><a href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
-                    <td class="border border-b-black"><?php echo  $favori['nom_domaine'] ?></td>
+                    <?php
+                    $texteEnValeur = "";
+
+
+                    if (isset($_GET['filtre_domaine'])) {
+                        if ($_GET['filtre_domaine'] != "aucun"){
+                          if($_GET['filtre_domaine'] == $favori['id_domaine']){
+                            $texteEnValeur = "  text-red-500 underline font-bold";
+                          }
+                        }
+
+                    } ?> 
+                    <td class="border border-b-black "><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
                     <td class="border border-b-black"><?php 
                     
                     $TabCatégorie = explode("|",$favori['liste_categorie']);
