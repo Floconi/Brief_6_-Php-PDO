@@ -112,6 +112,12 @@ if (isset($_GET['filtre_domaine'])){
           Appliquer les filtres
     </button> 
     </div>
+
+
+    <div>
+
+
+    <div>
     
     
 
@@ -135,7 +141,7 @@ if (isset($_GET['filtre_domaine'])){
 <!-- Zone de gestion de la requete en fonction des filtres -->
 <?php 
   
-  $Requete_SQL = "SELECT * FROM favori "; /* Début création de la requete sql */
+  $Requete_SQL = "SELECT  favori.id_favori,favori.libelle,GROUP_CONCAT(categorie.nom_categorie SEPARATOR "|") FROM favori "; /* Début création de la requete sql */
 
 
 
@@ -225,7 +231,7 @@ if (isset($_GET['filtre_domaine'])){
 
   if ($filtre_cat == false && $filtre_dom == false){
 
-    $Requete_SQL = "SELECT * FROM favori  INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom ";
+    $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.nom_domaine,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom GROUP BY favori.id_favori ORDER BY favori.id_favori ASC;";
 
   }
   $Requete_SQL = $Requete_SQL." ORDER BY favori.id_favori ASC";
@@ -246,8 +252,25 @@ if (isset($_GET['filtre_domaine'])){
   $result = $pdo->query($Requete_SQL);
   $favoris = $result->fetchAll(PDO::FETCH_ASSOC);
   
-  foreach ($favori as $favori )
-
+  /*$Tab_nom_categorie = array();
+  $index = 0;
+  $index_id = 0;
+  foreach ($favoris as $favori ){ 
+    if( $index_id != 0){
+       if($Tab_id_favori[$index-1] == $favori['id_favori']){
+        $index = 0;
+      }
+    }
+   
+    $Tab_id_favori[$index_id] = $favori['id_favori'];
+    $index_id = $index_id +1;
+    
+    $Tab_nom_categorie[$favori['id_favori']][$index] = $favori['nom_categorie'] ;
+   
+    $index = $index + 1;
+  }
+  print_r($Tab_id_favori);
+  print_r($Tab_nom_categorie);*/
 ?>  
     
 
@@ -261,7 +284,7 @@ if (isset($_GET['filtre_domaine'])){
                 <th class="border border-black  bg-gray-400">Date de création (YYYY-MM-JJ)</th>
                 <th class="border border-black  bg-gray-400">Lien</th>
                 <th class="border border-black  bg-gray-400">Nom de domaine</th>
-                <th class="border border-black  bg-gray-400">Catégorie</th>
+                <th class="border border-black  bg-gray-400">Catégorie(s)</th>
                 <th class="border border-black  bg-gray-400"> Gérer </th>
             </tr>
             <?php 
@@ -271,9 +294,14 @@ if (isset($_GET['filtre_domaine'])){
                 <td class=" font-bold border border-b-black  h-full"><?php echo  $favori['id_favori'] ?></td>
                 <td class="border border-b-black"><?php echo  $favori['libelle'] ?></td>
                 <td class="border border-b-black"><?php echo  $favori['date_creation'] ?></td>
-                <td class="border border-b-black"><a href="<?php echo  $favori['id_dom']?>">url</a></td>
+                <td class="border border-b-black"><a href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
                 <td class="border border-b-black"><?php echo  $favori['nom_domaine'] ?></td>
-                <td class="border border-b-black"><?php echo  $favori['nom_categorie'] ?></td>
+                <td class="border border-b-black"><?php 
+                
+                $TabCatégorie = explode("|",$favori['liste_categorie']);
+                foreach ($TabCatégorie as $uneCategorie){
+                 echo  $uneCategorie."<br>";
+                }?></td>
                 <td class="flex border border-b-black">
                   <button class="bg-orange-500 p-3 rounded mr-2" >
                   <i class="fa-solid fa-pen-clip"></i>
