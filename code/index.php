@@ -65,11 +65,11 @@ if (isset($_GET['filtre_domaine'])){
     <fieldset>
     <legend>Condition de sélection  entre les catégories uniquement:</legend>
       <div>
-        <input type="radio" id="ou_categorie" name="condition_categorie_ou" checked />
+        <input type="radio" id="ou_categorie" name="condition_categorie" value="ou" checked />
         <label for="oucategorie">OU <br> (Ex : Je veux les résultats d'une catégorie ou alors les résultats d'une autre catégorie) </label>
       </div>
       <div>
-        <input type="radio" id="et_categorie" name="condition_categorie_et"  />
+        <input type="radio" id="et_categorie" name="condition_categorie" value="et" />
         <label for="etcategorie">ET <br> (Ex : Je veux les résultats qui ont toutes les catégories sélectionnées)</label>
       </div>
     </fieldset>
@@ -77,11 +77,11 @@ if (isset($_GET['filtre_domaine'])){
     <fieldset>
     <legend>Condition de sélection  entre le(s) catégorie(s) et le domaine:</legend>
       <div>
-        <input type="radio" id="ou_categorie_dom" name="condition_categorie_dom" checked />
+        <input type="radio" id="ou_categorie_dom" name="condition_categorie_dom" value="ou" checked />
         <label for="ou_categorie_dom">OU <br> (Ex : Je veux les résultats d'une catégorie ou alors les résultats d'un certain domaine) </label>
       </div>
       <div>
-        <input type="radio" id="et_categorie_dom" name="condition_categorie_dom" />
+        <input type="radio" id="et_categorie_dom" name="condition_categorie_dom" value="et" />
         <label for="et_categorie_dom">ET <br> (Ex : Je veux les résultats d'une catégorie qui ont aussi un certain domaine)</label>
       </div>
     </fieldset>
@@ -135,7 +135,7 @@ if (isset($_GET['filtre_domaine'])){
 <!-- Zone de gestion de la requete en fonction des filtres -->
 <?php 
   
-  $Requete_SQL = "SELECT * FROM favori ";
+  $Requete_SQL = "SELECT * FROM favori "; /* Début création de la requete sql */
 
 
 
@@ -152,33 +152,101 @@ if (isset($_GET['filtre_domaine'])){
 
   };
   
-  print_r($table_id_categorie);
 
-  print_r($_GET['condition_categorie_ou']);
 
   
-  if ($_GET['condition_categorie_ou'] == "on"){
-    $condition_categorie = "OR";
+  if (isset($_GET['condition_categorie'])){
+    if ($_GET['condition_categorie'] == "ou"){
+      $condition_categorie = "OR";
+    }else{
+    $condition_categorie = "AND";
+  }; 
+
+  }
+
+  if(isset($_GET['condition_categorie_dom'])){
+    $condition_categorie_dom = "OR";
 
   }else{
-    $condition_categorie = "AND";
+    $condition_categorie_dom = "AND";
+  };
+
+  $filtre = false;
+  $filtre_cat = false;
+  $filtre_dom = false; 
+  $Requete_SQL = $Requete_SQL." INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie  ";
+  $Requete_SQL = $Requete_SQL." INNER JOIN domaine ON domaine.id_domaine = favori.id_dom ";
+  
+  if (count($table_id_categorie) != 0){
+   
+    $filtre_cat = true;
+  };
+
+  if(isset($_GET['filtre_domaine'])){
+    if ($_GET['filtre_domaine'] != "aucun"){
+      
+      $filtre_dom = true;
+    }
   }
 
-  if($_GET )
+  if($filtre_cat == true || $filtre_dom == true){
+    $Requete_SQL = $Requete_SQL."WHERE";
+  }
+  
+
+  
+  for ($index = 0 ; $index < count($table_id_categorie); $index++){
+   if (count($table_id_categorie) >=2 && $index == 0){
+        $Requete_SQL = $Requete_SQL." ( ";
+    };   
+    $Requete_SQL = $Requete_SQL." categorie.id_categorie = ".$table_id_categorie[$index]." ";
+
+    if ($index != count($table_id_categorie)-1 ){
+      $Requete_SQL = $Requete_SQL.$condition_categorie;
+      
+    }
+
+    if ( count($table_id_categorie) >=2 && $index == count($table_id_categorie)-1){
+      $Requete_SQL = $Requete_SQL." ) ";
+
+    }
+  }
+  if($filtre_cat == true && isset($_GET['filtre_domaine']) ){
+    if ($_GET['filtre_domaine'] != "aucun"){
+      $Requete_SQL = $Requete_SQL.$condition_categorie_dom;
+    }
+  
+  }
+  if (isset($_GET['filtre_domaine'])){
+    if ($_GET['filtre_domaine'] != "aucun"){
+      $Requete_SQL = $Requete_SQL." domaine.id_domaine = ".$_GET['filtre_domaine'];
+    }
+  }
+
+  if ($filtre_cat == false && $filtre_dom == false){
+
+    $Requete_SQL = "SELECT * FROM favori  INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom ";
+
+  }
+  $Requete_SQL = $Requete_SQL." ORDER BY favori.id_favori ASC";
+  $Requete_SQL = $Requete_SQL." ; "; /* FIN de l'instruction SQL */
+
+
+
+
 
   
 
-if ((isset($_GET['filtre_domaine'])) ) {
+/*if ((isset($_GET['filtre_domaine'])) ) {
   if ($_GET['filtre_domaine'] != "aucun"){
     $Requete_SQL = $Requete_SQL."INNER JOIN domaine ON domaine.id_domaine = favori.id_dom  WHERE domaine.id_domaine = '".$_GET['filtre_domaine']."';";
-  }
- 
+  }};*/
+ echo "Requete sql : ".$Requete_SQL;
 
-
-};
-  var_dump($Requete_SQL);
   $result = $pdo->query($Requete_SQL);
-  $favoris = $result->fetchAll(PDO::FETCH_ASSOC); 
+  $favoris = $result->fetchAll(PDO::FETCH_ASSOC);
+  
+  foreach ($favori as $favori )
 
 ?>  
     
@@ -192,9 +260,8 @@ if ((isset($_GET['filtre_domaine'])) ) {
                 <th class="border border-black  bg-gray-400">Libellé</th>
                 <th class="border border-black  bg-gray-400">Date de création (YYYY-MM-JJ)</th>
                 <th class="border border-black  bg-gray-400">Lien</th>
-                <th class="border border-black  bg-gray-400"> id_domaine sur favori </th>
-                <th class="border border-black  bg-gray-400"> id domaine </th>
                 <th class="border border-black  bg-gray-400">Nom de domaine</th>
+                <th class="border border-black  bg-gray-400">Catégorie</th>
                 <th class="border border-black  bg-gray-400"> Gérer </th>
             </tr>
             <?php 
@@ -204,10 +271,9 @@ if ((isset($_GET['filtre_domaine'])) ) {
                 <td class=" font-bold border border-b-black  h-full"><?php echo  $favori['id_favori'] ?></td>
                 <td class="border border-b-black"><?php echo  $favori['libelle'] ?></td>
                 <td class="border border-b-black"><?php echo  $favori['date_creation'] ?></td>
-                <td class="border border-b-black"><?php echo  $favori['url'] ?></td>
-                <td class="border border-b-black"><?php echo  $favori['id_dom'] ?></td>
-                <td class="border border-b-black"><?php// echo  $favori['id_domaine'] ?></td>
-                <td class="border border-b-black"><?php //echo  $favori['nom_domaine'] ?></td>
+                <td class="border border-b-black"><a href="<?php echo  $favori['id_dom']?>">url</a></td>
+                <td class="border border-b-black"><?php echo  $favori['nom_domaine'] ?></td>
+                <td class="border border-b-black"><?php echo  $favori['nom_categorie'] ?></td>
                 <td class="flex border border-b-black">
                   <button class="bg-orange-500 p-3 rounded mr-2" >
                   <i class="fa-solid fa-pen-clip"></i>
