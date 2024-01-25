@@ -1,7 +1,14 @@
 <?php
+
+require ("conect.php");
 /* Connection à la base de données */
-$pdo = new PDO('mysql:host=localhost;dbname=favoris', 'root', '', 
-array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+try{
+    $pdo = new PDO('mysql:host='.SERVEUR.';dbname='.BASE , USER , PASSWORD,array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+}catch(PDOExeption $e){
+    echo "Echec de la connection :%s\n" .$e->getMessage();
+    exit();
+}
+echo "Connection Réussie"
 
 
 

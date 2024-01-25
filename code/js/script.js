@@ -124,3 +124,16 @@ function AppliquerFiltre(){
 
 
 }
+
+
+ function changerEtatBoutton(id_bouton) {
+
+    var boutton = document.getElementById(id_bouton)
+
+    if (boutton.value == "on"){
+
+        boutton.classList.add('bg-cyan-400')
+        boutton.classList('')
+
+    }
+ }

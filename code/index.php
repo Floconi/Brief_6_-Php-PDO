@@ -116,7 +116,7 @@ if (isset($_GET['filtre_domaine'])){
           $nom_table = "favori"
         ?>
         <div class = " flex flex-col w-max">
-          <button type="button" class="bg-green-600 text-white p-2 rounded "><?php echo $nom_table ?></button>
+          <button type="button" class="bg-green-600 text-white p-2 rounded  " ><?php echo $nom_table ?></button>
         </div>
           <div class = "m-8 flex flex-col w-max">
           
@@ -127,7 +127,7 @@ if (isset($_GET['filtre_domaine'])){
 
               $index = 0;
               foreach ($collone as $uneCollone){ ?>
-                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " name="<?php echo $nom_table."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
+                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton(<?php echo $nom_table_favori.'_'.'colonne_n°'.$index ?>)" name="<?php echo $nom_table."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
 
 
 
@@ -138,8 +138,10 @@ if (isset($_GET['filtre_domaine'])){
           <?php 
           $nom_table = "categorie"
         ?>
+
+
         <div class = " flex flex-col w-max">
-        <button type="button" class="bg-green-600 text-white p-2 rounded"><?php echo $nom_table ?></button>
+          <button type="button" class="bg-green-600 text-white p-2  rounded" onclick="changerEtatBoutton()"><?php echo $nom_table ?></button>
         </div> 
         <div class = "m-8 flex flex-col w-max">
           
@@ -150,7 +152,7 @@ if (isset($_GET['filtre_domaine'])){
 
               $index = 0;
               foreach ($collone as $uneCollone){ ?>
-                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " name="<?php echo $nom_table_favori."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
+                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton(<?php echo $nom_table_favori.'_'.'colonne_n°'.$index ?>)" name="<?php echo $nom_table_favori."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
 
 
 
@@ -173,7 +175,7 @@ if (isset($_GET['filtre_domaine'])){
 
               $index = 0;
               foreach ($collone as $uneCollone){ ?>
-                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " name="<?php echo $nom_table_favori."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
+                <button type="button" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton(<?php echo $nom_table_favori.'_'.'colonne_n°'.$index ?>)" id="<?php echo $nom_table_favori."_"."colonne_n°".$index ?>" name="<?php echo $nom_table_favori."_"."colonne_n°".$index ?>"value ="off"><?php echo $uneCollone['Field'] ?></button>
 
 
 
@@ -256,11 +258,22 @@ if (isset($_GET['filtre_domaine'])){
   }
 
 
-  $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.id_domaine, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie'  FROM favori "; /* Début création de la requete sql */
+  $Requete_SQL = "SELECT favori.id_favori,
+    favori.libelle,
+    favori.date_creation,
+    favori.url, 
+    domaine.id_domaine, 
+    domaine.nom_domaine,
+    GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,
+    GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie'  
+    FROM favori "; /* Début création de la requete sql */
   $filtre = false;
   $filtre_cat = false;
   $filtre_dom = false; 
-  $Requete_SQL = $Requete_SQL." INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie  ";
+  $Requete_SQL = $Requete_SQL." INNER JOIN favori_categorie 
+  ON favori.id_favori = favori_categorie.id_favori 
+  INNER JOIN categorie 
+  ON categorie.id_categorie = favori_categorie.id_categorie  ";
   $Requete_SQL = $Requete_SQL." INNER JOIN domaine ON domaine.id_domaine = favori.id_dom ";
   
   if (count($table_id_categorie) != 0){
@@ -401,11 +414,17 @@ if (isset($_GET['filtre_domaine'])){
                       <td class="border border-b-black"><a href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
                       <td class="border border-b-black"><?php echo  $favori['nom_domaine'] ?></td>
                       <td class="border border-b-black"><?php 
+                    
+                    $TabCatégorie = explode("|",$favori['liste_categorie']);
+
+                    foreach ($TabCatégorie as $uneCategorie){
                       
-                      $TabCatégorie = explode("|",$favori['liste_categorie']);
-                      foreach ($TabCatégorie as $uneCategorie){
-                      echo  $uneCategorie."<br>";
-                      }?></td>
+                        echo "<span>".$uneCategorie."</span><br>";
+                   
+                    
+              
+                     
+                    }?></td>
                       <td class="flex border border-b-black">
                         <button class="bg-orange-500 p-3 rounded mr-2" >
                         <i class="fa-solid fa-pen-clip"></i>
@@ -442,8 +461,14 @@ if (isset($_GET['filtre_domaine'])){
                     <td class="border border-b-black"><?php 
                     
                     $TabCatégorie = explode("|",$favori['liste_categorie']);
+
                     foreach ($TabCatégorie as $uneCategorie){
-                    echo  $uneCategorie."<br>";
+                      
+                        echo "<span>".$uneCategorie."</span><br>";
+                   
+                    
+              
+                     
                     }?></td>
                     <td class="flex border border-b-black">
                       <button class="bg-orange-500 p-3 rounded mr-2" >
