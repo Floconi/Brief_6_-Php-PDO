@@ -371,11 +371,6 @@ if (!empty($_GET['Rechercher'])){
   }
   
   
-  if ($filtre_cat == false && $filtre_dom == false && $presence_recherche == false){
-
-    $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.id_domaine, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom";
-
-  }
   
   echo "<br>".$Requete_SQL."<br>";
 
@@ -383,12 +378,17 @@ if (!empty($_GET['Rechercher'])){
   if ($presence_limite == true ){
     $Requete_SQL .= " LIMIT ". $Résultat_limite;
   }
-  $Requete_SQL = $Requete_SQL." ; "; /* FIN de l'instruction SQL */
+  $Requete_SQL .= " ; "; /* FIN de l'instruction SQL */
 
 
+  $Requete_SQL_defaut = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.id_domaine, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom GROUP BY favori.id_favori ORDER BY favori.id_favori ASC";
 
+  
 
-
+  $result_defaut =  $pdo->query($Requete_SQL_defaut);
+  $favoris_defaut = $result_defaut->fetchAll(PDO::FETCH_ASSOC);
+  
+  var_dump($favoris_defaut);
   
 
 /*if ((isset($_GET['filtre_domaine'])) ) {
@@ -477,10 +477,9 @@ if (!empty($_GET['Rechercher'])){
                         <?php 
                       
                         if ($presence_recherche == true){
-                          echo $favori['libelle'];
+                    
 
                           $Tab_libelle = explode($Résultat_recherche,$favori['libelle']);
-                          print_r($Tab_libelle);
                           for ($index = 0 ; $index < count($Tab_libelle); $index++){
                             if ($index !=  count($Tab_libelle)-1){
                               echo $Tab_libelle[$index]."<span class='text-red-500  font-bold'> ".$Résultat_recherche." </span>";
@@ -509,12 +508,21 @@ if (!empty($_GET['Rechercher'])){
                       } ?> 
                       <td class="border border-b-black "><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
                       <td class="border border-b-black"><?php 
-                      
-                      $TabCatégorie = explode("|",$favori['liste_categorie']);
-
-                      foreach ($TabCatégorie as $uneCategorie){
+                      $TabCatégorie_id = explode("|",$favoris_defaut[$favori['id_favori']-1]['liste_id_cat']);
+                      $TabCatégorie = explode("|", $favoris_defaut[$favori['id_favori']-1]['liste_categorie']);
+                      print_r($TabCatégorie);
+                      print_r($TabCatégorie_id);
+                      print_r($table_id_categorie);
+                      for ($index= 0 ; $index < count($TabCatégorie); $index++){
+                        $texteEnValeur ="";
+                        for ($index2 = 0 ; $index2 < count($table_id_categorie); $index2++){
+                          if ($TabCatégorie_id[$index] == $table_id_categorie[$index2]){
+                            $texteEnValeur ="text-red-500 uderline  font-bold";
+                          }
+                        }
+                       
                         
-                          echo "<span>".$uneCategorie."</span><br>";
+                          echo "<span class='".$texteEnValeur."'>".$TabCatégorie[$index]."</span><br>";
                     
                       
                 
