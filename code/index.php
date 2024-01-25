@@ -184,6 +184,24 @@ if (isset($_GET['filtre_domaine'])){
             ?>
           </div>
         </div>
+        <div>
+          <h2> Limitation des résultat </h2>
+              <select name="Limite">
+              <option value = "Tout">-- Tous -- </option> 
+                <option value = "1">1</option>
+                <option value = "5">5</option>
+                <option value = "10">10</option>
+                <option value = "30">30</option>
+              </select>
+        </div>
+        
+
+        <div class = "flex flex-col justify-center ">
+          <h2> Barre de recherche </h2>
+          <input type="search" name="Rechercher" id="default-search" class="block w-1/2 p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  h-10" placeholder="Recherche par libelle..." >
+
+
+        </div>
 
 
 
@@ -236,8 +254,24 @@ if (isset($_GET['filtre_domaine'])){
     };
 
   };
+  $presence_limite = false;
+  if (isset($_GET['Limite'])){
+    if ($_GET['Limite'] != "Tout"){
+      $Résultat_limite = $_GET['Limite'];
+      $presence_limite = true;
+    }
+
+}
+$presence_recherche = false;
+if (!empty($_GET['Rechercher'])){
+    
+ 
+    $Résultat_recherche = $_GET['Rechercher'];
+    echo $Résultat_recherche;
+    $presence_recherche = true;
   
 
+}
 
   
   if (isset($_GET['condition_categorie'])){
@@ -270,10 +304,9 @@ if (isset($_GET['filtre_domaine'])){
   $filtre = false;
   $filtre_cat = false;
   $filtre_dom = false; 
-  $Requete_SQL = $Requete_SQL." INNER JOIN favori_categorie 
-  ON favori.id_favori = favori_categorie.id_favori 
-  INNER JOIN categorie 
-  ON categorie.id_categorie = favori_categorie.id_categorie  ";
+  $Requete_SQL = $Requete_SQL." 
+  INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori 
+  INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie  ";
   $Requete_SQL = $Requete_SQL." INNER JOIN domaine ON domaine.id_domaine = favori.id_dom ";
   
   if (count($table_id_categorie) != 0){
@@ -288,10 +321,24 @@ if (isset($_GET['filtre_domaine'])){
     }
   }
 
-  if($filtre_cat == true || $filtre_dom == true){
-    $Requete_SQL = $Requete_SQL."WHERE";
+  if($filtre_cat == true || $filtre_dom == true || $presence_recherche == true){
+    echo "hello";
+    $Requete_SQL .= "WHERE";
   }
-  
+
+
+  if ($presence_recherche == true ){
+
+    $Requete_SQL .= " libelle LIKE '%".$Résultat_recherche."%'"; 
+    
+    if ( $filtre_dom  == true || $filtre_cat == true){
+    $Requete_SQL .= " OR ";
+
+
+  }
+  }
+ 
+  echo "<br>".$Requete_SQL."<br>";
 
   
   for ($index = 0 ; $index < count($table_id_categorie); $index++){
@@ -310,6 +357,7 @@ if (isset($_GET['filtre_domaine'])){
 
     }
   }
+
   if($filtre_cat == true && isset($_GET['filtre_domaine']) ){
     if ($_GET['filtre_domaine'] != "aucun"){
       $Requete_SQL = $Requete_SQL.$condition_categorie_dom;
@@ -321,13 +369,20 @@ if (isset($_GET['filtre_domaine'])){
       $Requete_SQL = $Requete_SQL." domaine.id_domaine = ".$_GET['filtre_domaine'];
     }
   }
-
-  if ($filtre_cat == false && $filtre_dom == false){
+  
+  
+  if ($filtre_cat == false && $filtre_dom == false && $presence_recherche == false){
 
     $Requete_SQL = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.id_domaine, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom";
 
   }
+  
+  echo "<br>".$Requete_SQL."<br>";
+
   $Requete_SQL = $Requete_SQL." GROUP BY favori.id_favori ORDER BY favori.id_favori ASC";
+  if ($presence_limite == true ){
+    $Requete_SQL .= " LIMIT ". $Résultat_limite;
+  }
   $Requete_SQL = $Requete_SQL." ; "; /* FIN de l'instruction SQL */
 
 
@@ -340,7 +395,7 @@ if (isset($_GET['filtre_domaine'])){
   if ($_GET['filtre_domaine'] != "aucun"){
     $Requete_SQL = $Requete_SQL."INNER JOIN domaine ON domaine.id_domaine = favori.id_dom  WHERE domaine.id_domaine = '".$_GET['filtre_domaine']."';";
   }};*/
- echo "<br>Requete sql : ".$Requete_SQL;
+ echo "<br> Requete sql : ".$Requete_SQL;
 
   $result = $pdo->query($Requete_SQL);
   $favoris = $result->fetchAll(PDO::FETCH_ASSOC);
@@ -405,26 +460,66 @@ if (isset($_GET['filtre_domaine'])){
                         $afficherligne = false;
                       } 
                     }
+                  }
 
-                    if ($afficherligne == true) { ?>
+                    if ($afficherligne == true) { 
+                    
+                    
+
+
+                  
+
+
+                      ?>
                       <tr class="border-solid  old:bg-white even:bg-orange-200 hover:bg-green-200 ">
                       <td class=" font-bold border border-b-black  h-full"><?php echo  $favori['id_favori'] ?></td>
-                      <td class="border border-b-black"><?php echo  $favori['libelle'] ?></td>
+                      <td class="border border-b-black">
+                        <?php 
+                      
+                        if ($presence_recherche == true){
+                          echo $favori['libelle'];
+
+                          $Tab_libelle = explode($Résultat_recherche,$favori['libelle']);
+                          print_r($Tab_libelle);
+                          for ($index = 0 ; $index < count($Tab_libelle); $index++){
+                            if ($index !=  count($Tab_libelle)-1){
+                              echo $Tab_libelle[$index]."<span class='text-red-500  font-bold'> ".$Résultat_recherche." </span>";
+                            }else{
+                              echo $Tab_libelle[$index];
+                            }
+                          }
+                        }else{
+                          echo  $favori['libelle'];
+                        }
+                        ?>
+                      </td>
                       <td class="border border-b-black"><?php echo  $favori['date_creation'] ?></td>
                       <td class="border border-b-black"><a href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
-                      <td class="border border-b-black"><?php echo  $favori['nom_domaine'] ?></td>
-                      <td class="border border-b-black"><?php 
-                    
-                    $TabCatégorie = explode("|",$favori['liste_categorie']);
+                      <?php
+                      $texteEnValeur = "";
 
-                    foreach ($TabCatégorie as $uneCategorie){
+
+                      if (isset($_GET['filtre_domaine'])) {
+                          if ($_GET['filtre_domaine'] != "aucun"){
+                            if($_GET['filtre_domaine'] == $favori['id_domaine']){
+                              $texteEnValeur = "  text-red-500 underline font-bold";
+                            }
+                          }
+
+                      } ?> 
+                      <td class="border border-b-black "><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
+                      <td class="border border-b-black"><?php 
                       
-                        echo "<span>".$uneCategorie."</span><br>";
-                   
+                      $TabCatégorie = explode("|",$favori['liste_categorie']);
+
+                      foreach ($TabCatégorie as $uneCategorie){
+                        
+                          echo "<span>".$uneCategorie."</span><br>";
                     
-              
-                     
-                    }?></td>
+                      
+                
+  
+                      }?></td>
                       <td class="flex border border-b-black">
                         <button class="bg-orange-500 p-3 rounded mr-2" >
                         <i class="fa-solid fa-pen-clip"></i>
@@ -434,53 +529,7 @@ if (isset($_GET['filtre_domaine'])){
                         </button>
                       </tr>
 
-                    <?php } 
-                    
-
-
-                  }else{
-                    ?>
-                    <tr class="border-solid  old:bg-white even:bg-orange-200 hover:bg-green-200 ">
-                    <td class=" font-bold border border-b-black  h-full"><?php echo  $favori['id_favori'] ?></td>
-                    <td class="border border-b-black"><?php echo  $favori['libelle'] ?></td>
-                    <td class="border border-b-black"><?php echo  $favori['date_creation'] ?></td>
-                    <td class="border border-b-black"><a href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
-                    <?php
-                    $texteEnValeur = "";
-
-
-                    if (isset($_GET['filtre_domaine'])) {
-                        if ($_GET['filtre_domaine'] != "aucun"){
-                          if($_GET['filtre_domaine'] == $favori['id_domaine']){
-                            $texteEnValeur = "  text-red-500 underline font-bold";
-                          }
-                        }
-
-                    } ?> 
-                    <td class="border border-b-black "><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
-                    <td class="border border-b-black"><?php 
-                    
-                    $TabCatégorie = explode("|",$favori['liste_categorie']);
-
-                    foreach ($TabCatégorie as $uneCategorie){
-                      
-                        echo "<span>".$uneCategorie."</span><br>";
-                   
-                    
-              
-                     
-                    }?></td>
-                    <td class="flex border border-b-black">
-                      <button class="bg-orange-500 p-3 rounded mr-2" >
-                      <i class="fa-solid fa-pen-clip"></i>
-                      </button>
-                      <button class="bg-red-500 p-3 rounded" >
-                      <i class="fa-solid fa-file-circle-xmark"></i>
-                      </button>
-                    </tr>
-
-                  <?php } ?>
-
+                    <?php } ?>
                   
                   
                  
