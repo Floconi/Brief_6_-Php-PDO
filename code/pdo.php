@@ -8,7 +8,7 @@ try{
     echo "Echec de la connection :%s\n" .$e->getMessage();
     exit();
 }
-echo "Connection Réussie"
+
 
 
 

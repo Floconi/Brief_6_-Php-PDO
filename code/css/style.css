@@ -1,0 +1,11 @@
+.boutton_affichage_selectionner{
+
+    color: yellow;
+    background-color: rgb(50, 206, 154);
+}
+
+.justify-beteen-custom{
+
+    display: flex;
+    justify-content: space-between;
+}

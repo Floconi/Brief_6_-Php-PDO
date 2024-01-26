@@ -127,13 +127,21 @@ function AppliquerFiltre(){
 
 
  function changerEtatBoutton(id_bouton) {
+    console.log("hello")
 
     var boutton = document.getElementById(id_bouton)
+    console.log(boutton)
 
-    if (boutton.value == "on"){
+    if (boutton.value == "off"){
 
-        boutton.classList.add('bg-cyan-400')
-        boutton.classList('')
+        boutton.classList.add('boutton_affichage_selectionner')
+        boutton.classList.remove('bg-blue-950')
+        boutton.value = "on"
+
+    }else{
+        boutton.classList.remove('boutton_affichage_selectionner')
+        boutton.classList.add('bg-blue-950')
+        boutton.value = "off"
 
     }
  }
