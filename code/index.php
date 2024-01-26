@@ -27,8 +27,8 @@ if (isset($_GET['filtre_domaine'])){
               ;");
               $categorie = $result->fetchAll(PDO::FETCH_ASSOC); 
             ?>
-            <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4">
-              <legend class="text-center">
+            <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4 rounded">
+              <legend class="text-center border border-black rounded p-4">
                 <?php 
                   $table_cat = " FILTRE sur ".ucfirst($table_cat)."s "; 
                   echo $table_cat 
@@ -89,8 +89,8 @@ if (isset($_GET['filtre_domaine'])){
               $domaine = $result->fetchAll(PDO::FETCH_ASSOC); 
             ?>
             
-            <fieldset class="flex flex-col border border-black p-4 m-4 justify-center">
-              <legend class="flex justify-center text-center"> Domaine </legend>
+            <fieldset class="flex flex-col border border-black p-4 m-4 justify-center rounded ">
+              <legend class="flex justify-center text-center border border-black rounded p-4"> FILTRE sur Domaine </legend>
               <select id="selection_dom" name="filtre_domaine " class="mb-4">
                 <option value="aucun" selected>-- Tous les Domaines -- </option>
                 <?php
@@ -118,104 +118,115 @@ if (isset($_GET['filtre_domaine'])){
       
         <div>
           <h2 class="flex justify-center"> Filtre sur l'affichage Affichage  </h2>
-          <fieldset class = "flex justify-center border border-black"> 
-            <?php 
-              $nom_table = "favori"
-            ?> 
-            <legend  class="bg-green-600 text-white p-2 rounded border  " ><?php echo $nom_table ?></legend>
-            <div class = " flex flex-col w-max">
-             
-            </div>
-            <div class = "m-8 flex flex-col w-max">
+          
+          <div class="flex justify-around">
+          
+            <fieldset class = "flex justify-center border border-black "> 
               <?php 
-
-                $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                $collone= $result->fetchAll(PDO::FETCH_ASSOC);
-
-                $index = 0;
-                foreach ($collone as $uneCollone){ 
-                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
-                  <button type="button" name="<?php echo $id_du_bouton ?>"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $id_du_bouton ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
-                  
-                <?php $index = $index +1;
-                }
-
-              ?>
-            </filedset>
-            <?php 
-              $nom_table = "categorie"
-            ?>
-            <div class = " flex flex-col w-max">
-              <button type="button" class="bg-green-600 text-white p-2  rounded" onclick="changerEtatBoutton()"><?php echo $nom_table ?></button>
-            </div> 
-            <div class = "m-8 flex flex-col w-max">
-            
-              <?php 
-
-                $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                $collone = $result->fetchAll(PDO::FETCH_ASSOC);
-
-                $index = 0;
-                foreach ($collone as $uneCollone){ 
-                $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
-                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $nom_table.'_'.'colonne_n°'.$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
-
-                  <?php $index = $index +1;
-
-                }
-
-              ?>
-            </div>
-            <?php 
-            $nom_table = "domaine"
-            ?>
-            <div class = " flex flex-col w-max">
-              <button type="button" class="bg-green-600 text-white p-2 rounded"><?php echo $nom_table ?></button>
-            </div> 
-            <div class = "m-8 flex flex-col w-max">
-            
-              <?php 
-
-                $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                $collone = $result->fetchAll(PDO::FETCH_ASSOC);
-
-                $index = 0;
-                foreach ($collone as $uneCollone){ 
-                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
-                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" id="<?php echo $nom_table."_"."colonne_n°".$index ?>" name="<?php echo $nom_table."_"."colonne_n°".$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
-
-
-
+                $nom_table = "favori"
+              ?> 
+              <legend  class="bg-green-600 text-white p-2 rounded border border-black ml-4 " ><?php echo $nom_table ?></legend>
+              <div class = " flex flex-col w-max">
+              
+              </div>
+              <div class = "m-8 flex flex-col w-max">
                 <?php 
-                 $index = $index +1;
-                }
 
+                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                  $collone= $result->fetchAll(PDO::FETCH_ASSOC);
+
+                  $index = 0;
+                  foreach ($collone as $uneCollone){ 
+                    $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
+                    <button type="button" name="<?php echo $id_du_bouton ?>"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $id_du_bouton ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
+                    
+                  <?php $index = $index +1;
+                  }
+                  $nomb_col_max_favori = $index;
+                  echo $nomb_col_max_favori;
+
+                ?>
+              </fieldset>
+              <fieldset class = "flex justify-center border border-black"> 
+              <?php 
+                $nom_table = "categorie"
               ?>
-            </div>
-          </div>
-          <div>
-            <h2> Limitation des résultat </h2>
-                <select name="Limite">
+                <legend  class="bg-green-600 text-white p-2  ml-4 rounded" onclick="changerEtatBoutton()"><?php echo $nom_table ?></legend>
+              
+              <div class = "m-8 flex flex-col w-max">
+              
+                <?php 
+
+                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                  $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+                  $index = 0;
+                  foreach ($collone as $uneCollone){ 
+                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
+                    <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $nom_table.'_'.'colonne_n°'.$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
+
+                    <?php $index = $index +1;
+
+                  }
+
+                ?>
+              </div>
+              </fieldset>
+              <fieldset class = "flex justify-center border border-black  "> 
+              <?php 
+              $nom_table = "domaine"
+              ?>
+                <legend type="button" class="bg-green-600 text-white p-2 rounded ml-4"><?php echo $nom_table ?></legend>
+              <div class = "m-8 flex flex-col w-max">
+              
+                <?php 
+
+                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                  $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+                  $index = 0;
+                  foreach ($collone as $uneCollone){ 
+                    $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
+                    <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" id="<?php echo $nom_table."_"."colonne_n°".$index ?>" name="<?php echo $nom_table."_"."colonne_n°".$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
+
+
+
+                  <?php 
+                  $index = $index +1;
+                  }
+
+                ?>
+              </div>
+              </fieldset>
+              <fieldset class="flex justify-center border border-black items-center rounded">
+              <legend class="border border-black flex text-center rounded "> Limitation  </legend>
+                <select name="Limite" class="h-5">
                 <option value = "Tout">-- Tous -- </option> 
                   <option value = "1">1</option>
                   <option value = "5">5</option>
                   <option value = "10">10</option>
                   <option value = "30">30</option>
                 </select>
+                </fieldset>
+            </div>
+          </div>
+          <div>
+            
           </div>
           
+        <div class="flex items-center justify-evenly mt-5">
+          <fieldset class = "flex flex-col justify-center w-1/2 border border-black items-center p-4">
+            <legend class="text-center"> Barre de recherche </legend>
 
-          <div class = "flex flex-col justify-center ">
-            <h2> Barre de recherche </h2>
-            <input type="search" name="Rechercher" id="default-search" class="block w-1/2 p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  h-10" placeholder="Recherche par libelle..." >
+            <input type="search" name="Rechercher" id="default-search" class="block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  h-10" placeholder="Recherche par libelle..." >
 
 
-          </div>
+          </fieldset>
 
 
 
       
-        <button type="submit" >
+        <button type="submit" class="bg-blue-950 text-white p-6  rounded flex justify-center" >
               Appliquer les filtres
         </button> 
                 
@@ -263,6 +274,11 @@ if (isset($_GET['filtre_domaine'])){
         $index_id_cat = $index_id_cat + 1 ;
 
       };
+    
+
+
+
+
 
     };
     $presence_limite = false;
@@ -303,12 +319,9 @@ if (isset($_GET['filtre_domaine'])){
     }
 
 
-    $Requete_SQL = "SELECT favori.id_favori,
-      favori.libelle,
-      favori.date_creation,
-      favori.url, 
-      domaine.id_domaine, 
-      domaine.nom_domaine,
+    $Requete_SQL = "SELECT 
+      favori.id_favori, favori.libelle, favori.date_creation, favori.url, 
+      domaine.id_domaine, domaine.nom_domaine,
       GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,
       GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie'  
       FROM favori "; /* Début création de la requete sql */
@@ -349,7 +362,6 @@ if (isset($_GET['filtre_domaine'])){
     }
     }
   
-    echo "<br>".$Requete_SQL."<br>";
 
     
     for ($index = 0 ; $index < count($table_id_categorie); $index++){
@@ -399,7 +411,6 @@ if (isset($_GET['filtre_domaine'])){
     $result_defaut =  $pdo->query($Requete_SQL_defaut);
     $favoris_defaut = $result_defaut->fetchAll(PDO::FETCH_ASSOC);
     
-    var_dump($favoris_defaut);
     
 
   /*if ((isset($_GET['filtre_domaine'])) ) {
@@ -438,7 +449,7 @@ if (isset($_GET['filtre_domaine'])){
     <section id="bookmarks">
         <table class="flex justify-center table_favori">
             <tr class="odd:bg-white even:bg-slate-50">
-                <th class="border border-black bg-gray-400 hover:bg-red-900">ID favori</th>
+                <th class="border border-black bg-gray-400 hover:bg-red-900 text-center">ID favori</th>
                 <th class="border border-black  bg-gray-400">Libellé</th>
                 <th class="border border-black  bg-gray-400">Date de création</th>
                 <th class="border border-black  bg-gray-400">Lien</th>
@@ -483,91 +494,88 @@ if (isset($_GET['filtre_domaine'])){
 
                       ?>
                       <tr class="border-solid  odd:bg-orange-100 even:bg-orange-300 hover:bg-green-200 ">
-                      <td class=" font-bold border border-b-black  h-full"><?php echo  $favori['id_favori'] ?></td>
-                      <td class="border border-b-black">
-                        <?php 
-                      
-                        if ($presence_recherche == true){
-                    
 
-                          $Tab_libelle = explode($Résultat_recherche,$favori['libelle']);
-                          for ($index = 0 ; $index < count($Tab_libelle); $index++){
-                            if ($index !=  count($Tab_libelle)-1){
-                              echo $Tab_libelle[$index]."<span class='text-red-500 underline font-bold'> ".$Résultat_recherche."</span> ";
-                            }else{
-                              echo $Tab_libelle[$index];
-                            }
-                          }
-                        }else{
-                          echo  $favori['libelle'];
-                        }
-                        ?>
-                      </td>
-                      <td class="border border-b-black"><?php echo  $favori['date_creation'] ?></td>
-                      <td class="border border-b-black"><a href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
-                      <?php
-                      $texteEnValeur = "";
-
-
-                      if (isset($_GET['filtre_domaine'])) {
-                          if ($_GET['filtre_domaine'] != "aucun"){
-                            if($_GET['filtre_domaine'] == $favori['id_domaine']){
-                              $texteEnValeur = "  text-red-500 underline font-bold";
-                            }
-                          }
-
-                      } ?> 
-                      <td class="border border-b-black "><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
-                      <td class="border border-b-black"><?php 
-                      $TabCatégorie_id = explode("|",$favoris_defaut[$favori['id_favori']-1]['liste_id_cat']);
-                      $TabCatégorie = explode("|", $favoris_defaut[$favori['id_favori']-1]['liste_categorie']);
-                      for ($index= 0 ; $index < count($TabCatégorie); $index++){
-                        $texteEnValeur ="";
-                        for ($index2 = 0 ; $index2 < count($table_id_categorie); $index2++){
-                          if ($TabCatégorie_id[$index] == $table_id_categorie[$index2]){
-                            $texteEnValeur ="text-red-500 underline  font-bold";
-                          }
-                        }
-                       
+                        <td class=" font-bold border border-b-black  h-full text-center"><?php
                         
-                          echo "<span class='".$texteEnValeur."'>".$TabCatégorie[$index]."</span><br>";
-                    
+                        echo  $favori['id_favori'] ?></td>
+                        <td class="border border-b-black">
+                          <?php 
+                        
+                          if ($presence_recherche == true){
                       
-                
-  
-                      }?></td class="h-full">
-                      
-                      <td class="flex border border-b-black">
-                      <form action="unfavori.php" method="GET">
-                      <button type="submit" name="id_du_favori" href="unfavori.php" class="bg-green-500 p-3 rounded mr-2 h-max" value= "<?php echo $favori['id_favori'] ?>">
-                        <i class="fa-solid fa-book"></i>
-                      </button>
-                      </form>
-                    
 
-                        <button class="bg-orange-500 p-3 rounded mr-2" >
-                        <i class="fa-solid fa-pen-clip"></i>
-                        </button>
-                        <button class="bg-red-500 p-3 rounded" >
-                        <i class="fa-solid fa-file-circle-xmark"></i>
-                        </button>
-                      
-                      
-                      
-                      
-                      
-                    </td>
-                      </tr>
+                            $Tab_libelle = explode($Résultat_recherche,$favori['libelle']);
+                            for ($index = 0 ; $index < count($Tab_libelle); $index++){
+                              if ($index !=  count($Tab_libelle)-1){
+                                echo $Tab_libelle[$index]."<span class='text-red-500 underline font-bold'> ".$Résultat_recherche."</span> ";
+                              }else{
+                                echo $Tab_libelle[$index];
+                              }
+                            }
+                          }else{
+                            echo  $favori['libelle'];
+                          }
+                          ?>
+                        </td>
+                        <td class="border border-b-black text-center"><?php echo  $favori['date_creation'] ?></td>
+                        <td class="border border-b-black h-max"><a class="flex justify-center " href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                        <?php
+                        $texteEnValeur = "";
 
-                    <?php } ?>
+
+                        if (isset($_GET['filtre_domaine'])) {
+                            if ($_GET['filtre_domaine'] != "aucun"){
+                              if($_GET['filtre_domaine'] == $favori['id_domaine']){
+                                $texteEnValeur = "  text-red-500 underline font-bold";
+                              }
+                            }
+
+                        } ?> 
+                        <td class="border border-b-black text-center"><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
+                        <td class="border border-b-black"><?php 
+                        $TabCatégorie_id = explode("|",$favoris_defaut[$favori['id_favori']-1]['liste_id_cat']);
+                        $TabCatégorie = explode("|", $favoris_defaut[$favori['id_favori']-1]['liste_categorie']);
+                        for ($index= 0 ; $index < count($TabCatégorie); $index++){
+                          $texteEnValeur ="";
+                          for ($index2 = 0 ; $index2 < count($table_id_categorie); $index2++){
+                            if ($TabCatégorie_id[$index] == $table_id_categorie[$index2]){
+                              $texteEnValeur ="text-red-500 underline  font-bold";
+                            }
+                          }
+                        
+                          
+                            echo "<span class='".$texteEnValeur."'>".$TabCatégorie[$index]."</span><br>";
+                      
+                        
                   
-                  
-                 
-                    
     
-
-                <?php } ?>
-
+                        }?></td class="h-full">
+                        
+                        <td class="flex border justify-center align-middle">
+                          <div class="flex justify-around item-center text-center ">
+                            <form action="unfavori.php" method="GET" class="text-center align-middle">
+                              <button type="submit" name="id_du_favori" href="unfavori.php" class="bg-green-500 p-3 rounded " value= "<?php echo $favori['id_favori'] ?>">
+                                <i class="fa-solid fa-book"></i>
+                              </button>
+                            </form>
+                        
+                            <form action="unfavori.php" method="GET">
+                              <button class="bg-orange-500 p-3 rounded  mr-2 ml-2" >
+                                <i class="fa-solid fa-pen-clip"></i>
+                              </button>
+                            </form>
+                            <form action="unfavori.php" method="GET">
+                            <button class="bg-red-500 p-3 rounded" >
+                            <i class="fa-solid fa-file-circle-xmark"></i>
+                            </button>
+                            </form>
+                          </div>
+                        </td>
+                      </tr>
+                    <?php 
+                    } 
+                    ?>
+              <?php } ?>
         </table> 
 
         <button>

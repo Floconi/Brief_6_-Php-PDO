@@ -10,7 +10,7 @@
     <script src="https://kit.fontawesome.com/0a3766d4f1.js" crossorigin="anonymous"></script>
     <script src="js/script.js" defer></script>
 </head>
-<body class="bg-slate-600">
+<body class="bg-slate-100">
     <header class="flex justify-center">
         <h1 class="flex justify-center text-sky-100">Mes favoris</h1>
     </header>
