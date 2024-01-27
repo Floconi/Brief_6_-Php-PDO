@@ -130,18 +130,23 @@ function AppliquerFiltre(){
     console.log("hello")
 
     var boutton = document.getElementById(id_bouton)
+   
+    var id_boutton_cacher = "btn_cacher"+id_bouton;
+   
+    var btn_cacher = document.getElementById(id_boutton_cacher)
     console.log(boutton)
-
-    if (boutton.value == "off"){
+    
+    if (btn_cacher.value == "off"){
 
         boutton.classList.add('boutton_affichage_selectionner')
         boutton.classList.remove('bg-blue-950')
-        boutton.value = "on"
+        btn_cacher.value = "on"
+        console.log(btn_cacher);
 
     }else{
         boutton.classList.remove('boutton_affichage_selectionner')
         boutton.classList.add('bg-blue-950')
-        boutton.value = "off"
+        btn_cacher.value = "off"
 
     }
  }

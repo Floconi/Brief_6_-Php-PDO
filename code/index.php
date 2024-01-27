@@ -135,14 +135,50 @@ if (isset($_GET['filtre_domaine'])){
                 $collone= $result->fetchAll(PDO::FETCH_ASSOC);
 
                 $index = 0;
+                $Tab_nom_de_collone = array();
+                $index_affichage = 0;
                 foreach ($collone as $uneCollone){ 
                   $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
-                  <input  name="<?php echo $id_du_bouton ?>"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $id_du_bouton ?>" value ="off"><?php echo $uneCollone['Field'] ?></input>
+                  <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded " " name="<?php echo $id_du_bouton ?>" value ="off"></input>
+                  <input type="button"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $id_du_bouton ?>" value ="<?php echo $uneCollone['Field'] ?>"></input>
                   <?php 
+
                     $index = $index +1;
+                    $Tab_nom_de_collone[$index_affichage] = $uneCollone['Field'];
+                    $index_affichage = $index_affichage + 1;
                 }
                 $nomb_col_max_favori = $index;
-                echo $nomb_col_max_favori;
+                echo $index_affichage;
+                
+              ?>
+            </div>
+          </fieldset>
+          <fieldset class = "flex justify-center border border-black  "> 
+            <?php 
+            $nom_table = "domaine"
+            ?>
+            <legend type="button" class="bg-green-600 text-white p-2 rounded ml-4">
+              <?php echo $nom_table ?>
+            </legend>
+            <div class = "m-8 flex flex-col w-max">
+              <?php 
+
+                $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+                $index = 0;
+                foreach ($collone as $uneCollone){ 
+                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
+                   <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded " " name="<?php echo $id_du_bouton ?>" value ="off"></input>
+                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" id="<?php echo $nom_table."_"."colonne_n°".$index ?>"  value ="off"><?php echo $uneCollone['Field'] ?></button>
+                <?php 
+                $index = $index +1;
+                  
+                  $Tab_nom_de_collone[$index_affichage] = $uneCollone['Field'];
+                  $index_affichage = $index_affichage + 1;
+                  echo $index_affichage;
+                }
+                $nomb_col_max_domaine = $index;
               ?>
             </div>
           </fieldset>
@@ -162,39 +198,22 @@ if (isset($_GET['filtre_domaine'])){
                 $index = 0;
                 foreach ($collone as $uneCollone){ 
                   $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
-                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $nom_table.'_'.'colonne_n°'.$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
+                   <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded " " name="<?php echo $id_du_bouton ?>" value ="off"></input>
+                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" value ="off"><?php echo $uneCollone['Field'] ?></button>
 
                   <?php $index = $index +1;
+                    echo $index_affichage;
+                    $Tab_nom_de_collone[$index_affichage] = $uneCollone['Field'];
+                    $index_affichage = $index_affichage + 1;
 
                 }
+                $nomb_col_max_categorie = $index;
 
               ?>
 
             </div>
           </fieldset>
-          <fieldset class = "flex justify-center border border-black  "> 
-            <?php 
-            $nom_table = "domaine"
-            ?>
-            <legend type="button" class="bg-green-600 text-white p-2 rounded ml-4">
-              <?php echo $nom_table ?>
-            </legend>
-            <div class = "m-8 flex flex-col w-max">
-              <?php 
-
-                $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                $collone = $result->fetchAll(PDO::FETCH_ASSOC);
-
-                $index = 0;
-                foreach ($collone as $uneCollone){ 
-                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
-                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" id="<?php echo $nom_table."_"."colonne_n°".$index ?>" name="<?php echo $nom_table."_"."colonne_n°".$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
-                <?php 
-                $index = $index +1;
-                }
-              ?>
-            </div>
-          </fieldset>
+          
 
           <fieldset class="flex justify-center border border-black items-center rounded">
             <legend class="border border-black flex text-center rounded "> 
@@ -263,23 +282,52 @@ if (isset($_GET['filtre_domaine'])){
       };
     };
     
-
-    if (isset($_GET['favori_colonne_n°'.$index]) == true){
+   
+   
       $index_affichage = 0;
-    $Tab_affichage = array();
-    for ($index = 0; $index <= $nomb_col_max_favori ; $index++){
-          if($_GET('favori_colonne_n°'.$index) == "on"){
+      $Tab_affichage = array();
+    for ($index = 0; $index < $nomb_col_max_favori ; $index++){
+      if (isset($_GET['favori_colonne_n°'.$index])){
+          if($_GET['favori_colonne_n°'.$index] == "on"){
             $Tab_affichage[$index_affichage] = "on";
           }else{
             $Tab_affichage[$index_affichage] = "off";
           }
 
-          $index_affichage = $index_affichage +1;
       }
-      echo "<pre>";
-      print_r($Tab_affichage);
-      echo "</pre>";
+        $index_affichage = $index_affichage +1;
     }
+
+    for ($index = 0; $index < $nomb_col_max_domaine ; $index++){
+      if (isset($_GET['domaine_colonne_n°'.$index])){
+          if($_GET['domaine_colonne_n°'.$index] == "on"){
+            $Tab_affichage[$index_affichage] = "on";
+          }else{
+            $Tab_affichage[$index_affichage] = "off";
+          }
+
+      }
+        $index_affichage = $index_affichage +1;
+    }
+    echo "<pre>";
+      print_r($Tab_affichage);
+      echo ($index_affichage);
+      echo "</pre>";
+
+    for ($index = 0; $index < $nomb_col_max_categorie ; $index++){
+      if (isset($_GET['categorie_colonne_n°'.$index])){
+          if($_GET['categorie_colonne_n°'.$index] == "on"){
+            $Tab_affichage[$index_affichage] = "on";
+          }else{
+            $Tab_affichage[$index_affichage] = "off";
+          }
+
+      }
+        $index_affichage = $index_affichage +1;
+    }
+
+
+      
     
 
     $presence_limite = false;
@@ -450,13 +498,34 @@ if (isset($_GET['filtre_domaine'])){
     <section id="bookmarks">
         <table class="flex justify-center table_favori">
             <tr class="odd:bg-white even:bg-slate-50">
-                <th class="border border-black bg-gray-400 hover:bg-red-900 text-center">ID favori</th>
-                <th class="border border-black  bg-gray-400">Libellé</th>
-                <th class="border border-black  bg-gray-400">Date de création</th>
-                <th class="border border-black  bg-gray-400">Lien</th>
-                <th class="border border-black  bg-gray-400">Nom de domaine</th>
-                <th class="border border-black  bg-gray-400">Catégorie(s)</th>
-                <th class="border border-black  bg-gray-400"> Gérer </th>
+              <?php
+                echo "<pre>";
+                print_r($Tab_affichage);
+                print_r($Tab_nom_de_collone);
+                echo "</pre>";
+                echo count($Tab_affichage) ;
+                if (count($Tab_affichage) != 0) {
+                  for ($index=0; $index < count($Tab_affichage) ; $index++){
+                    if ($Tab_affichage[$index] == "on" ){ ?>
+                      <th class="border border-black bg-gray-400 hover:bg-red-900 text-center"><?php echo $Tab_nom_de_collone[$index] ?></th>
+                    <?php }
+                  }
+
+
+                }else {
+                ?>
+                  <th class="border border-black bg-gray-400 hover:bg-red-900 text-center">ID favori</th>
+                  <th class="border border-black  bg-gray-400">Libellé</th>
+                  <th class="border border-black  bg-gray-400">Date de création</th>
+                  <th class="border border-black  bg-gray-400">Lien</th>
+                  <th class="border border-black  bg-gray-400">Nom de domaine</th>
+                  <th class="border border-black  bg-gray-400">Catégorie(s)</th>
+                  
+                <?php } 
+              ?>
+              <th class="border border-black  bg-gray-400"> Gérer </th>
+              
+                
             </tr>
             <?php 
                 foreach($favoris as $favori) {
