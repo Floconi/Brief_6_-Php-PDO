@@ -150,3 +150,32 @@ function AppliquerFiltre(){
 
     }
  }
+
+ function changerEtatBoutton_ordre(id_bouton){
+    console.log("hello")
+    console.log(id_bouton)
+     var bouton_cliker = document.getElementById(id_bouton);
+    console.log(bouton_cliker)
+    if (bouton_cliker.value == "off" ){
+        bouton_cliker_cacher = document.getElementById("btn_cacher_"+id_bouton)
+        if (id_bouton.includes("ASC")){
+            id_autre_bouton = "ordre_DESC"
+            autre_Bouton = document.getElementById(id_autre_bouton);
+            autre_Bouton_cacher = document.getElementById("btn_cacher_"+id_autre_bouton);
+        }else{
+            id_autre_bouton = "ordre_ASC"
+            autre_Bouton = document.getElementById(id_autre_bouton);
+            autre_Bouton_cacher = document.getElementById("btn_cacher_"+id_autre_bouton)
+        }
+        bouton_cliker.value = "on"
+        bouton_cliker.classList.add('boutton_affichage_selectionner')
+        bouton_cliker.classList.remove('bg-blue-950')
+        bouton_cliker_cacher.value = "on"
+        autre_Bouton.value = "off"
+        autre_Bouton.classList.remove('boutton_affichage_selectionner')
+        autre_Bouton.classList.add('bg-blue-950')
+        autre_Bouton_cacher.value = "off"
+
+    }
+
+ }
