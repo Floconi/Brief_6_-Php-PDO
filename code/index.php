@@ -1,7 +1,6 @@
 <?php 
 
 if (isset($_GET['filtre_domaine'])){
-  print_r($_GET['filtre_domaine']);
   
 }
 
@@ -281,15 +280,17 @@ if (isset($_GET['filtre_domaine'])){
 
       };
     };
-    
+ 
    
    
       $index_affichage = 0;
       $Tab_affichage = array();
+      $FiltreSurAffichage = false;
     for ($index = 0; $index < $nomb_col_max_favori ; $index++){
       if (isset($_GET['favori_colonne_n°'.$index])){
           if($_GET['favori_colonne_n°'.$index] == "on"){
             $Tab_affichage[$index_affichage] = "on";
+            $FiltreSurAffichage = true;
           }else{
             $Tab_affichage[$index_affichage] = "off";
           }
@@ -302,6 +303,7 @@ if (isset($_GET['filtre_domaine'])){
       if (isset($_GET['domaine_colonne_n°'.$index])){
           if($_GET['domaine_colonne_n°'.$index] == "on"){
             $Tab_affichage[$index_affichage] = "on";
+            $FiltreSurAffichage = true;
           }else{
             $Tab_affichage[$index_affichage] = "off";
           }
@@ -309,15 +311,13 @@ if (isset($_GET['filtre_domaine'])){
       }
         $index_affichage = $index_affichage +1;
     }
-    echo "<pre>";
-      print_r($Tab_affichage);
-      echo ($index_affichage);
-      echo "</pre>";
+
 
     for ($index = 0; $index < $nomb_col_max_categorie ; $index++){
       if (isset($_GET['categorie_colonne_n°'.$index])){
           if($_GET['categorie_colonne_n°'.$index] == "on"){
             $Tab_affichage[$index_affichage] = "on";
+            $FiltreSurAffichage = true;
           }else{
             $Tab_affichage[$index_affichage] = "off";
           }
@@ -367,9 +367,20 @@ if (isset($_GET['filtre_domaine'])){
       };
     }
 
+    for ($index = 0; $index < count($Tab_nom_de_collone) ; $index++){
+      if ($Tab_nom_de_collone[$index] == "id_categorie"){
+        $Tab_nom_de_collone[$index] = "liste_id_cat";
+      }
+      if ($Tab_nom_de_collone[$index] == "nom_categorie" ){
+        $Tab_nom_de_collone[$index] = "liste_categorie";
+      }
+    }
+ 
+   
+
 
     $Requete_SQL = "SELECT 
-      favori.id_favori, favori.libelle, favori.date_creation, favori.url, 
+      favori.id_favori, favori.libelle, favori.date_creation, favori.url, favori.id_dom,
       domaine.id_domaine, domaine.nom_domaine,
       GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,
       GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie'  
@@ -499,12 +510,9 @@ if (isset($_GET['filtre_domaine'])){
         <table class="flex justify-center table_favori">
             <tr class="odd:bg-white even:bg-slate-50">
               <?php
-                echo "<pre>";
-                print_r($Tab_affichage);
-                print_r($Tab_nom_de_collone);
-                echo "</pre>";
+              
                 echo count($Tab_affichage) ;
-                if (count($Tab_affichage) != 0) {
+                if ($FiltreSurAffichage == true) {
                   for ($index=0; $index < count($Tab_affichage) ; $index++){
                     if ($Tab_affichage[$index] == "on" ){ ?>
                       <th class="border border-black bg-gray-400 hover:bg-red-900 text-center"><?php echo $Tab_nom_de_collone[$index] ?></th>
@@ -555,16 +563,68 @@ if (isset($_GET['filtre_domaine'])){
                   }
 
                     if ($afficherligne == true) { 
-                    
-                    
+                      if ($FiltreSurAffichage == true){ ?>
+                        <tr class="border-solid  odd:bg-orange-100 even:bg-orange-300 hover:bg-green-200 "> 
+                        <?php for ($index=0; $index < count($Tab_affichage) ; $index++){
+                          if ($Tab_affichage[$index] == "on" ){
+                            if ($Tab_nom_de_collone[$index] == "liste_categorie"){ ?>
+                              <td class="border border-b-black"><?php 
+                              $TabCatégorie_id = explode("|",$favoris_defaut[$favori['id_favori']-1]['liste_id_cat']);
+                              $TabCatégorie = explode("|", $favoris_defaut[$favori['id_favori']-1]['liste_categorie']);
+                             
+                              for ($index2= 0 ; $index2 < count($TabCatégorie); $index2++){
+                                $texteEnValeur ="";
+                                for ($index3 = 0 ; $index3 < count($table_id_categorie); $index3++){
+                                  if ($TabCatégorie_id[$index2] == $table_id_categorie[$index3]){
+                                    $texteEnValeur ="text-red-500 underline  font-bold";
+                                  }
+                                }
+                              
+                                
+                                  echo "<span class='".$texteEnValeur."'>".$TabCatégorie[$index2]."</span><br>";
+                            
+                      
+                        
+                              
+                              }
 
+                            }elseif($Tab_nom_de_collone[$index] == "url"){ ?>
+                              <td class="border border-b-black h-max"><a class="flex justify-center " target="_blank" href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                            
+                            <?php }elseif($Tab_nom_de_collone[$index] == "libelle"){ ?>
+                              <td class="border border-b-black">
+                                <?php 
+                                if ($presence_recherche == true){
+                            
 
-                  
+                                  $Tab_libelle = explode($Résultat_recherche,$favori['libelle']);
+                                  for ($index2 = 0 ; $index2 < count($Tab_libelle); $index2++){
+                                    if ($index2 !=  count($Tab_libelle)-1){
+                                      echo $Tab_libelle[$index2]."<span class='text-red-500 underline font-bold'> ".$Résultat_recherche."</span> ";
+                                    }else{
+                                      echo $Tab_libelle[$index2];
+                                    }
+                                  }
+                                }else{
+                                  echo  $favori['libelle'];
+                                }
+                                ?>
+                              </td>
+                              
+                            <?php }else{ ?>
+                                <td class=" border border-b-black  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
+                            <?php } ?>
+                          
+                          <?php }
+
+                      }
+                      
+                      }else{
 
 
                       ?>
-                      <tr class="border-solid  odd:bg-orange-100 even:bg-orange-300 hover:bg-green-200 ">
-
+                     
+                        <tr class="border-solid  odd:bg-orange-100 even:bg-orange-300 hover:bg-green-200 "> 
                         <td class=" font-bold border border-b-black  h-full text-center"><?php
                         
                         echo  $favori['id_favori'] ?></td>
@@ -588,7 +648,7 @@ if (isset($_GET['filtre_domaine'])){
                           ?>
                         </td>
                         <td class="border border-b-black text-center"><?php echo  $favori['date_creation'] ?></td>
-                        <td class="border border-b-black h-max"><a class="flex justify-center " href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                        <td class="border border-b-black h-max"><a class="flex justify-center " target="_blank"  href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
                         <?php
                         $texteEnValeur = "";
 
@@ -603,6 +663,7 @@ if (isset($_GET['filtre_domaine'])){
                         } ?> 
                         <td class="border border-b-black text-center"><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
                         <td class="border border-b-black"><?php 
+                       
                         $TabCatégorie_id = explode("|",$favoris_defaut[$favori['id_favori']-1]['liste_id_cat']);
                         $TabCatégorie = explode("|", $favoris_defaut[$favori['id_favori']-1]['liste_categorie']);
                         for ($index= 0 ; $index < count($TabCatégorie); $index++){
@@ -619,7 +680,19 @@ if (isset($_GET['filtre_domaine'])){
                         
                   
     
-                        }?></td class="h-full">
+                        }?></td>
+                        
+                        
+                      <?php } ?>
+                    
+
+
+                  
+
+
+                        
+                        
+                        
                         
                         <td class="flex border justify-center ">
                             <form action="unfavori.php" method="GET" class="text-center ">
