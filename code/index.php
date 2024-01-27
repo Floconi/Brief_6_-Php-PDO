@@ -16,226 +16,213 @@ if (isset($_GET['filtre_domaine'])){
   
  
   <section class=" bg-red-500   filtre flex flex-col justify-center m-8">
-    <div class="flex justify-center" >
-      <form  method="get" action="index.php"> 
-        <h2 class="flex justify-center"> Filtres sur les données </h2>
-        <div class="flex ">
+    <form  method="get" action="index.php"> 
+       
+      <div class="flex Partie-Filtre-données ">
+        <h2 class="flex justify-center">
+          Filtres sur les données 
+        </h2>
+        <?php 
+          $table_cat = "categorie" ;
+          $result = $pdo->query(" SELECT * 
+          FROM $table_cat 
+          ;");
+          $categorie = $result->fetchAll(PDO::FETCH_ASSOC); 
+        ?>
+        <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4 rounded">
+          <legend class="text-center border border-black rounded p-4">
             <?php 
-              $table_cat = "categorie" ;
-              $result = $pdo->query(" SELECT * 
-              FROM $table_cat 
-              ;");
-              $categorie = $result->fetchAll(PDO::FETCH_ASSOC); 
+              $table_cat = " FILTRE sur ".ucfirst($table_cat)."s "; 
+              echo $table_cat 
             ?>
-            <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4 rounded">
-              <legend class="text-center border border-black rounded p-4">
-                <?php 
-                  $table_cat = " FILTRE sur ".ucfirst($table_cat)."s "; 
-                  echo $table_cat 
-                ?>
-              </legend>
-              <div class="flex flex-col">
-                
-                <?php
-                  $numero_cat = 1;
-                  foreach($categorie as $uneCategorie) { ?>
-                    <div class="flex "> 
-                      <input name="<?php echo "categorie_n°".$numero_cat ?>" type="checkbox" id="<?php echo "categor".$numero_cat ?>" >
-                      <label id="<?php echo "Label_categorie_n°".$numero_cat ?>" class="ml-2" for="<?php echo "categorie_n°".$numero_cat ?>"><?php echo $uneCategorie['nom_categorie'] ?></label>
-                    </div>
-                    <?php $numero_cat = $numero_cat + 1 ?>
-                  <?php };
-                  $numero_cat_max = $numero_cat;
-                ?> 
-                
-                <?php $numero_cat = 1;
-                  foreach ($categorie as $uneCategorie){ ?>
-                    <!--<select id="<?php echo "categorie_n°".$numero_cat ?>" name="<?php echo "flitre_categorie_n°".$numero_cat ?>">
-                    <?php
-                      $numero_dom = 1;
-                      foreach($categorie as $uneCategorie) { ?>
-                        <option  id="<?php echo "categorie_n°".$numero_cat ?>" value="<?php echo $uneCategorie['id_categorie'] ?>" ><?php //echo $uneCategorie['nom_categorie'] ?></option>
-                      
-                      <?php } 
-                    ?> 
-                    <?php  
-                      $numero_cat = $numero_cat + 1 
-                    ?>
-                    </select>-->
-                  <?php } 
-                ?>
-              </div>
-
-              <div class="">
-                <h3> Conditions entre les catégories  : <h3>
-                <div>
-                  <input type="radio" id="ou_categorie" name="condition_categorie" value="ou" checked />
-                  <label for="oucategorie">OU  </label>
+          </legend>
+          <div class="flex flex-col">  
+            <?php
+              $numero_cat = 1;
+              foreach($categorie as $uneCategorie) { ?>
+                <div class="flex "> 
+                  <input name="<?php echo "categorie_n°".$numero_cat ?>" type="checkbox" id="<?php echo "categor".$numero_cat ?>" >
+                  <label id="<?php echo "Label_categorie_n°".$numero_cat ?>" class="ml-2" for="<?php echo "categorie_n°".$numero_cat ?>"><?php echo $uneCategorie['nom_categorie'] ?></label>
                 </div>
-                <div>
-                  <input type="radio" id="et_categorie" name="condition_categorie" value="et" />
-                  <label for="etcategorie">ET</label>
-                </div>
-              </div>
-              
-            </fieldset>
-
-
+                <?php $numero_cat = $numero_cat + 1 ?>
+              <?php };
+              $numero_cat_max = $numero_cat;
+            ?>   
             <?php 
-              $table_dom = "domaine" ;
-              $result = $pdo->query(" SELECT * 
-              FROM $table_dom 
-              ;");
-              $domaine = $result->fetchAll(PDO::FETCH_ASSOC); 
-            ?>
-            
-            <fieldset class="flex flex-col border border-black p-4 m-4 justify-center rounded ">
-              <legend class="flex justify-center text-center border border-black rounded p-4"> FILTRE sur Domaine </legend>
-              <select id="selection_dom" name="filtre_domaine " class="mb-4">
-                <option value="aucun" selected>-- Tous les Domaines -- </option>
+              $numero_cat = 1;
+              foreach ($categorie as $uneCategorie){ ?>
+                <!--<select id="<?php echo "categorie_n°".$numero_cat ?>" name="<?php echo "flitre_categorie_n°".$numero_cat ?>">
                 <?php
                   $numero_dom = 1;
-                  foreach($domaine as $unDomaine) { ?>
-                    <option id="<?php echo "domaine_n°".$numero_dom ?>" value="<?php echo $unDomaine['id_domaine'] ?>" ><?php echo $unDomaine['nom_domaine'] ?></option>
-                    <?php $numero_dom = $numero_dom + 1 ?>
+                  foreach($categorie as $uneCategorie) { ?>
+                    <option  id="<?php echo "categorie_n°".$numero_cat ?>" value="<?php echo $uneCategorie['id_categorie'] ?>" ><?php //echo $uneCategorie['nom_categorie'] ?></option>
                   <?php } 
+                ?> 
+                <?php  
+                  $numero_cat = $numero_cat + 1 
                 ?>
-              </select>
-              <p>Condition de sélection  entre le(s) catégorie(s) et le domaine:</p>
-              <div>
-                <input type="radio" id="ou_categorie_dom" name="condition_categorie_dom" value="ou" checked />
-                <label for="ou_categorie_dom">OU </label>
-              </div>
-              <div>
-                <input type="radio" id="et_categorie_dom" name="condition_categorie_dom" value="et" />
-                <label for="et_categorie_dom">ET </label>
-              </div> 
-            </fieldset>
+                </select>-->
+              <?php } 
+            ?>
           </div>
-        </div>
-       
-      
-      
-        <div>
-          <h2 class="flex justify-center"> Filtre sur l'affichage Affichage  </h2>
-          
-          <div class="flex justify-around">
-          
-            <fieldset class = "flex justify-center border border-black "> 
-              <?php 
-                $nom_table = "favori"
-              ?> 
-              <legend  class="bg-green-600 text-white p-2 rounded border border-black ml-4 " ><?php echo $nom_table ?></legend>
-              <div class = " flex flex-col w-max">
-              
-              </div>
-              <div class = "m-8 flex flex-col w-max">
-                <?php 
 
-                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                  $collone= $result->fetchAll(PDO::FETCH_ASSOC);
-
-                  $index = 0;
-                  foreach ($collone as $uneCollone){ 
-                    $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
-                    <button type="button" name="<?php echo $id_du_bouton ?>"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $id_du_bouton ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
-                    
-                  <?php $index = $index +1;
-                  }
-                  $nomb_col_max_favori = $index;
-                  echo $nomb_col_max_favori;
-
-                ?>
-              </fieldset>
-              <fieldset class = "flex justify-center border border-black"> 
-              <?php 
-                $nom_table = "categorie"
-              ?>
-                <legend  class="bg-green-600 text-white p-2  ml-4 rounded" onclick="changerEtatBoutton()"><?php echo $nom_table ?></legend>
-              
-              <div class = "m-8 flex flex-col w-max">
-              
-                <?php 
-
-                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                  $collone = $result->fetchAll(PDO::FETCH_ASSOC);
-
-                  $index = 0;
-                  foreach ($collone as $uneCollone){ 
-                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
-                    <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $nom_table.'_'.'colonne_n°'.$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
-
-                    <?php $index = $index +1;
-
-                  }
-
-                ?>
-              </div>
-              </fieldset>
-              <fieldset class = "flex justify-center border border-black  "> 
-              <?php 
-              $nom_table = "domaine"
-              ?>
-                <legend type="button" class="bg-green-600 text-white p-2 rounded ml-4"><?php echo $nom_table ?></legend>
-              <div class = "m-8 flex flex-col w-max">
-              
-                <?php 
-
-                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                  $collone = $result->fetchAll(PDO::FETCH_ASSOC);
-
-                  $index = 0;
-                  foreach ($collone as $uneCollone){ 
-                    $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
-                    <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" id="<?php echo $nom_table."_"."colonne_n°".$index ?>" name="<?php echo $nom_table."_"."colonne_n°".$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
-
-
-
-                  <?php 
-                  $index = $index +1;
-                  }
-
-                ?>
-              </div>
-              </fieldset>
-              <fieldset class="flex justify-center border border-black items-center rounded">
-              <legend class="border border-black flex text-center rounded "> Limitation  </legend>
-                <select name="Limite" class="h-5">
-                <option value = "Tout">-- Tous -- </option> 
-                  <option value = "1">1</option>
-                  <option value = "5">5</option>
-                  <option value = "10">10</option>
-                  <option value = "30">30</option>
-                </select>
-                </fieldset>
+          <div class="">
+            <h3> Conditions entre les catégories  : <h3>
+            <div>
+              <input type="radio" id="ou_categorie" name="condition_categorie" value="ou" checked />
+              <label for="oucategorie">OU  </label>
             </div>
+            <div>
+              <input type="radio" id="et_categorie" name="condition_categorie" value="et" />
+              <label for="etcategorie">ET</label>
+            </div>
+          </div>     
+        </fieldset>
+        <?php 
+          $table_dom = "domaine" ;
+          $result = $pdo->query(" SELECT * 
+          FROM $table_dom 
+          ;");
+          $domaine = $result->fetchAll(PDO::FETCH_ASSOC); 
+        ?>  
+        <fieldset class="flex flex-col border border-black p-4 m-4 justify-center rounded ">
+          <legend class="flex justify-center text-center border border-black rounded p-4"> 
+            FILTRE sur Domaine 
+          </legend>
+          <select id="selection_dom" name="filtre_domaine" class="mb-4">
+            <option value="aucun" selected>-- Tous les Domaines -- </option>
+            <?php
+              $numero_dom = 1;
+              foreach($domaine as $unDomaine) { ?>
+                <option id="<?php echo "domaine_n°".$numero_dom ?>" value="<?php echo $unDomaine['id_domaine'] ?>" ><?php echo $unDomaine['nom_domaine'] ?></option>
+                <?php $numero_dom = $numero_dom + 1 ?>
+              <?php } 
+            ?>
+          </select>
+          <p>Condition de sélection  entre le(s) catégorie(s) et le domaine:</p>
+          <div>
+            <input type="radio" id="ou_categorie_dom" name="condition_categorie_dom" value="ou" checked />
+            <label for="ou_categorie_dom">OU </label>
           </div>
           <div>
-            
-          </div>
+            <input type="radio" id="et_categorie_dom" name="condition_categorie_dom" value="et" />
+            <label for="et_categorie_dom">ET </label>
+          </div> 
+        </fieldset>
+      </div>
+        
+       
+      
+      <?php /* Partie de filtre sur l'afichage */ ?>
+
+      <div class="Filtre_sur_l'affichage">
+        <h2 class="flex justify-center"> 
+          Filtre sur l'affichage Affichage  
+        </h2>
           
-        <div class="flex items-center justify-evenly mt-5">
-          <fieldset class = "flex flex-col justify-center w-1/2 border border-black items-center p-4">
-            <legend class="text-center"> Barre de recherche </legend>
+        <div class="flex justify-around">
+          <fieldset class = "flex justify-center border border-black "> 
+            <?php 
+              $nom_table = "favori"
+            ?> 
+            <legend  class="bg-green-600 text-white p-2 rounded border border-black ml-4 " >
+              <?php echo $nom_table ?>
+            </legend>
+            <div class = "m-8 flex flex-col w-max">
+              <?php 
 
-            <input type="search" name="Rechercher" id="default-search" class="block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  h-10" placeholder="Recherche par libelle..." >
+                $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                $collone= $result->fetchAll(PDO::FETCH_ASSOC);
 
+                $index = 0;
+                foreach ($collone as $uneCollone){ 
+                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
+                  <input  name="<?php echo $id_du_bouton ?>"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $id_du_bouton ?>" value ="off"><?php echo $uneCollone['Field'] ?></input>
+                  <?php 
+                    $index = $index +1;
+                }
+                $nomb_col_max_favori = $index;
+                echo $nomb_col_max_favori;
+              ?>
+            </div>
+          </fieldset>
+          <fieldset class = "flex justify-center border border-black"> 
+            <?php 
+              $nom_table = "categorie"
+            ?>
+            <legend  class="bg-green-600 text-white p-2  ml-4 rounded" onclick="changerEtatBoutton()">
+              <?php echo $nom_table ?>
+            </legend>
+            <div class = "m-8 flex flex-col w-max">
+              <?php 
 
+                $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+                $index = 0;
+                foreach ($collone as $uneCollone){ 
+                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
+                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" name="<?php echo $nom_table.'_'.'colonne_n°'.$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
+
+                  <?php $index = $index +1;
+
+                }
+
+              ?>
+
+            </div>
+          </fieldset>
+          <fieldset class = "flex justify-center border border-black  "> 
+            <?php 
+            $nom_table = "domaine"
+            ?>
+            <legend type="button" class="bg-green-600 text-white p-2 rounded ml-4">
+              <?php echo $nom_table ?>
+            </legend>
+            <div class = "m-8 flex flex-col w-max">
+              <?php 
+
+                $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+                $index = 0;
+                foreach ($collone as $uneCollone){ 
+                  $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
+                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" id="<?php echo $nom_table."_"."colonne_n°".$index ?>" name="<?php echo $nom_table."_"."colonne_n°".$index ?>" value ="off"><?php echo $uneCollone['Field'] ?></button>
+                <?php 
+                $index = $index +1;
+                }
+              ?>
+            </div>
           </fieldset>
 
-
-
-      
+          <fieldset class="flex justify-center border border-black items-center rounded">
+            <legend class="border border-black flex text-center rounded "> 
+              Limitation  
+            </legend>
+              <select name="Limite" class="h-5">
+                <option value = "Tout">-- Tous -- </option> 
+                <option value = "1">1</option>
+                <option value = "5">5</option>
+                <option value = "10">10</option>
+                <option value = "30">30</option>
+              </select>
+          </fieldset>
+        </div>
+      </div>   
+      <div class="flex items-center justify-evenly mt-5">
+        <fieldset class = "flex flex-col justify-center w-1/2 border border-black items-center p-4">
+          <legend class="text-center"> 
+            Barre de recherche 
+          </legend>
+          <input type="search" name="Rechercher" id="default-search" class="block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  h-10" placeholder="Recherche par libelle..." >
+        </fieldset>
         <button type="submit" class="bg-blue-950 text-white p-6  rounded flex justify-center" >
-              Appliquer les filtres
+          Appliquer les filtres
         </button> 
-                
-      </form>
-    </div>  
-
-
-      
-
+      </div>  
+    </form>
+  </section>
     
       
       
@@ -274,13 +261,27 @@ if (isset($_GET['filtre_domaine'])){
         $index_id_cat = $index_id_cat + 1 ;
 
       };
+    };
     
 
+    if (isset($_GET['favori_colonne_n°'.$index]) == true){
+      $index_affichage = 0;
+    $Tab_affichage = array();
+    for ($index = 0; $index <= $nomb_col_max_favori ; $index++){
+          if($_GET('favori_colonne_n°'.$index) == "on"){
+            $Tab_affichage[$index_affichage] = "on";
+          }else{
+            $Tab_affichage[$index_affichage] = "off";
+          }
 
+          $index_affichage = $index_affichage +1;
+      }
+      echo "<pre>";
+      print_r($Tab_affichage);
+      echo "</pre>";
+    }
+    
 
-
-
-    };
     $presence_limite = false;
     if (isset($_GET['Limite'])){
       if ($_GET['Limite'] != "Tout"){
@@ -551,9 +552,8 @@ if (isset($_GET['filtre_domaine'])){
     
                         }?></td class="h-full">
                         
-                        <td class="flex border justify-center align-middle">
-                          <div class="flex justify-around item-center text-center ">
-                            <form action="unfavori.php" method="GET" class="text-center align-middle">
+                        <td class="flex border justify-center ">
+                            <form action="unfavori.php" method="GET" class="text-center ">
                               <button type="submit" name="id_du_favori" href="unfavori.php" class="bg-green-500 p-3 rounded " value= "<?php echo $favori['id_favori'] ?>">
                                 <i class="fa-solid fa-book"></i>
                               </button>
@@ -569,7 +569,6 @@ if (isset($_GET['filtre_domaine'])){
                             <i class="fa-solid fa-file-circle-xmark"></i>
                             </button>
                             </form>
-                          </div>
                         </td>
                       </tr>
                     <?php 
