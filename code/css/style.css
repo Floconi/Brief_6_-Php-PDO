@@ -4,3 +4,56 @@
     background-color: rgb(50, 206, 154);
 }
 
+@font-face {
+    font-family: 'nunito_italic';
+    src: url('../police_ecriture/police_Ninito/nunito-italic-variablefont_wght-webfont.woff2') format('woff2'),
+         url('../police_ecriture/police_Ninito/nunito-italic-variablefont_wght-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'nunito_regular';
+    src: url('../police_ecriture/police_Ninito/nunito-variablefont_wght-webfont.woff2') format('woff2'),
+         url('../police_ecriture/police_Ninito/nunito-variablefont_wght-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'libre_baskerville_bold';
+    src: url('../police_ecriture/police_Libre_Baskerville/librebaskerville-bold-webfont.woff2') format('woff2'),
+         url('../police_ecriture/police_Libre_Baskerville/librebaskerville-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'libre_baskerville_italic';
+    src: url('../police_ecriture/police_Libre_Baskerville/librebaskerville-italic-webfont.woff2') format('woff2'),
+         url('../police_ecriture/police_Libre_Baskerville/librebaskerville-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'libre_baskerville_regular';
+    src: url('../police_ecriture/police_Libre_Baskerville/librebaskerville-regular-webfont.woff2') format('woff2'),
+         url('../police_ecriture/police_Libre_Baskerville/librebaskerville-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

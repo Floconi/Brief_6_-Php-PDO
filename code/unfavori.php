@@ -15,42 +15,41 @@ WHERE favori.id_favori =".$_GET['id_du_favori'].";";
 
 $result =  $pdo->query($Requete_SQL);
 $favoris = $result->fetch(PDO::FETCH_ASSOC);
-echo "<pre>";
-print_r($favoris);
-echo "<pre>";
+
 
 ?>
-
-<div class="informations">
+<div class="flex justify-center font-PE_libre_baskerville">
+<div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black m-8 w-3/4">
     <div class="flex ">
-        <p class="w-1/4"> ID du favori </p>
-        <p> <?php echo $favoris['id_favori'] ?></p>
+        <p class="w-1/4  bg-orange-200 h-max flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold">ID du favori </p>
+        <p class=" w-full pl-5 border-b bg-orange-100 border-black flex justify-start items-center"><?php echo $favoris['id_favori'] ?></p>
     </div>
     <div class="flex">
-        <p class="w-max 1/4"> Libelle du  favori </p>
-        <p> <?php echo $favoris['libelle'] ?> </p>
+        <p class="w-1/4 bg-orange-200 h-max flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold">Libelle du  favori </p>
+        <p class=" w-full pl-5 border-b bg-orange-100 border-black flex  items-center"><?php echo $favoris['libelle'] ?> </p>
     </div>
     <div class="flex">
-        <p class="w-1/2"> Date de création favori </p>
-        <p><?php echo $favoris['date_creation'] ?></p>
+        <p class="w-1/4 h-max bg-orange-200 flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold">Date de création du favori </p>
+        <p class=" w-full pl-5 border-b bg-orange-100 border-black flex items-center"><?php echo $favoris['date_creation'] ?></p>
     </div>
     <div class="flex">
-        <p class="w-1/2"> URL  </p>
-        <p><?php echo $favoris['url'] ?> </p>
+        <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between"><p >URL</p> <a href="<?php echo  $favoris['url']?>"><i class=" text-[#78afd8]  fa-solid fa-arrow-up-right-from-square"></i></a> </div>
+        <p class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"><?php echo $favoris['url'] ?> </p>
     </div>
     <div class="flex">
-        <p class="w-1/2"> Catégorie associée </p>
-        <p> <?php echo $favoris['nom_domaine'] ?></p>
+        <p class="w-1/4 bg-orange-200 h-max flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold">Domaine associées </p>
+        <p class="w-full pl-5 border-b bg-orange-100 border-black flex items-center"><?php echo $favoris['nom_domaine'] ?></p>
     </div>
-    <div class="flex">
-        <p class="w-1/2"> Domaine associée </p>
-          <p class="flex flex-col"><?php
+    <div class="flex ">
+        <p class="w-1/4 flex bg-orange-200 justify-start font-PE_libre_baskerville_italique items-center p-4 font-bold"> Catégorie associées </p>
+          <p class="w-full pl-5 flex bg-orange-100 flex-col  justify-center"><?php
          $TabCatégorie = explode("|", $favoris['liste_categorie']);
                       for ($index= 0 ; $index < count($TabCatégorie); $index++){
                             $texteEnValeur ="";
                             echo "<span>".$TabCatégorie[$index]."</span>";?>
                         <?php } ?>
 
+    </div>
     </div>
 
 
@@ -60,3 +59,4 @@ echo "<pre>";
 
 
 </div>
+<?php include ("footer.php") ?>

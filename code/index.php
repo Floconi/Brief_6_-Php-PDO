@@ -18,7 +18,7 @@ if (isset($_GET['filtre_domaine'])){
     <form  method="get" action="index.php"> 
        
       <div class="flex partie-Filtre-données flex-col">
-        <h2 class="flex justify-center underline">
+        <h2 class="flex justify-center underline font-PE_libre_baskerville_gras text-xl">
           Filtres sur les données 
         </h2>
         <div class="flex justify-center">
@@ -30,9 +30,9 @@ if (isset($_GET['filtre_domaine'])){
             $categorie = $result->fetchAll(PDO::FETCH_ASSOC); 
           ?>
           <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4 rounded">
-            <legend class="text-center border border-black rounded p-4">
+            <legend class="text-center border border-black rounded p-4 font-PE_libre_baskerville_italique text-lg">
               <?php 
-                $table_cat = " FILTRE sur ".ucfirst($table_cat)."s "; 
+                $table_cat = " FILTRE sur les ".ucfirst($table_cat)."s "; 
                 echo $table_cat;
               ?>
             </legend>
@@ -40,9 +40,9 @@ if (isset($_GET['filtre_domaine'])){
               <?php
                 $numero_cat = 1;
                 foreach($categorie as $uneCategorie) { ?>
-                  <div class="flex "> 
+                  <div class="flex mr-5 "> 
                     <input name="<?php echo "categorie_n°".$numero_cat ?>" type="checkbox" id="<?php echo "categor".$numero_cat ?>" >
-                    <label id="<?php echo "Label_categorie_n°".$numero_cat ?>" class="ml-2" for="<?php echo "categorie_n°".$numero_cat ?>"><?php echo $uneCategorie['nom_categorie'] ?></label>
+                    <label id="<?php echo "Label_categorie_n°".$numero_cat ?>" class="ml-2 font-PE_libre_baskerville" for="<?php echo "categorie_n°".$numero_cat ?>"><?php echo $uneCategorie['nom_categorie'] ?></label>
                   </div>
                   <?php $numero_cat = $numero_cat + 1 ?>
                 <?php };
@@ -66,15 +66,17 @@ if (isset($_GET['filtre_domaine'])){
               ?>
             </div>
 
-            <div class="">
+            <div class=" flex justify-center flex-col items-center">
               <h3> Conditions entre les catégories  : <h3>
-              <div>
-                <input type="radio" id="ou_categorie" name="condition_categorie" value="ou" checked />
-                <label for="oucategorie">OU  </label>
-              </div>
-              <div>
-                <input type="radio" id="et_categorie" name="condition_categorie" value="et" />
-                <label for="etcategorie">ET</label>
+              <div class="flex justify-center item-center flex-col ">
+                <div class="">
+                  <input type="radio" id="ou_categorie" name="condition_categorie" value="ou" checked />
+                  <label for="oucategorie">OU  </label>
+                </div>
+                <div class="">
+                  <input type="radio" id="et_categorie" name="condition_categorie" value="et" />
+                  <label for="etcategorie">ET</label>
+                </div>
               </div>
             </div>     
           </fieldset>
@@ -85,12 +87,12 @@ if (isset($_GET['filtre_domaine'])){
             ;");
             $domaine = $result->fetchAll(PDO::FETCH_ASSOC); 
           ?>  
-          <fieldset class="flex flex-col border border-black p-4 m-4 justify-center rounded ">
-            <legend class="flex justify-center text-center border border-black rounded p-4"> 
-              FILTRE sur Domaine 
+          <fieldset class="flex flex-col border border-black p-4 m-4 justify-around rounded ">
+            <legend class="flex justify-center text-center border border-black rounded p-4 font-PE_libre_baskerville_italique"> 
+              FILTRE sur le Domaine 
             </legend>
-            <select id="selection_dom" name="filtre_domaine" class="mb-4">
-              <option value="aucun" selected>-- Tous les Domaines -- </option>
+            <select id="selection_dom"class="font-PE_libre_baskerville" name="filtre_domaine" class="mb-4">
+              <option value="aucun" class="font-PE_libre_baskerville" selected>-- Tous les Domaines -- </option>
               <?php
                 $numero_dom = 1;
                 foreach($domaine as $unDomaine) { ?>
@@ -99,15 +101,19 @@ if (isset($_GET['filtre_domaine'])){
                 <?php } 
               ?>
             </select>
-            <p>Condition de sélection  entre le(s) catégorie(s) et le domaine:</p>
-            <div>
-              <input type="radio" id="ou_categorie_dom" name="condition_categorie_dom" value="ou" checked />
-              <label for="ou_categorie_dom">OU </label>
+            <div class="flex items-center flex-col ">
+              <p>Condition de sélection  entre le(s) catégorie(s) et le domaine:</p>
+              <div class="">
+                <div>
+                  <input type="radio" id="ou_categorie_dom" name="condition_categorie_dom" value="ou" checked />
+                  <label for="ou_categorie_dom">OU </label>
+                </div>
+                <div>
+                  <input type="radio" id="et_categorie_dom" name="condition_categorie_dom" value="et" />
+                  <label for="et_categorie_dom">ET </label>
+                </div>
+              </div>
             </div>
-            <div>
-              <input type="radio" id="et_categorie_dom" name="condition_categorie_dom" value="et" />
-              <label for="et_categorie_dom">ET </label>
-            </div> 
           </fieldset>
         </div>
       </div>
@@ -117,7 +123,7 @@ if (isset($_GET['filtre_domaine'])){
       <?php /* Partie de filtre sur l'afichage */ ?>
 
       <div class="Filtre_sur_l'affichage">
-        <h2 class="flex justify-center underline"> 
+        <h2 class="flex justify-center underline font-PE_libre_baskerville_gras p-4"> 
           FILTRE sur l'affichage 
         </h2>
           
@@ -126,7 +132,7 @@ if (isset($_GET['filtre_domaine'])){
             <?php 
               $nom_table = "favori"
             ?> 
-            <legend  class="bg-green-600 text-white p-2 rounded   ml-4 " >
+            <legend  class="bg-blue-950 text-white p-2 rounded font-PE_libre_baskerville_italique  ml-4 " >
               <?php echo $nom_table; ?>
             </legend>
             <div class = "m-8 flex flex-col w-max">
@@ -141,7 +147,7 @@ if (isset($_GET['filtre_domaine'])){
                 foreach ($collone as $uneCollone){ 
                   $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
                   <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
-                  <input type="button"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded " onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')"  value ="<?php echo $uneCollone['Field'] ?>"></input>
+                  <input type="button"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded font-PE_libre_baskerville" onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')"  value ="<?php echo $uneCollone['Field'] ?>"></input>
                   <?php 
 
                     $index = $index +1;
@@ -158,7 +164,7 @@ if (isset($_GET['filtre_domaine'])){
             <?php 
             $nom_table = "domaine"
             ?>
-            <legend type="button" class="bg-green-600 text-white p-2 rounded ml-4">
+            <legend type="button" class="bg-blue-950 text-white p-2 rounded ml-4 font-PE_libre_baskerville_italique">
             <?php echo $nom_table; ?>
             </legend>
             <div class = "m-8 flex flex-col w-max">
@@ -172,7 +178,7 @@ if (isset($_GET['filtre_domaine'])){
                 foreach ($collone as $uneCollone){ 
                   $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
                    <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
-                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')"  value ="off"><?php echo $uneCollone['Field'] ?></button>
+                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded font-PE_libre_baskerville "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')"  value ="off"><?php echo $uneCollone['Field'] ?></button>
                 <?php 
                 $index = $index +1;
                   
@@ -188,7 +194,7 @@ if (isset($_GET['filtre_domaine'])){
             <?php 
               $nom_table = "categorie"
             ?>
-            <legend  class="bg-green-600 text-white p-2  ml-4 rounded" onclick="changerEtatBoutton()">
+            <legend  class="bg-blue-950 text-white p-2  ml-4 rounded font-PE_libre_baskerville_italique" onclick="changerEtatBoutton()">
               <?php echo $nom_table; ?>
             </legend>
             <div class = "m-8 flex flex-col w-max">
@@ -202,7 +208,7 @@ if (isset($_GET['filtre_domaine'])){
                 foreach ($collone as $uneCollone){ 
                   $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
                    <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
-                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" value ="off"><?php echo $uneCollone['Field'] ?></button>
+                  <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 font-PE_libre_baskerville text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" value ="off"><?php echo $uneCollone['Field'] ?></button>
 
                   <?php $index = $index +1;
             
@@ -219,47 +225,47 @@ if (isset($_GET['filtre_domaine'])){
           
           <div class="flex flex-col justify-around">
             <fieldset class="flex justify-center border border-black items-center rounded p-5">
-              <legend class="border border-black flex text-center rounded p-4"> 
+              <legend class=" border border-black flex text-center rounded p-4 font-PE_libre_baskerville_italique"> 
                 Limitation  
               </legend>
-                <select name="Limite" class="h-5">
-                  <option value = "Tout">-- Tous -- </option> 
-                  <option value = "1">1</option>
-                  <option value = "5">5</option>
-                  <option value = "10">10</option>
-                  <option value = "30">30</option>
+                <select class="font-PE_libre_baskerville" name="Limite" class="h-5">
+                  <option class="font-PE_libre_baskerville" value = "Tout">-- Tous -- </option> 
+                  <option class="font-PE_libre_baskerville" value = "1">1</option>
+                  <option class="font-PE_libre_baskerville" value = "5">5</option>
+                  <option class="font-PE_libre_baskerville" value = "10">10</option>
+                  <option class="font-PE_libre_baskerville" value = "30">30</option>
                 </select>
             </fieldset>
             <fieldset class="flex justify-around flex-col border border-black items-center rounded p-5">
-              <legend class=" border border-black flex text-center rounded p-4 ">Ordonée par collone</legend>
-              <select name="ordre_affichage" class="h-5">
-                  <option value = "">-- Ne pas Ordonée -- </option> 
-                  <option value = "id_favori">id_favori</option>
-                  <option value = "libelle">libelle</option>
-                  <option value = "date_creation">date_creation</option>
-                  <option value = "url">url</option>
-                  <option value = "nom_domaine">nom_domaine</option>
-                  <option value = "liste_Categorie">liste_Categorie</option>
+              <legend class=" font-PE_libre_baskerville_italique border border-black flex text-center rounded p-4 ">Ordonée par collone</legend>
+              <select class="font-PE_libre_baskerville" name="ordre_affichage" class="h-5">
+                  <option class="font-PE_libre_baskerville" value = "">-- Ne pas Ordonée -- </option> 
+                  <option class="font-PE_libre_baskerville" value = "id_favori">id_favori</option>
+                  <option class="font-PE_libre_baskerville" value = "libelle">libelle</option>
+                  <option class="font-PE_libre_baskerville" value = "date_creation">date_creation</option>
+                  <option class="font-PE_libre_baskerville" value = "url">url</option>
+                  <option class="font-PE_libre_baskerville" value = "nom_domaine">nom_domaine</option>
+                  <option class="font-PE_libre_baskerville" value = "liste_categorie">liste_Categorie</option>
               </select>
               <div class="flex mt-10 justify-between">
-                <input type="hidden" id="btn_cacher_ordre_ASC" name="Ordre_ASC"   class="bg-blue-950 text-white p-2 mb-5 rounded " value ="on"></input>
-                <button type="button" id="ordre_ASC" class=" text-white p-2 mb-5 rounded boutton_affichage_selectionner mr-4"  onclick="changerEtatBoutton_ordre('ordre_ASC')" value ="on">A -> Z</button>
+                <input type="hidden" id="btn_cacher_ordre_ASC" name="Ordre_ASC"   class="bg-blue-950  text-white p-2 mb-5 rounded " value ="on"></input>
+                <button type="button" id="ordre_ASC" class=" text-white p-2 mb-5 font-PE_libre_baskerville rounded boutton_affichage_selectionner mr-4"  onclick="changerEtatBoutton_ordre('ordre_ASC')" value ="on">A -> Z</button>
                 <input type="hidden" id="btn_cacher_ordre_DESC" name="Ordre_DESC"   class="bg-blue-950 text-white p-2 mb-5 rounded " value ="off"></input>
-                <button type="button" id="ordre_DESC" class="bg-blue-950 text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton_ordre('ordre_DESC')" value ="off"> Z -> A </button>
+                <button type="button" id="ordre_DESC" class="bg-blue-950 font-PE_libre_baskerville text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton_ordre('ordre_DESC')" value ="off"> Z -> A </button>
               <div>
 
             </fieldset>
           </div>
         </div>
       </div>   
-      <div class="flex items-center justify-evenly mt-5">
+      <div class="flex items-center justify-evenly mt-5 ">
         <fieldset class = "flex flex-col justify-center w-1/2 border border-black items-center p-4 rounded">
-          <legend class="text-center border border-black rounded p-4"> 
+          <legend class="text-center border border-black rounded p-4 font-PE_libre_baskerville_italique"> 
             Barre de recherche 
           </legend>
-          <input type="search" name="Rechercher" id="default-search" class="block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  h-10" placeholder="Recherche par libelle..." >
+          <input type="search" name="Rechercher" id="default-search" class="font-PE_libre_baskerville block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 h-10" placeholder="Recherche par libelle..." >
         </fieldset>
-        <button type="submit" class="bg-blue-950 text-white p-6  rounded flex justify-center " >
+        <button type="submit" class="bg-blue-950 mt-2 text-white p-6 font-PE_nunito rounded flex justify-center " >
           Appliquer les filtres
         </button> 
       </div>  
@@ -355,7 +361,10 @@ if (isset($_GET['filtre_domaine'])){
       $Tab_affichage[1] = "on";
       $Tab_affichage[2] = "on";
       $Tab_affichage[3] = "on";
+      $Tab_affichage[4] = "off";
+      $Tab_affichage[5] = "off";
       $Tab_affichage[6] = "on";
+      $Tab_affichage[7] = "off";
       $Tab_affichage[8] = "on";
       $FiltreSurAffichage = true;
 
@@ -572,7 +581,6 @@ if (isset($_GET['filtre_domaine'])){
     
 
   </section>
-
     <section id="bookmarks">
         <table class="flex justify-center table_favori">
             <tr class="odd:bg-white even:bg-slate-50">
@@ -581,9 +589,9 @@ if (isset($_GET['filtre_domaine'])){
                   for ($index=0; $index < count($Tab_affichage) ; $index++){
                     if ($Tab_affichage[$index] == "on" ){ 
                       if ($collone_filtre_ordre == $Tab_nom_de_collone[$index]){ ?>
-                        <th class="border border-black  hover:bg-red-900 bg-red-900 text-center text-red-500  font-bold"><?php echo $Tab_nom_de_collone[$index] ?> <span class="text-red-500 underline  font-bold"> <?php echo " ".$affichage_ordre ?> </span> </th>
+                        <th class="border border-black font-PE_nunito_italique hover:bg-red-900 bg-red-900 text-center text-red-500  font-bold"><?php echo $Tab_nom_de_collone[$index] ?> <span class="text-red-500 underline  font-bold"> <?php echo " ".$affichage_ordre ?> </span> </th>
                       <?php }else{ ?>
-                         <th class="border border-black bg-gray-400 hover:bg-red-900 text-center"><?php echo $Tab_nom_de_collone[$index] ?></th>
+                         <th class="border border-black font-PE_libre_baskerville_italique  bg-gray-400 hover:bg-red-900 text-center"><?php echo $Tab_nom_de_collone[$index] ?></th>
                       <?php }?>
                      
                     <?php }
@@ -592,16 +600,16 @@ if (isset($_GET['filtre_domaine'])){
 
                 }else {
                 ?>
-                  <th class="border border-black bg-gray-400 hover:bg-red-900 text-center">ID favori</th>
+                  <!--<th class="border border-black bg-gray-400 hover:bg-red-900 text-center">ID favori</th>
                   <th class="border border-black  bg-gray-400">Libellé</th>
                   <th class="border border-black  bg-gray-400">Date de création</th>
                   <th class="border border-black  bg-gray-400">Lien</th>
                   <th class="border border-black  bg-gray-400">Nom de domaine</th>
-                  <th class="border border-black  bg-gray-400">Catégorie(s)</th>
+                  <th class="border border-black  bg-gray-400">Catégorie(s)</th> -->
                   
                 <?php } 
               ?>
-              <th class="border border-black  bg-gray-400"> Gérer </th>
+              <th class="border border-black font-PE_libre_baskerville_italique  bg-gray-400 hover:bg-red-900 text-center"> Gérer </th>
               
                 
             </tr>
@@ -633,7 +641,7 @@ if (isset($_GET['filtre_domaine'])){
                         <?php for ($index=0; $index < count($Tab_affichage) ; $index++){
                           if ($Tab_affichage[$index] == "on" ){
                             if ($Tab_nom_de_collone[$index] == "liste_categorie"){ ?>
-                              <td class="border border-b-black"><?php 
+                              <td class="border border-b-black font-PE_libre_baskerville"><?php 
                               $TabCatégorie_id = explode("|",$favoris_defaut[$favori['id_favori']-1]['liste_id_cat']);
                               $TabCatégorie = explode("|", $favoris_defaut[$favori['id_favori']-1]['liste_categorie']);
                              
@@ -654,10 +662,10 @@ if (isset($_GET['filtre_domaine'])){
                               }
 
                             }elseif($Tab_nom_de_collone[$index] == "url"){ ?>
-                              <td class="border border-b-black h-max"><a class="flex justify-center " target="_blank" href="<?php echo  $favori['url']?>"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                              <td class="border border-b-black h-max min-w-20 font-PE_libre_baskerville"><a class="flex justify-center " target="_blank" href="<?php echo  $favori['url']?>"><i class=" text-[#78afd8]  fa-solid fa-arrow-up-right-from-square"></i></a></td>
                             
                             <?php }elseif($Tab_nom_de_collone[$index] == "libelle"){ ?>
-                              <td class="border border-b-black">
+                              <td class="border border-b-black font-PE_libre_baskerville">
                                 <?php 
                                 if ($presence_recherche == true){
                             
@@ -689,12 +697,18 @@ if (isset($_GET['filtre_domaine'])){
                                       }
 
                                   } 
-                                ?> 
-                                <td class="border border-b-black text-center"><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
+                                ?>
+                                <td class="border min-w-[150px] font-PE_libre_baskerville border-b-black text-center"><span class="<?php echo $texteEnValeur ?>"><?php echo  $favori['nom_domaine'] ?></span></td>
+                              <?php }elseif($Tab_nom_de_collone[$index] == "date_creation"){
+                                 ?>
+                                 
+                                <td class=" border min-w-[120px] border-b-black font-PE_libre_baskerville  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
+                                <?php }elseif($Tab_nom_de_collone[$index] == "id_favori"){ ?>
+                                  <td class=" border border-b-black font-PE_libre_baskerville_gras  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
 
-
-                            <?php }else{ ?>
-                                <td class=" border border-b-black  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
+                                
+                              <?php }else{ ?>
+                                <td class=" border border-b-black  font-PE_libre_baskerville h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
                             <?php } ?>
                           
                           <?php }
@@ -776,23 +790,25 @@ if (isset($_GET['filtre_domaine'])){
                         
                         
                         
-                        <td class="flex border justify-center ">
+                        <td class=" border justify-center items-center align-middle border-black ">
+                          <div class="flex ">
                             <form action="unfavori.php" method="GET" class="text-center ">
-                              <button type="submit" name="id_du_favori" href="unfavori.php" class="bg-green-500 p-3 rounded " value= "<?php echo $favori['id_favori'] ?>">
-                                <i class="fa-solid fa-book"></i>
+                              <button type="submit" name="id_du_favori" href="unfavori.php" class=" p-3    rounded " value= "<?php echo $favori['id_favori'] ?>">
+                                <i class=" text-green-600 fa-solid fa-book"></i>
                               </button>
                             </form>
                         
                             <form action="unfavori.php" method="GET">
-                              <button class="bg-orange-500 p-3 rounded  mr-2 ml-2" >
-                                <i class="fa-solid fa-pen-clip"></i>
+                              <button class=" p-3 rounded  mr-2 ml-2" >
+                                <i class=" text-orange-600 fa-solid fa-pen-clip"></i>
                               </button>
                             </form>
                             <form action="unfavori.php" method="GET">
-                            <button class="bg-red-500 p-3 rounded" >
-                            <i class="fa-solid fa-file-circle-xmark"></i>
+                            <button class=" p-3 rounded" >
+                            <i class="text-rose-700 text-red fa-solid fa-file-circle-xmark"></i>
                             </button>
                             </form>
+                          </div>
                         </td>
                       </tr>
                     <?php 
@@ -801,14 +817,13 @@ if (isset($_GET['filtre_domaine'])){
               <?php } ?>
         </table> 
 
-        <button>
+        <!--<button>
                 Télécharger le CVS
         </button>
         <button class="bg-lime-500">
                   Ajouter
         </button>
-    </section>
+    </section>-->
 
     
-</body>
-</html>
+<?php include("footer.php") ?>
