@@ -292,16 +292,41 @@ if (isset($_GET['filtre_domaine'])){
           
 
 
-  <!-- Zone de gestion de la requete en fonction des filtres -->
+  <!-- /**
+  * ? PARTIE 2 : Zone de gestion de la requete en fonction des filtres / 
+  * ? VERIFICATION que les données existe et attribution des valeurs
+  -->
   <?php 
     
-  
-
-
-
+   /** 
+     * ! Filtre sur les données
+     * TODO : On défini si il y'a un filtre sélectionné sur les catégorie et le domaine à l'aide d'un booléan
+     */
+    $filtre = false;
+    $filtre_cat = false;
+    $filtre_dom = false; 
     $index = 1;
     $index_id_cat = 0;
     $table_id_categorie = array();
+
+    if (count($table_id_categorie) != 0){
+    
+      $filtre_cat = true;
+    };
+
+    if(isset($_GET['filtre_domaine'])){
+      if ($_GET['filtre_domaine'] != "aucun"){
+        
+        $filtre_dom = true;
+      }
+    }
+
+    /** 
+     * ! Filtre Sur l'affichage
+     * todo : ici on récupère les ids des catégories sélectionnées et on les affecte dans un tableau
+     * */
+
+   
 
     for ($index = 1 ; $index <= $numero_cat_max ; $index++){
       if (isset($_GET['categorie_n°'.$index])){
@@ -311,7 +336,13 @@ if (isset($_GET['filtre_domaine'])){
       };
     };
  
-   
+   /**
+    * TODO : ici on récupère les boutons d'afffichage coché par l'utilisateur et on affecte la valeur dans un tableau 
+    * TODO : on si on veut voir la collone 
+    * TODO : off si on veut la masquées
+    * TODO : On fait tout d'abord pour la table favori
+    * TODO : On garde le même idex_affichage et tableau pour les autres tables
+    */
    
       $index_affichage = 0;
       $Tab_affichage = array();
@@ -328,6 +359,12 @@ if (isset($_GET['filtre_domaine'])){
       }
         $index_affichage = $index_affichage +1;
     }
+    /**
+     * TODO : On fait la même chose avec la table domaine
+     * TODO : on si on veut voir la collone 
+     * TODO : off si on veut la masquées
+     * 
+     */
 
     for ($index = 0; $index < $nomb_col_max_domaine ; $index++){
       if (isset($_GET['domaine_colonne_n°'.$index])){
@@ -342,6 +379,13 @@ if (isset($_GET['filtre_domaine'])){
         $index_affichage = $index_affichage +1;
     }
 
+     /**
+     * TODO : On fait la même chose avec la table catégorie
+     * TODO : on si on veut voir la collone 
+     * TODO : off si on veut la masquées
+     * 
+     */
+
 
     for ($index = 0; $index < $nomb_col_max_categorie ; $index++){
       if (isset($_GET['categorie_colonne_n°'.$index])){
@@ -355,6 +399,11 @@ if (isset($_GET['filtre_domaine'])){
       }
         $index_affichage = $index_affichage +1;
     }
+
+    /**
+     * TODO : Si l'utilisateur n'a sélectionner aucun affichage particulier (y compris au chargement de la page)
+     * TODO : On affecte des valeurs par défaut pour que l'affichage s'applique dans tout les cas
+     */
 
     if($FiltreSurAffichage == false){
       $Tab_affichage[0] = "on";
@@ -374,8 +423,11 @@ if (isset($_GET['filtre_domaine'])){
 
     }
 
+   
      
-    
+    /**
+     * TODO : Vérification que l'utisateur à selectionné une limite par le passage en parametre
+     */
 
 
     
@@ -388,7 +440,11 @@ if (isset($_GET['filtre_domaine'])){
       }
 
   }
-
+/**
+ * TODO : Vérification si l'utilisateur à choisi un filtre 
+ * TODO : Puis on créer des variables à inclure dans la requete SQL 
+ * TODO : Création de variable d'affichage qui sera vu par l'utilisateur (A->Z PLUS Compréhensible que ASC)
+ */
   $filtre_ordre = false;
   $collone_filtre_ordre ="";
   if(!empty($_GET['ordre_affichage'])){
@@ -405,19 +461,27 @@ if (isset($_GET['filtre_domaine'])){
   }
  
 
-
+  /**
+   * TODO  : Vériication du paramêtre de recherche
+   * todo : Si oui on affecte le mot recherché dans une variable
+   */
 
   $presence_recherche = false;
   if (!empty($_GET['Rechercher'])){
       
   
-      $Résultat_recherche = $_GET['Rechercher'];
+      $resultat_recherche = $_GET['Rechercher'];
 
       $presence_recherche = true;
     
 
   }
 
+  /**
+   * TODO : Récupération de l'élément de liéson qui servira si l'utilisateur veut plusieurs catégorie
+   * TODO : ET -  Je veux que le résultat possède uniquement toutes les catégorie sélectionnées
+   * TODO : OU -  Le résultat doit avoir au moins l'une des catégorie sélectionnées
+   */
     
     if (isset($_GET['condition_categorie'])){
         if ($_GET['condition_categorie'] == "ou"){
@@ -428,6 +492,13 @@ if (isset($_GET['filtre_domaine'])){
 
     }
 
+    /**
+     * TODO : Comme il n'y a que un seul et unique domaine pas de condition entre domaine 
+     * TODO : Cependant, il nous faut la liéson entre la(les) catégorie(s) et le domaine
+     * TODO : ET - Je veux les résultat des catégorie sélectionnée qui ont le domaine sélectionné
+     * TODO : OU - Je veux les résultat des caégorie sélectionnées ou bien du domaine sélectionné
+     */
+
     if(isset($_GET['condition_categorie_dom'])){
       if ($_GET['condition_categorie_dom'] == "ou"){
       $condition_categorie_dom = "OR";
@@ -435,6 +506,11 @@ if (isset($_GET['filtre_domaine'])){
         $condition_categorie_dom = "AND";
       };
     }
+
+    /**
+     * TODO : Comme on fait des allias dans la requete on va venir modifier les noms de collone 
+     * TODO : Ainsi il corresponde à la requete et on va pouvoir les utiliser 
+     */
 
     for ($index = 0; $index < count($Tab_nom_de_collone) ; $index++){
       if ($Tab_nom_de_collone[$index] == "id_categorie"){
@@ -444,9 +520,20 @@ if (isset($_GET['filtre_domaine'])){
         $Tab_nom_de_collone[$index] = "liste_categorie";
       }
     }
- 
-   
 
+    
+      
+   
+ 
+   /**
+    * ? PARTIE 3 : Création de la requete SQL 
+    */
+
+    /**
+     * todo : ICI , on créer la requete de base en fonction des filtres Pour l'instant, on décide de prendre à afficher toute les collonne
+     ** Version future : Créer les collone à afficher en fonction des filtres d'affichage sélectionnées
+     * 
+     */
 
     $Requete_SQL = "SELECT 
       favori.id_favori, favori.libelle, favori.date_creation, favori.url, favori.id_dom,
@@ -454,35 +541,35 @@ if (isset($_GET['filtre_domaine'])){
       GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,
       GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as liste_categorie 
       FROM favori "; /* Début création de la requete sql */
-    $filtre = false;
-    $filtre_cat = false;
-    $filtre_dom = false; 
+    
+    /**
+     * TODO : Je créer toutes les jointures des tables
+     */
     $Requete_SQL .= 
     "INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori 
      INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie 
      INNER JOIN domaine ON domaine.id_domaine = favori.id_dom ";
     
-    if (count($table_id_categorie) != 0){
-    
-      $filtre_cat = true;
-    };
-
-    if(isset($_GET['filtre_domaine'])){
-      if ($_GET['filtre_domaine'] != "aucun"){
-        
-        $filtre_dom = true;
-      }
-    }
+    /**
+     * TODO : On ne met le where que si il y'a un filtre sur les catégorie ou le domaine ou la recherche
+     */
 
     if($filtre_cat == true || $filtre_dom == true || $presence_recherche == true){
    
       $Requete_SQL .= "WHERE";
     }
 
+    /**
+     * TODO : Je commence par la recherche 
+     * TODO : LIKE permet de repérer un motif particulier 
+     * TODO : LE % remplace n'importe quel caractère
+     * 
+     ** Version future : Permettre un AND pour filtre sur recherche et le faire sur différente collone
+     */
 
     if ($presence_recherche == true ){
 
-      $Requete_SQL .= " libelle LIKE '%".$Résultat_recherche."%'"; 
+      $Requete_SQL .= " libelle LIKE '%".$resultat_recherche."%'"; 
       
       if ( $filtre_dom  == true || $filtre_cat == true){
       $Requete_SQL .= " OR ";
@@ -491,37 +578,59 @@ if (isset($_GET['filtre_domaine'])){
     }
     }
   
+    /**
+     * TODO : On créer la requete sql pour les filtres
+     * TODO : On fait attention au ordre de priorité donc on ajoute les parenthèse
+     * TODO : Petite subtilité ne pas mettre de liéson sur le dernier catégorie donc  count($table_id_categorie)-1 
+     * TODO : 2eme subtilité Le mot de liéson est le OR meme dans le cas de Et On va juste filtrer les résultat au moment de l'affichage
+     */
 
     
     for ($index = 0 ; $index < count($table_id_categorie); $index++){
     if (count($table_id_categorie) >=2 && $index == 0){
-          $Requete_SQL = $Requete_SQL." ( ";
+          $Requete_SQL .= " ( ";
       };   
-      $Requete_SQL = $Requete_SQL." categorie.id_categorie = ".$table_id_categorie[$index]." ";
+      $Requete_SQL .= " categorie.id_categorie = ".$table_id_categorie[$index]." ";
 
       if ($index != count($table_id_categorie)-1 ){
-        $Requete_SQL = $Requete_SQL."OR";
+        $Requete_SQL .= "OR";
         
       }
 
       if ( count($table_id_categorie) >=2 && $index == count($table_id_categorie)-1){
-        $Requete_SQL = $Requete_SQL." ) ";
+        $Requete_SQL .= $Requete_SQL." ) ";
 
       }
     }
 
-    if($filtre_cat == true && isset($_GET['filtre_domaine']) ){
-      if ($_GET['filtre_domaine'] != "aucun"){
-        $Requete_SQL = $Requete_SQL.$condition_categorie_dom;
-      }
-    
+
+    /**
+     * TODO : On ajoute la condition entre le domaine et les catégorie uniquement si on a un filtre sur les catégorie et le dom
+     ** Version Future : Enlever les get et les remplacer par les variable de la partie 2 (fait)
+     */
+
+    if($filtre_cat == true && $filtre_dom == true ){
+       /**if ($_GET['filtre_domaine'] != "aucun"){*/
+        $Requete_SQL .= $condition_categorie_dom;
+        $Requete_SQL .= " domaine.id_domaine = ".$_GET['filtre_domaine'];
+      /** }*/
+
+      
     }
-    if (isset($_GET['filtre_domaine'])){
-      if ($_GET['filtre_domaine'] != "aucun"){
-        $Requete_SQL = $Requete_SQL." domaine.id_domaine = ".$_GET['filtre_domaine'];
-      }
-    }
+    /** 
     
+    *if (isset($_GET['filtre_domaine'])){
+    *  if ($_GET['filtre_domaine'] != "aucun"){
+        
+    *  }
+    *}
+    */
+
+    /**
+     * TODO : On rajoute un group by pour ne pas avoir plusieurs fois la même ligne
+     * TODO : Comme la clé primaire est unique on le groupe par cette collone
+     * TODO : Puis on ordre par le nombre de collone et ordre croissant ou décroissant
+     */
     
     
 
@@ -539,7 +648,10 @@ if (isset($_GET['filtre_domaine'])){
     }
     $Requete_SQL .= " ; "; /* FIN de l'instruction SQL */
 
-
+    /**
+     * TODO : J'ai besoin de la requete par défaut consernant les catégorie pour les voir toute afficher 
+     * TODO: Sans cela si on fait une recherhce API, on obtiendera qu'une api
+     */
 
 
     $Requete_SQL_defaut = "SELECT favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.id_domaine, domaine.nom_domaine,GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,GROUP_CONCAT(categorie.nom_categorie SEPARATOR ' | ') as 'liste_categorie' FROM favori INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie INNER JOIN domaine ON domaine.id_domaine = favori.id_dom GROUP BY favori.id_favori ORDER BY favori.id_favori ASC";
@@ -554,6 +666,10 @@ if (isset($_GET['filtre_domaine'])){
     if ($_GET['filtre_domaine'] != "aucun"){
       $Requete_SQL = $Requete_SQL."INNER JOIN domaine ON domaine.id_domaine = favori.id_dom  WHERE domaine.id_domaine = '".$_GET['filtre_domaine']."';";
     }};*/
+
+    /**
+     * TODO : Interogation de la base de données avec la requete SQL pour obtenir les résultats
+     */
 
     $result = $pdo->query($Requete_SQL);
     $favoris = $result->fetchAll(PDO::FETCH_ASSOC);
@@ -668,12 +784,13 @@ if (isset($_GET['filtre_domaine'])){
                               <td class="border border-b-black font-PE_libre_baskerville">
                                 <?php 
                                 if ($presence_recherche == true){
-                            
+                                  $resultat_recherche_initial = $resultat_recherche;
 
-                                  $Tab_libelle = explode($Résultat_recherche,$favori['libelle']);
+                                  
+                                  $Tab_libelle = explode($resultat_recherche,$favori['libelle']);
                                   for ($index2 = 0 ; $index2 < count($Tab_libelle); $index2++){
                                     if ($index2 !=  count($Tab_libelle)-1){
-                                      echo $Tab_libelle[$index2]."<span class='text-red-500 underline font-bold'> ".$Résultat_recherche."</span> ";
+                                      echo $Tab_libelle[$index2]."<span class='text-red-500 underline font-bold'> ".$resultat_recherche."</span> ";
                                     }else{
                                       echo $Tab_libelle[$index2];
                                     }
@@ -730,10 +847,10 @@ if (isset($_GET['filtre_domaine'])){
                           if ($presence_recherche == true){
                       
 
-                            $Tab_libelle = explode($Résultat_recherche,$favori['libelle']);
+                            $Tab_libelle = explode($resultat_recherche,$favori['libelle']);
                             for ($index = 0 ; $index < count($Tab_libelle); $index++){
                               if ($index !=  count($Tab_libelle)-1){
-                                echo $Tab_libelle[$index]."<span class='text-red-500 underline font-bold'> ".$Résultat_recherche."</span> ";
+                                echo $Tab_libelle[$index]."<span class='text-red-500 underline font-bold'> ".$resultat_recherche."</span> ";
                               }else{
                                 echo $Tab_libelle[$index];
                               }
