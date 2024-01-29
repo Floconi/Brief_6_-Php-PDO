@@ -695,7 +695,7 @@ if (isset($_GET['filtre_domaine'])){
     print_r($Tab_nom_categorie);*/
   ?>  
     
-
+    <?php $index4 = 0  ?>
   </section>
     <section id="bookmarks">
         <table class="flex justify-center table_favori">
@@ -758,9 +758,10 @@ if (isset($_GET['filtre_domaine'])){
                           if ($Tab_affichage[$index] == "on" ){
                             if ($Tab_nom_de_collone[$index] == "liste_categorie"){ ?>
                               <td class="border border-b-black font-PE_libre_baskerville"><?php 
-                              $TabCatégorie_id = explode("|",$favoris_defaut[$favori['id_favori']-1]['liste_id_cat']);
-                              $TabCatégorie = explode("|", $favoris_defaut[$favori['id_favori']-1]['liste_categorie']);
-                             
+                              
+                              $TabCatégorie_id = explode("|",$favoris_defaut[$index4]['liste_id_cat']);
+                              $TabCatégorie = explode("|", $favoris_defaut[$index4]['liste_categorie']);
+                              $index4 = $index4+1;
                               for ($index2= 0 ; $index2 < count($TabCatégorie); $index2++){
                                 $texteEnValeur ="";
                                 for ($index3 = 0 ; $index3 < count($table_id_categorie); $index3++){
@@ -915,13 +916,13 @@ if (isset($_GET['filtre_domaine'])){
                               </button>
                             </form>
                         
-                            <form action="unfavori.php" method="GET">
-                              <button class=" p-3 rounded  mr-2 ml-2" >
+                            <form action="modifier.php" method="GET">
+                              <button class=" p-3 rounded mr-2 ml-2" name="id_du_favori" value="<?php echo $favori['id_favori']?>">
                                 <i class=" text-orange-600 fa-solid fa-pen-clip"></i>
                               </button>
                             </form>
-                            <form action="unfavori.php" method="GET">
-                            <button class=" p-3 rounded" >
+                            <form action="supprimer.php" method="GET">
+                            <button type="submit" name="id_du_favori" class=" p-3 rounded" value="<?php echo $favori['id_favori'] ?>">
                             <i class="text-rose-700 text-red fa-solid fa-file-circle-xmark"></i>
                             </button>
                             </form>
