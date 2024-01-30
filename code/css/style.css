@@ -3,7 +3,9 @@
     color: yellow;
     background-color: rgb(50, 206, 154);
 }
-
+.couleur-noir-custom{
+    color: black;
+}
 @font-face {
     font-family: 'nunito_italic';
     src: url('../police_ecriture/police_Ninito/nunito-italic-variablefont_wght-webfont.woff2') format('woff2'),

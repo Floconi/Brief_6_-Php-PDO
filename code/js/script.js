@@ -179,3 +179,26 @@ function AppliquerFiltre(){
     }
 
  }
+
+
+ function changercouleurtexteselect(){
+
+
+    nom_domaine = document.getElementById("saisie_nom_domaine")
+
+
+    if (nom_domaine.value != ""){
+        nom_domaine.classList.add("couleur-noir-custom")
+        nom_domaine.classList.remove("text-[#9caabc]")
+    }else{
+        nom_domaine.classList.remove("couleur-noir-custom")
+        nom_domaine.classList.add("text-[#9caabc]")
+    }
+
+ }
+
+ function ChangerCouleurIcone(champ){
+    
+
+
+ }

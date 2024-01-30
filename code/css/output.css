@@ -590,6 +590,14 @@ video {
   margin: 2rem;
 }
 
+.m-3 {
+  margin: 0.75rem;
+}
+
+.m-1 {
+  margin: 0.25rem;
+}
+
 .mb-4 {
   margin-bottom: 1rem;
 }
@@ -808,6 +816,11 @@ video {
   background-color: rgb(69 10 10 / var(--tw-bg-opacity));
 }
 
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -893,9 +906,19 @@ video {
   color: rgb(120 175 216 / var(--tw-text-opacity));
 }
 
+.text-\[\#9caabc\] {
+  --tw-text-opacity: 1;
+  color: rgb(156 170 188 / var(--tw-text-opacity));
+}
+
 .text-amber-500 {
   --tw-text-opacity: 1;
   color: rgb(245 158 11 / var(--tw-text-opacity));
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .text-gray-900 {
