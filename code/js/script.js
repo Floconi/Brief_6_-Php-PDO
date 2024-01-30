@@ -198,7 +198,44 @@ function AppliquerFiltre(){
  }
 
  function ChangerCouleurIcone(champ){
+
+    console.log("hello")
     
+    champ_selectionner = document.getElementById(champ)
+    icone = document.getElementById(champ+"_icone")
+
+
+    if (champ_selectionner.value != 0){
+        icone.classList.add("couleur_orange")
+        
+    }else{
+        icone.classList.remove("couleur_orange")
+    }
+
+ }
+
+ function changercouleur_categorie(nomb_cat){
+    icone = document.getElementById("categorie_icone")
+    console.log(icone)
+    uneSelection = false;
+    for (index =1 ; index <= nomb_cat ; index++){
+        var uneCategorie = document.getElementById("categorie"+index)
+        console.log(uneCategorie)
+        if (uneCategorie.checked == true){
+            uneSelection = true;
+        }
+
+    }
+    if (uneSelection == true){
+
+        icone.classList.add("couleur_orange")
+    
+    }else{
+
+        icone.classList.remove("couleur_orange")
+
+    }
+
 
 
  }

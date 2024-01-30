@@ -10,8 +10,29 @@ if (!empty($_POST)){
 }else{
     echo "no";
     $formulaire_soumis = false;
+    if (isset($_POST['saisie_libelle'])){
+        $valeur_du_libelle = htmlspecialchars($_POST['saisie_libelle']);
+    }else{
+        $valeur_du_libelle = "";
+    }
+    if (isset($_POST['saisie_url'])){
+        $valeur_du_libelle = htmlspecialchars($_POST['saisie_url']);
+    }else{
+        $valeur_du_libelle = "";
+    }
+    if (isset($_POST['saisie_libelle'])){
+        $selection_active = htmlspecialchars($_POST['saisie_libelle']);
+    }else{
+        $valeur_du_libelle = "";
+    }
 }
-$formulaireValide = true;
+
+
+
+$Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
+    
+$result =  $pdo->query($Requete_SQL);
+$nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
 
 if ($formulaire_soumis == true){
 
@@ -49,7 +70,7 @@ if ($formulaire_soumis == true){
                 $erreur_libelle = "Le libelle ne doit pas exéder 100 caractères";
                 $formulaireValide = false;
             }else{
-                 $libelle = $_POST['saisie_libelle'];
+                 $libelle =  htmlspecialchars($_POST['saisie_libelle']);
             }
         }else{
             $erreur_libelle = "Veuillez écrire un libéllé , ce champs est obligatoire";
@@ -60,15 +81,14 @@ if ($formulaire_soumis == true){
        
 
 
-        $libelle = "";
         if (!empty($_POST['saisie_url'])){
-            $libelle = $_POST['saisie_url'];
             $erreur_url = "";
             if (strlen($_POST['saisie_url']) > 1000){
-                $erreur_url = "Le libelle ne doit pas exéder 1000 caractères";
+                $erreur_url = "L' URL ne doit pas exéder 1000 caractères";
                 $formulaireValide = false;
             }else{
-                $url = $_POST['saisie_url'];
+               
+                $url =  htmlspecialchars($_POST['saisie_url']);
             }
         }else{
             $erreur_url = "L'url est un champs obligatoire Veuillez saisir un lien";
@@ -79,7 +99,8 @@ if ($formulaire_soumis == true){
 
         $domaine="";
         if (!empty($_POST['saisie_nom_domaine'])){
-            $domaine = $_POST['saisie_nom_domaine'];
+            $domaine = intval($_POST['saisie_nom_domaine']);
+            echo gettype($domaine);
             $erreur_nom_dom ="";
         }else{
             $erreur_nom_dom = "Veuillez choisir un domaine dans la liste déroulante ce champs est obligatoire";
@@ -92,17 +113,49 @@ if ($formulaire_soumis == true){
         if ($formulaireValide == true){
 
             echo "VRAI §§§";
-            $Requete_SQL = "INSERT INTO favori VALUES ('','".$libelle."','".$date."','".$url."',".$domaine.")";
+
+            $Requete_SQL_Preparation = "INSERT INTO favori VALUES ('',:libelle,:date,:url,:domaine)";
+
+            $Requete_prete = $pdo->prepare($Requete_SQL_Preparation);
+
+            $Tableau_parametre = array(
+                ':libelle' => $libelle,
+                ':date' => $date,
+                ':url' => $url,
+                ':domaine' => $domaine );
+
+
+            $Requete_prete->execute($Tableau_parametre);
+            /**$Requete_SQL = "INSERT INTO favori VALUES ('','".$libelle."','".$date."','".$url."',".$domaine.")";
             echo $Requete_SQL;
-            //$pdo->query($Requete_SQL);
+            $pdo->query($Requete_SQL);*/
         
             $dernier_id = $pdo -> lastInsertId();
 
             for ($index = 0 ; $index < count($saisie_table_id_categorie); $index++){
-                $Requete_SQL = " INSERT INTO favori_categorie VALUES ('".$dernier_id."','".$saisie_table_id_categorie[$index]."')";
-                // $pdo->query($Requete_SQL);
+                $Requete_SQL_preparation = " INSERT INTO favori_categorie VALUES (:dernier_id,:id_categorie_assosier)";
+
+                $RequetePreparer = $pdo->prepare($Requete_SQL_preparation);
+
+                $Tableau_parametre = array(
+                    ':dernier_id' => $dernier_id,
+                    'id_categorie_assosier' => $saisie_table_id_categorie[$index]
+                );
+
+
+                $RequetePreparer -> execute($Tableau_parametre);
             }
 
+
+
+           /**  for ($index = 0 ; $index < count($saisie_table_id_categorie); $index++){
+               * $Requete_SQL = " INSERT INTO favori_categorie VALUES ('".$dernier_id."','".$saisie_table_id_categorie[$index]."')";
+               * $pdo->query($Requete_SQL);
+            *}
+            */
+
+
+            header('Location: index.php');
 
         }else{
             echo "faux";
@@ -144,7 +197,7 @@ if ($formulaire_soumis == true){
             <div class="flex flex-col">
                 <div class="flex">
                     <div class="w-1/4 bg-orange-200 h-max flex border-b font-PE_libre_baskerville_italique border-black p-4 font-bold justify-between items-center"><p>Libelle du  favori <span class="text-red-600">*</span></p><i id="champ_libelle_icone" class="fa-solid fa-pencil"></i> </div>
-                    <input type="text" name="saisie_libelle" class=" w-full pl-5 border-b bg-orange-100 border-black flex  items-center" onchange="ChangerCouleurIcone()" placeholder="Entrer un nom de libelle" id="champ_libelle"></input>
+                    <input type="text" name="saisie_libelle" class=" w-full pl-5 border-b bg-orange-100 border-black flex  items-center" onchange="ChangerCouleurIcone('champ_libelle')" placeholder="Entrer un nom de libelle" id="champ_libelle" value="<?php echo $valeur_du_libelle ?>"></input>
                 </div>
                     <?php if (!empty($erreur_libelle) && $formulaire_soumis == true ){ ?>
                     <div class="bg-red-600 flex justify-center">
@@ -164,8 +217,8 @@ if ($formulaire_soumis == true){
             </div>
             <div class="flex flex-col">
                 <div class="flex">
-                    <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i class="fa-solid fa-pencil"></i></div>
-                    <input name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"> </input>
+                    <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i id="champ_url_icone" class="fa-solid fa-pencil"></i></div>
+                    <input id="champ_url" name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"  onchange="ChangerCouleurIcone('champ_url')"> </input>
                 </div>
                     <?php if (!empty($erreur_url) && $formulaire_soumis == true ){ ?>
                         <div class="bg-red-600 flex justify-center">
@@ -174,7 +227,7 @@ if ($formulaire_soumis == true){
                 <?php } ?>
             </div>
             <div class="flex ">
-                    <div class="w-1/4  bg-orange-200 h-max flex fle  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold justify-between items-center"><p>Domaine associé <span class="text-red-600">*</span></p><i class="fa-solid fa-pencil"></i></div>
+                    <div class="w-1/4  bg-orange-200 h-max flex fle  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold justify-between items-center"><p>Domaine associé <span class="text-red-600">*</span></p><i id="saisie_nom_domaine_icone" class="fa-solid fa-pencil"></i></div>
                         <?php 
                             $table_dom = "domaine" ;
                             $result = $pdo->query(" SELECT * 
@@ -182,7 +235,7 @@ if ($formulaire_soumis == true){
                             ;");
                             $domaine = $result->fetchAll(PDO::FETCH_ASSOC); 
                         ?>  
-                        <select id="saisie_nom_domaine" name="saisie_nom_domaine" class="w-full pl-5 border-b bg-orange-100 border-black flex items-center text-[#9caabc]" onchange="changercouleurtexteselect()">
+                        <select id="saisie_nom_domaine" name="saisie_nom_domaine" class="w-full pl-5 border-b bg-orange-100 border-black flex items-center text-[#9caabc]" onchange="changercouleurtexteselect(),ChangerCouleurIcone('saisie_nom_domaine')">
                             <option value="" class="font-PE_libre_baskerville text-[#9caabc]" selected>-- Veillez sélectionner un domaine (obligatoire) --</option>
                         <?php foreach($domaine as $unDomaine) { ?>
                                 <option id="<?php echo "domaine_n°".$numero_dom ?>" class="text-black" value="<?php echo $unDomaine['id_domaine'] ?>" ><?php echo $unDomaine['nom_domaine'] ?></option>
@@ -196,7 +249,7 @@ if ($formulaire_soumis == true){
                         </div>
                     <?php } ?>
             <div class="flex ">
-                <div class="w-1/4 flex bg-orange-200  font-PE_libre_baskerville_italique items-center p-4 font-bold justify-between"><p> Catégorie associées <span class="text-red-600">*</span></p><i class="fa-solid fa-pencil"></i></div>
+                <div class="w-1/4 flex bg-orange-200  font-PE_libre_baskerville_italique items-center p-4 font-bold justify-between"><p> Catégorie associées <span class="text-red-600">*</span></p><i id="categorie_icone" class="fa-solid fa-pencil"></i></div>
                 <?php 
                     $table_cat = "categorie" ;
                     $result = $pdo->query(" SELECT * 
@@ -208,7 +261,7 @@ if ($formulaire_soumis == true){
                     <?php  $numero_cat = 1;
                         foreach($categorie as $uneCategorie) { ?>
                         <div class="flex mr-5 "> 
-                            <input name="<?php echo "saisie_categorie_n°".$numero_cat ?>" value="<?php echo  $uneCategorie['id_categorie']?>" type="checkbox" id="<?php echo "categorie".$numero_cat ?>" >
+                            <input name="<?php echo "saisie_categorie_n°".$numero_cat ?>" value="<?php echo  $uneCategorie['id_categorie']?>" type="checkbox" id="<?php echo "categorie".$numero_cat ?>" onchange="changercouleur_categorie(<?php echo $nomb_categorie['nomb_categorie']?>)" >
                             <label id="<?php echo "Label_categorie_n°".$numero_cat ?>" class="ml-2 font-PE_libre_baskerville" for="<?php echo "categorie_n°".$numero_cat ?>"><?php echo $uneCategorie['nom_categorie'] ?></label>
                         </div>
                         <?php $numero_cat = $numero_cat + 1 ?>
@@ -221,11 +274,11 @@ if ($formulaire_soumis == true){
                 </div>
                 </div>
             <div class="flex ">
-                <p class="w-1/4  bg-orange-200  flex justify-start border-b font-PE_libre_baskerville_italique p-4 font-bold">Validation </p>
+                <p class="w-1/4  bg-orange-200  flex justify-center border-b font-PE_libre_baskerville_italique p-4 font-bold items-center">Validation </p>
                 <div class="flex  justify-center w-full bg-orange-100 ">
                     <button type="submit" class="bg-blue-950 mt-2  text-white p-6 font-PE_nunito rounded flex justify-center mr-5 mb-5 items-center" >
                     <i class="fa-solid fa-plus flex text-center m-1 text-green-600"></i> 
-                    <i class="fa-solid fa-book-bookmark m-1 text-green-600"></i><p class="m-1 text-green-600">Ajouter un favori<p>
+                    <i class="fa-solid fa-book-bookmark m-1 font text-green-600"></i><p class="m-1 font-PE_libre_baskerville_gras text-green-600">Ajouter un favori<p>
                     </button> 
                 </div>
             
