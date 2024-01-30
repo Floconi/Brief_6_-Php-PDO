@@ -10,24 +10,29 @@ if (!empty($_POST)){
 }else{
     echo "no";
     $formulaire_soumis = false;
-    if (isset($_POST['saisie_libelle'])){
+   
+}
+ if (!empty($_POST['saisie_libelle'])){
         $valeur_du_libelle = htmlspecialchars($_POST['saisie_libelle']);
     }else{
         $valeur_du_libelle = "";
     }
-    if (isset($_POST['saisie_url'])){
-        $valeur_du_libelle = htmlspecialchars($_POST['saisie_url']);
+    if (!empty($_POST['saisie_url'])){
+        $valeur_du_url = htmlspecialchars($_POST['saisie_url']);
     }else{
-        $valeur_du_libelle = "";
+        $valeur_du_url = "";
     }
-    if (isset($_POST['saisie_libelle'])){
-        $selection_active = htmlspecialchars($_POST['saisie_libelle']);
+    if (!empty($_POST['saisie_nom_domaine'])){
+        $presence_nom_domaine = true;
+        $id_dom =  htmlspecialchars($_POST['saisie_nom_domaine']);
+        echo "travi".$id_dom;
     }else{
-        $valeur_du_libelle = "";
+        $presence_nom_domaine = false;
     }
-}
 
 
+$saisie_table_id_categorie = array();
+$presence_categorie_cocher = false;
 
 $Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
     
@@ -38,7 +43,7 @@ if ($formulaire_soumis == true){
 
     $formulaireValide = true;
 
-    $saisie_table_id_categorie = array();
+    
 
     $Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
     
@@ -57,11 +62,12 @@ if ($formulaire_soumis == true){
 
         print_r( $saisie_table_id_categorie);
         if (count($saisie_table_id_categorie) == 0 ){
-            $formulaireValide == false;
+            $formulaireValide = false;
             $erreur_categorie = "Il faut sélectionner au moins une catégorie. Ceci est obligatoire";
            
         }else{
-          $erreur_categorie = ""; 
+          $erreur_categorie = "";
+          $presence_categorie_cocher = true ;
         }
 
         
@@ -218,7 +224,7 @@ if ($formulaire_soumis == true){
             <div class="flex flex-col">
                 <div class="flex">
                     <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i id="champ_url_icone" class="fa-solid fa-pencil"></i></div>
-                    <input id="champ_url" name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"  onchange="ChangerCouleurIcone('champ_url')"> </input>
+                    <input id="champ_url" name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"  onchange="ChangerCouleurIcone('champ_url')" value ="<?php echo $valeur_du_url ?>"> </input>
                 </div>
                     <?php if (!empty($erreur_url) && $formulaire_soumis == true ){ ?>
                         <div class="bg-red-600 flex justify-center">
@@ -234,11 +240,27 @@ if ($formulaire_soumis == true){
                             FROM $table_dom 
                             ;");
                             $domaine = $result->fetchAll(PDO::FETCH_ASSOC); 
-                        ?>  
-                        <select id="saisie_nom_domaine" name="saisie_nom_domaine" class="w-full pl-5 border-b bg-orange-100 border-black flex items-center text-[#9caabc]" onchange="changercouleurtexteselect(),ChangerCouleurIcone('saisie_nom_domaine')">
+                            $numero_dom =1;
+                            if ($presence_nom_domaine == true){
+                                $couleur_selection = "couleur-noir-custom";
+                            }else{
+                                $couleur_selection = "";
+                            }
+                        ?> 
+                        <select id="saisie_nom_domaine" name="saisie_nom_domaine" class="w-full pl-5 border-b bg-orange-100 border-black flex items-center text-[#9caabc] <?php echo $couleur_selection ?> echo " onchange="changercouleurtexteselect(),ChangerCouleurIcone('saisie_nom_domaine')">
                             <option value="" class="font-PE_libre_baskerville text-[#9caabc]" selected>-- Veillez sélectionner un domaine (obligatoire) --</option>
-                        <?php foreach($domaine as $unDomaine) { ?>
-                                <option id="<?php echo "domaine_n°".$numero_dom ?>" class="text-black" value="<?php echo $unDomaine['id_domaine'] ?>" ><?php echo $unDomaine['nom_domaine'] ?></option>
+                            <?php $selection_nom_dom ="" ?>
+                            <?php foreach($domaine as $unDomaine) { ?>
+                                <?php if ($presence_nom_domaine == true){
+                                    if ($id_dom == $unDomaine['id_domaine'] ){
+                                        $selection_nom_dom = "selected=selected";
+                                    }else{
+                                        $selection_nom_dom = "";
+                                    }
+                                }
+                                ?>
+                            
+                                <option <?php echo $selection_nom_dom ?>  id="<?php echo "domaine_n°".$numero_dom ?>" class="text-black" value="<?php echo $unDomaine['id_domaine'] ?>" ><?php echo $unDomaine['nom_domaine'] ?></option>
                                 <?php $numero_dom = $numero_dom + 1 ?>
                                 <?php } ?>
                         </select>
@@ -259,9 +281,21 @@ if ($formulaire_soumis == true){
                 ?>
                 <div class="flex flex-col w-full pl-5 border-b bg-orange-100  items-start">  
                     <?php  $numero_cat = 1;
-                        foreach($categorie as $uneCategorie) { ?>
+                        foreach($categorie as $uneCategorie) { 
+                            $case_cocher = "";
+                            if ($presence_categorie_cocher == true){
+                                $case_cocher = "";
+                                for ($index = 0 ; $index < count($saisie_table_id_categorie); $index++){
+                                    if ($uneCategorie['id_categorie'] == $saisie_table_id_categorie[$index]){
+                                        $case_cocher = "checked=checked";
+                                    }
+                                }
+                            }
+                            
+                            
+                            ?>
                         <div class="flex mr-5 "> 
-                            <input name="<?php echo "saisie_categorie_n°".$numero_cat ?>" value="<?php echo  $uneCategorie['id_categorie']?>" type="checkbox" id="<?php echo "categorie".$numero_cat ?>" onchange="changercouleur_categorie(<?php echo $nomb_categorie['nomb_categorie']?>)" >
+                            <input <?php echo  $case_cocher ?> name="<?php echo "saisie_categorie_n°".$numero_cat ?>" value="<?php echo  $uneCategorie['id_categorie']?>" type="checkbox" id="<?php echo "categorie".$numero_cat ?>" onchange="changercouleur_categorie(<?php echo $nomb_categorie['nomb_categorie']?>)" >
                             <label id="<?php echo "Label_categorie_n°".$numero_cat ?>" class="ml-2 font-PE_libre_baskerville" for="<?php echo "categorie_n°".$numero_cat ?>"><?php echo $uneCategorie['nom_categorie'] ?></label>
                         </div>
                         <?php $numero_cat = $numero_cat + 1 ?>
