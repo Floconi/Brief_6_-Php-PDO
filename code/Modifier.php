@@ -47,9 +47,26 @@ if (!empty($_POST)){
     if (!empty($_POST['saisie_nom_domaine'])){
         $presence_nom_domaine = true;
         $id_dom =  htmlspecialchars($_POST['saisie_nom_domaine']);
+        echo "hello".$id_dom;
     }else{
         $presence_nom_domaine = false;
     }
+    $Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
+    
+    $result =  $pdo->query($Requete_SQL);
+    $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
+
+    $saisie_table_id_categorie = array();
+        $index_id_cat = 0;
+        echo  "hello".$nomb_categorie['nomb_categorie'];
+        for ($index = 0 ; $index < $nomb_categorie['nomb_categorie']; $index++){
+            if (!empty($_POST['saisie_categorie_n°'.$index])){
+                $saisie_table_id_categorie[$index_id_cat] = $_POST['saisie_categorie_n°'.$index];
+                $index_id_cat = $index_id_cat + 1 ;
+            };
+        };
+        var_dump($saisie_table_id_categorie);
+
 
 
 
@@ -59,6 +76,8 @@ if (!empty($_POST)){
     $valeur_du_libelle = $favoris['libelle'];
     $valeur_de_url = $favoris['url'];
 }
+
+echo "formulaire soumis".$formulaire_soumis;
 
 
 
@@ -80,17 +99,15 @@ if (!empty($_POST)){
         $presence_nom_domaine = false;
     }*/
 
-$saisie_table_id_categorie = array();
-$presence_categorie_cocher = false;
 
 $Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
     
 $result =  $pdo->query($Requete_SQL);
 $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
 
-if ($formulaire_soumis == true){
+/*if ($formulaire_soumis == true){
 
-   /* $formulaireValide = true;
+    $formulaireValide = true;
 
     
 
@@ -210,14 +227,14 @@ if ($formulaire_soumis == true){
             */
 
 
-            /**header('Location: index.php');*/
+            /**header('Location: index.php');
 
         }else{
             echo "faux";
         }
        
 
-}
+}*/
 
 
 ?>
@@ -266,23 +283,16 @@ if ($formulaire_soumis == true){
 
                         <?php
                         if ($formulaire_soumis == true){
-                            if($formulaire_soumis == false){
                                 if($unDomaine['id_domaine'] == $id_dom ){
                                     $selection_active = "selected='selected'";
                                 }else{
                                     $selection_active = "" ;
                                 } 
-                            }else{
-
-                                $selection_active = "" ;
-                            }
                         }else{
                              if($formulaire_soumis == false){
                                 if($unDomaine['id_domaine'] == $favoris['id_domaine'] ){
                                     $selection_active = "selected='selected'";
-                                }else{
-                                    $selection_active = "" ;
-                                } 
+                                }
                             }else{
 
                                 $selection_active = "" ;
@@ -317,16 +327,26 @@ if ($formulaire_soumis == true){
                                     $selection_cat = "checked='checked'";
                                 }
                             }else{
-                                $selection_cat = "";
-
-
+                                $selection_cat ="";
+                                for($index = 0; $index < count($saisie_table_id_categorie); $index++){
+                                    echo $uneCategorie['id_categorie'];
+                                    echo $saisie_table_id_categorie[$index];
+                                    
+                                    if ($uneCategorie['id_categorie'] == $saisie_table_id_categorie[$index]){
+                                        echo "yes";
+                                        $selection_cat = "checked='checked'";
+                                    }
+                                }  
                             }
+
+
                         ?>
                         <div class="flex mr-5 "> 
-                            <input <?php echo $selection_cat ?> name="<?php echo "saisie_categorie_n°".$numero_cat ?>" type="checkbox" id="<?php echo "categorie".$numero_cat ?>" >
+                            <input <?php echo $selection_cat ?> name="<?php echo "saisie_categorie_n°".$numero_cat?>" type="checkbox" id="<?php echo "categorie".$numero_cat ?>"  value="<?php echo $uneCategorie['id_categorie'] ?>" >
                             <label id="<?php echo "Label_categorie_n°".$numero_cat ?>" class="ml-2 font-PE_libre_baskerville" for="<?php echo "categorie_n°".$numero_cat ?>"><?php echo $uneCategorie['nom_categorie'] ?></label>
                         </div>
-                        <?php $numero_cat = $numero_cat + 1 ?>
+                        <?php $selection_cat = "";
+                        $numero_cat = $numero_cat + 1 ?>
                     <?php }; ?>
                 </div>
             </div>
