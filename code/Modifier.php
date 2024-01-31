@@ -44,13 +44,14 @@ if (!empty($_POST)){
     }else{
         $valeur_de_url = "";
     }
-    if (!empty($_POST['saisie_nom_domaine'])){
+    /*if (!empty($_POST['saisie_nom_domaine'])){
         $presence_nom_domaine = true;
         $id_dom =  htmlspecialchars($_POST['saisie_nom_domaine']);
-        echo "hello".$id_dom;
     }else{
         $presence_nom_domaine = false;
-    }
+    }*/
+
+
     $Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
     
     $result =  $pdo->query($Requete_SQL);
@@ -58,14 +59,197 @@ if (!empty($_POST)){
 
     $saisie_table_id_categorie = array();
         $index_id_cat = 0;
-        echo  "hello".$nomb_categorie['nomb_categorie'];
         for ($index = 0 ; $index < $nomb_categorie['nomb_categorie']; $index++){
             if (!empty($_POST['saisie_categorie_n°'.$index])){
                 $saisie_table_id_categorie[$index_id_cat] = $_POST['saisie_categorie_n°'.$index];
                 $index_id_cat = $index_id_cat + 1 ;
             };
         };
-        var_dump($saisie_table_id_categorie);
+
+        if ($formulaire_soumis == true){
+
+                $formulaireValide = true;
+        
+                if (count($saisie_table_id_categorie) == 0 ){
+                    $formulaireValide = false;
+                    $erreur_categorie = "Il faut sélectionner au moins une catégorie. Ceci est obligatoire";
+                   
+                }else{
+                  $erreur_categorie = "";
+                  $presence_categorie_cocher = true ;
+                }
+        
+                
+                if (!empty($_POST['saisie_libelle'])){
+                    if (strlen($_POST['saisie_libelle']) > 100){
+                        $erreur_libelle = "Le libelle ne doit pas exéder 100 caractères";
+                        $formulaireValide = false;
+                    }else{
+                         $libelle =  htmlspecialchars($_POST['saisie_libelle']);
+                    }
+                }else{
+                    $erreur_libelle = "Veuillez écrire un libéllé , ce champs est obligatoire";
+                    $formulaireValide = false;
+                };
+        
+        
+               
+        
+        
+                if (!empty($_POST['saisie_url'])){
+                    $erreur_url = "";
+                    if (strlen($_POST['saisie_url']) > 1000){
+                        $erreur_url = "L' URL ne doit pas exéder 1000 caractères";
+                        $formulaireValide = false;
+                    }else{
+                       
+                        $url =  htmlspecialchars($_POST['saisie_url']);
+                    }
+                }else{
+                    $erreur_url = "L'url est un champs obligatoire Veuillez saisir un lien";
+                    $formulaireValide = false;
+                }
+        
+                $domaine="";
+                if (!empty($_POST['saisie_nom_domaine'])){
+                    $domaine = intval($_POST['saisie_nom_domaine']);
+                    echo gettype($domaine);
+                    $erreur_nom_dom ="";
+                }/*else{
+                    $erreur_nom_dom = "Veuillez choisir un domaine dans la liste déroulante ce champs est obligatoire";
+                    $formulaireValide = false;
+                };*/
+
+                if ($formulaireValide == true){
+
+                    echo "VRAI §§§";
+        
+                    $Requete_SQL_Preparation = "UPDATE favori SET libelle = :libelle , url = :url , id_dom = :id_domaine WHERE id_favori = :id_favori";
+        
+                    $Requete_prete = $pdo->prepare($Requete_SQL_Preparation);
+        
+                    $Tableau_parametre = array(
+                        ':libelle' => $libelle,
+                        ':url' => $url,
+                        ':id_domaine' => $domaine,
+                        ':id_favori' => $favoris['id_favori']
+                    );
+        
+        
+                    $Requete_prete->execute($Tableau_parametre);
+
+                    $Requete_SQL = "SELECT id_categorie   FROM categorie";
+    
+                    $result =  $pdo->query($Requete_SQL);
+                    $categorie_base_tout = $result->fetchall(PDO::FETCH_ASSOC);
+
+                    $tab_id_categorie_en_base = explode("|",$favoris['liste_id_cat']);
+
+
+                    echo "<pre>";
+                    //print_r($tab_id_categorie_en_base);
+                    //print_r($saisie_table_id_categorie);
+                    print_r($categorie_base_tout[0]['id_categorie']);
+                    echo count($categorie_base_tout);
+                    echo "</pre>";
+
+                    for($index = 0 ; $index < count($categorie_base_tout) ; $index++){
+                        $Requete_SQL_Preparation ="non";
+                        if(in_array($categorie_base_tout[$index]['id_categorie'],$saisie_table_id_categorie) == true){ // je veux cette cat
+                            if(in_array($categorie_base_tout[$index]['id_categorie'],$tab_id_categorie_en_base) == true){ // possède deja en bdd
+                                // ne fait rien car existe déja
+                            }else{
+                                $Requete_SQL_Prep = " INSERT INTO favori_categorie VALUES (:dernier_id,:id_categorie_assosier) ";
+                            }
+                        }else{ /** je ne veut pas cette cat */
+                            if(in_array($categorie_base_tout[$index]['id_categorie'],$tab_id_categorie_en_base) == true){ // posede en bdd
+                                 $Requete_SQL_Prep = "DELETE FROM favori_categorie WHERE id_favori = :dernier_id AND id_categorie = :id_categorie_assosier";
+                            }else{
+                               // ne fait rien car pas de ligne et non voulu
+                            }
+                        }
+                        if ($Requete_SQL_Prep != ""){
+                            echo "hello".$Requete_SQL_Prep;
+                            $RequetePreparer = $pdo->prepare($Requete_SQL_Prep);
+                        
+                           
+                            $Tableau_parametre = array(
+                                ':dernier_id' => $favoris['id_favori'],
+                                'id_categorie_assosier' => $categorie_base_tout[$index]['id_categorie']
+                            );
+                            
+                            $RequetePreparer -> execute($Tableau_parametre);
+
+
+
+
+                        }
+                        
+                        
+                    }
+
+                    /**for ($index = 0 ; $index < count($saisie_table_id_categorie); $index++){
+                        $Requete_SQL_preparation = " UPDATE favori_categorie SET  id_categorie = :id_categorie WHERE id_favori = :id_favori" ;
+        
+                        $RequetePreparer = $pdo->prepare($Requete_SQL_preparation);
+        
+                        $Tableau_parametre = array(
+                            ':id_categorie' => $saisie_table_id_categorie[$index],
+                            ':id_favori' => $favoris['id_favori']
+                        );
+        
+        
+                        $RequetePreparer -> execute($Tableau_parametre);
+                    }*/
+                    /**$Requete_SQL = "INSERT INTO favori VALUES ('','".$libelle."','".$date."','".$url."',".$domaine.")";
+                    echo $Requete_SQL;
+                    $pdo->query($Requete_SQL);*/
+                
+                    /**$dernier_id = $pdo -> lastInsertId();
+        
+                    for ($index = 0 ; $index < count($saisie_table_id_categorie); $index++){
+                        $Requete_SQL_preparation = " INSERT INTO favori_categorie VALUES (:dernier_id,:id_categorie_assosier)";
+        
+                        $RequetePreparer = $pdo->prepare($Requete_SQL_preparation);
+        
+                        $Tableau_parametre = array(
+                            ':dernier_id' => $dernier_id,
+                            'id_categorie_assosier' => $saisie_table_id_categorie[$index]
+                        );
+        
+        
+                        $RequetePreparer -> execute($Tableau_parametre);
+                    }*/
+        
+        
+        
+                   /**  for ($index = 0 ; $index < count($saisie_table_id_categorie); $index++){
+                       * $Requete_SQL = " INSERT INTO favori_categorie VALUES ('".$dernier_id."','".$saisie_table_id_categorie[$index]."')";
+                       * $pdo->query($Requete_SQL);
+                    *}
+                    */
+        
+        
+                    /**header('Location: index.php');
+        
+                }else{
+                    echo "faux";
+                }*/
+
+
+
+
+
+
+
+
+
+            }
+        }
+        
+        
+
+
 
 
 
@@ -77,7 +261,7 @@ if (!empty($_POST)){
     $valeur_de_url = $favoris['url'];
 }
 
-echo "formulaire soumis".$formulaire_soumis;
+
 
 
 
@@ -246,10 +430,18 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
             <div class="flex ">
             <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >ID du favori <span class="text-red-600">*</span></p> <i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i> </div>
                 <p class=" w-full pl-5 border-b bg-orange-100 border-black flex justify-start items-center"><?php echo $favoris['id_favori'] ?></p>
+              
             </div>
             <div class="flex">
                 <div class="w-1/4 bg-orange-200 h-max flex border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Libelle du  favori <span class="text-red-600">*</span></p><i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
-                <input type="text" name="saisie_libelle" class=" w-full pl-5 border-b bg-orange-100 border-black flex  items-center" placeholder="Entrer un nom de libelle" value="<?php echo $favoris['libelle'] ?>"></input>
+                <div class="flex flex-col w-full ">
+                    <input type="text" name="saisie_libelle" class=" w-full pl-5 border-b h-full bg-orange-100 border-black flex  items-center" placeholder="Entrer un nom de libelle" value="<?php echo $valeur_du_libelle ?>"></input>
+                    <?php if (!empty($erreur_libelle) && $formulaire_soumis == true ){ ?>
+                            <div class="bg-red-600 flex justify-center">
+                                <?php echo $erreur_libelle ?>
+                            </div>
+                    <?php } ?>
+                </div>
             </div>
             <div class="flex">
             <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >Date de création <span class="text-red-600">*</span></p> <i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i> </div>
@@ -262,7 +454,14 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
             </div>
             <div class="flex">
                 <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i id="champ_url_icone" class="fa-solid fa-pencil"></i>  </div>
-                <input name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center" value="<?php echo $valeur_de_url ?>"> </input>
+                <div class="flex flex-col w-full ">
+                    <input name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full h-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center" value="<?php echo $valeur_de_url ?>"> </input>
+                    <?php if (!empty($erreur_url) && $formulaire_soumis == true ){ ?>
+                            <div class="bg-red-600 flex justify-center">
+                                <?php echo $erreur_url ?>
+                            </div>
+                    <?php } ?>
+                </div>
             </div>
             <div class="flex">
                 <div class="w-1/4 bg-orange-200 h-max flex justify-between border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center"><p>Domaine associées <span class="text-red-600"> *</span></p> <i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
@@ -329,11 +528,9 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                             }else{
                                 $selection_cat ="";
                                 for($index = 0; $index < count($saisie_table_id_categorie); $index++){
-                                    echo $uneCategorie['id_categorie'];
-                                    echo $saisie_table_id_categorie[$index];
                                     
                                     if ($uneCategorie['id_categorie'] == $saisie_table_id_categorie[$index]){
-                                        echo "yes";
+                            
                                         $selection_cat = "checked='checked'";
                                     }
                                 }  
@@ -348,6 +545,11 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                         <?php $selection_cat = "";
                         $numero_cat = $numero_cat + 1 ?>
                     <?php }; ?>
+                    <?php if (!empty($erreur_categorie) && $formulaire_soumis == true ){ ?>
+                            <div class="bg-red-600 flex justify-center">
+                                <?php echo $erreur_categorie ?>
+                            </div>
+                    <?php } ?>
                 </div>
             </div>
             <div class="flex ">
