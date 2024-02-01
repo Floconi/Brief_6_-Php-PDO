@@ -3,7 +3,7 @@ include("header.php");
 include("pdo.php"); 
 
 $id_favori = intval($_GET['id_du_favori']);
-echo $id_favori;
+
 $Requete_SQL_preparation = "SELECT 
 favori.id_favori,favori.libelle,favori.date_creation,favori.url, domaine.id_domaine, domaine.nom_domaine,
 GROUP_CONCAT(categorie.id_categorie SEPARATOR '|') as liste_id_cat ,
@@ -21,12 +21,12 @@ $Tableau_parametre = array(
 );
 
 $Requete_preparer->execute($Tableau_parametre);
-var_dump($Requete_preparer);
+
 // $result =  $pdo->query($Requete_SQL);
 $favoris = $Requete_preparer->fetch(PDO::FETCH_ASSOC);
 
 
-var_dump($_POST);
+
 
 if (!empty($_POST)){
 
@@ -113,7 +113,6 @@ if (!empty($_POST)){
                 $domaine="";
                 if (!empty($_POST['saisie_nom_domaine'])){
                     $domaine = intval($_POST['saisie_nom_domaine']);
-                    echo gettype($domaine);
                     $erreur_nom_dom ="";
                 }/*else{
                     $erreur_nom_dom = "Veuillez choisir un domaine dans la liste déroulante ce champs est obligatoire";
@@ -122,7 +121,7 @@ if (!empty($_POST)){
 
                 if ($formulaireValide == true){
 
-                    echo "VRAI §§§";
+                    
         
                     $Requete_SQL_Preparation = "UPDATE favori SET libelle = :libelle , url = :url , id_dom = :id_domaine WHERE id_favori = :id_favori";
         
@@ -145,16 +144,13 @@ if (!empty($_POST)){
 
                     $tab_id_categorie_en_base = explode("|",$favoris['liste_id_cat']);
 
-
-                    echo "<pre>";
+;
                     //print_r($tab_id_categorie_en_base);
                     //print_r($saisie_table_id_categorie);
-                    print_r($categorie_base_tout[0]['id_categorie']);
-                    echo count($categorie_base_tout);
-                    echo "</pre>";
-
+                    
                     for($index = 0 ; $index < count($categorie_base_tout) ; $index++){
                         $Requete_SQL_Preparation ="non";
+                        $Requete_SQL_Prep ="";
                         if(in_array($categorie_base_tout[$index]['id_categorie'],$saisie_table_id_categorie) == true){ // je veux cette cat
                             if(in_array($categorie_base_tout[$index]['id_categorie'],$tab_id_categorie_en_base) == true){ // possède deja en bdd
                                 // ne fait rien car existe déja
@@ -169,7 +165,7 @@ if (!empty($_POST)){
                             }
                         }
                         if ($Requete_SQL_Prep != ""){
-                            echo "hello".$Requete_SQL_Prep;
+
                             $RequetePreparer = $pdo->prepare($Requete_SQL_Prep);
                         
                            
