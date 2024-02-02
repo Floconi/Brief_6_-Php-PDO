@@ -14,9 +14,10 @@ if (isset($_GET['filtre_domaine'])){
 ?>
   
  
-<button type="button" class="collapsible">Open Collapsible</button>
-  <div class="content">
+
     <section class=" bg-gray-400  filtre flex flex-col justify-center m-8 p-5">
+      <button type="button" class="collapsible">Filtres</button>
+      <div class="content">
       <form  method="get" action="index.php"> 
         
         <div class="flex partie-Filtre-données flex-col">
@@ -117,163 +118,173 @@ if (isset($_GET['filtre_domaine'])){
                 </div>
               </div>
             </fieldset>
+            <div class="items-center flex ">
+              <button type="submit" class=" bg-blue-950 mt-2 text-white p-6 font-PE_nunito rounded flex justify-center " >
+                Appliquer les filtres
+              </button>
+             </div> 
           </div>
         </div>
           
         
         
         <?php /* Partie de filtre sur l'afichage */ ?>
-
-        <div class="Filtre_sur_l'affichage">
-          <h2 class="flex justify-center underline font-PE_libre_baskerville_gras p-4"> 
-            FILTRE sur l'affichage 
-          </h2>
-            
-          <div class="flex justify-around">
-            <fieldset class = "flex justify-center border border-black  rounded"> 
-              <?php 
-                $nom_table = "favori"
-              ?> 
-              <legend  class="bg-blue-950 text-white p-2 rounded font-PE_libre_baskerville_italique  ml-4 " >
-                <?php echo $nom_table; ?>
-              </legend>
-              <div class = "m-8 flex flex-col w-max">
-                <?php 
-
-                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                  $collone= $result->fetchAll(PDO::FETCH_ASSOC);
-
-                  $index = 0;
-                  $Tab_nom_de_collone = array();
-                  $index_affichage = 0;
-                  foreach ($collone as $uneCollone){ 
-                    $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
-                    <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
-                    <input type="button"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded font-PE_libre_baskerville" onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')"  value ="<?php echo $uneCollone['Field'] ?>"></input>
-                    <?php 
-
-                      $index = $index +1;
-                      $Tab_nom_de_collone[$index_affichage] = $uneCollone['Field'];
-                      $index_affichage = $index_affichage + 1;
-                  }
-                  $nomb_col_max_favori = $index;
-
-                  
-                ?>
-              </div>
-            </fieldset>
-            <fieldset class = "flex justify-center border border-black rounded "> 
-              <?php 
-              $nom_table = "domaine"
-              ?>
-              <legend type="button" class="bg-blue-950 text-white p-2 rounded ml-4 font-PE_libre_baskerville_italique">
-              <?php echo $nom_table; ?>
-              </legend>
-              <div class = "m-8 flex flex-col w-max">
-                <?php 
-                
-
-                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                  $collone = $result->fetchAll(PDO::FETCH_ASSOC);
-
-                  $index = 0;
-                  foreach ($collone as $uneCollone){ 
-                    $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
-                    <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
-                    <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded font-PE_libre_baskerville "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')"  value ="off"><?php echo $uneCollone['Field'] ?></button>
-                  <?php 
-                  $index = $index +1;
-                    
-                    $Tab_nom_de_collone[$index_affichage] = $uneCollone['Field'];
-                    $index_affichage = $index_affichage + 1;
-                  
-                  }
-                  $nomb_col_max_domaine = $index;
-                ?>
-              </div>
-            </fieldset>
-            <fieldset class = "flex justify-center border border-black rounded"> 
-              <?php 
-                $nom_table = "categorie"
-              ?>
-              <legend  class="bg-blue-950 text-white p-2  ml-4 rounded font-PE_libre_baskerville_italique" onclick="changerEtatBoutton()">
-                <?php echo $nom_table; ?>
-              </legend>
-              <div class = "m-8 flex flex-col w-max">
-                <?php 
-                  
-
-                  $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
-                  $collone = $result->fetchAll(PDO::FETCH_ASSOC);
-
-                  $index = 0;
-                  foreach ($collone as $uneCollone){ 
-                    $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
-                    <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
-                    <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 font-PE_libre_baskerville text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" value ="off"><?php echo $uneCollone['Field'] ?></button>
-
-                    <?php $index = $index +1;
+        <button type="button" class="collapsible">Filtres Avancées</button>
+        <div class="content">
+          <div class="Filtre_sur_l'affichage">
+            <h2 class="flex justify-center underline font-PE_libre_baskerville_gras p-4"> 
+              FILTRE sur l'affichage 
+            </h2>
               
+            <div class="flex justify-around">
+              <fieldset class = "flex justify-center border border-black  rounded"> 
+                <?php 
+                  $nom_table = "favori"
+                ?> 
+                <legend  class="bg-blue-950 text-white p-2 rounded font-PE_libre_baskerville_italique  ml-4 " >
+                  <?php echo $nom_table; ?>
+                </legend>
+                <div class = "m-8 flex flex-col w-max">
+                  <?php 
+
+                    $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                    $collone= $result->fetchAll(PDO::FETCH_ASSOC);
+
+                    $index = 0;
+                    $Tab_nom_de_collone = array();
+                    $index_affichage = 0;
+                    foreach ($collone as $uneCollone){ 
+                      $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
+                      <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
+                      <input type="button"  id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded font-PE_libre_baskerville" onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')"  value ="<?php echo $uneCollone['Field'] ?>"></input>
+                      <?php 
+
+                        $index = $index +1;
+                        $Tab_nom_de_collone[$index_affichage] = $uneCollone['Field'];
+                        $index_affichage = $index_affichage + 1;
+                    }
+                    $nomb_col_max_favori = $index;
+
+                    
+                  ?>
+                </div>
+              </fieldset>
+              <fieldset class = "flex justify-center border border-black rounded "> 
+                <?php 
+                $nom_table = "domaine"
+                ?>
+                <legend type="button" class="bg-blue-950 text-white p-2 rounded ml-4 font-PE_libre_baskerville_italique">
+                <?php echo $nom_table; ?>
+                </legend>
+                <div class = "m-8 flex flex-col w-max">
+                  <?php 
+                  
+
+                    $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                    $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+                    $index = 0;
+                    foreach ($collone as $uneCollone){ 
+                      $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?>
+                      <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
+                      <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 text-white p-2 mb-5 rounded font-PE_libre_baskerville "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')"  value ="off"><?php echo $uneCollone['Field'] ?></button>
+                    <?php 
+                    $index = $index +1;
+                      
                       $Tab_nom_de_collone[$index_affichage] = $uneCollone['Field'];
                       $index_affichage = $index_affichage + 1;
-
-                  }
-                  $nomb_col_max_categorie = $index;
-
+                    
+                    }
+                    $nomb_col_max_domaine = $index;
+                  ?>
+                </div>
+              </fieldset>
+              <fieldset class = "flex justify-center border border-black rounded"> 
+                <?php 
+                  $nom_table = "categorie"
                 ?>
-
-              </div>
-            </fieldset>
-            
-            <div class="flex flex-col justify-around">
-              <fieldset class="flex justify-center border border-black items-center rounded p-5">
-                <legend class=" border border-black flex text-center rounded p-4 font-PE_libre_baskerville_italique"> 
-                  Limitation  
+                <legend  class="bg-blue-950 text-white p-2  ml-4 rounded font-PE_libre_baskerville_italique" onclick="changerEtatBoutton()">
+                  <?php echo $nom_table; ?>
                 </legend>
-                  <select class="font-PE_libre_baskerville" name="Limite" class="h-5">
-                    <option class="font-PE_libre_baskerville" value = "Tout">-- Tous -- </option> 
-                    <option class="font-PE_libre_baskerville" value = "1">1</option>
-                    <option class="font-PE_libre_baskerville" value = "5">5</option>
-                    <option class="font-PE_libre_baskerville" value = "10">10</option>
-                    <option class="font-PE_libre_baskerville" value = "30">30</option>
-                  </select>
-              </fieldset>
-              <fieldset class="flex justify-around flex-col border border-black items-center rounded p-5">
-                <legend class=" font-PE_libre_baskerville_italique border border-black flex text-center rounded p-4 ">Ordonée par collone</legend>
-                <select class="font-PE_libre_baskerville" name="ordre_affichage" class="h-5">
-                    <option class="font-PE_libre_baskerville" value = "">-- Ne pas Ordonée -- </option> 
-                    <option class="font-PE_libre_baskerville" value = "id_favori">id_favori</option>
-                    <option class="font-PE_libre_baskerville" value = "libelle">libelle</option>
-                    <option class="font-PE_libre_baskerville" value = "date_creation">date_creation</option>
-                    <option class="font-PE_libre_baskerville" value = "url">url</option>
-                    <option class="font-PE_libre_baskerville" value = "nom_domaine">nom_domaine</option>
-                    <option class="font-PE_libre_baskerville" value = "liste_categorie">liste_Categorie</option>
-                </select>
-                <div class="flex mt-10 justify-between">
-                  <input type="hidden" id="btn_cacher_ordre_ASC" name="Ordre_ASC"   class="bg-blue-950  text-white p-2 mb-5 rounded " value ="on"></input>
-                  <button type="button" id="ordre_ASC" class=" text-white p-2 mb-5 font-PE_libre_baskerville rounded boutton_affichage_selectionner mr-4"  onclick="changerEtatBoutton_ordre('ordre_ASC')" value ="on">A -> Z</button>
-                  <input type="hidden" id="btn_cacher_ordre_DESC" name="Ordre_DESC"   class="bg-blue-950 text-white p-2 mb-5 rounded " value ="off"></input>
-                  <button type="button" id="ordre_DESC" class="bg-blue-950 font-PE_libre_baskerville text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton_ordre('ordre_DESC')" value ="off"> Z -> A </button>
-                <div>
+                <div class = "m-8 flex flex-col w-max">
+                  <?php 
+                    
 
+                    $result = $pdo->query("SHOW COLUMNS FROM ".$nom_table);
+                    $collone = $result->fetchAll(PDO::FETCH_ASSOC);
+
+                    $index = 0;
+                    foreach ($collone as $uneCollone){ 
+                      $id_du_bouton =  $nom_table."_"."colonne_n°".$index ?> 
+                      <input type="hidden" name="<?php echo $id_du_bouton ?>"  id="btn_cacher<?php echo $id_du_bouton ?>"  class="bg-blue-950 text-white p-2 mb-5 rounded "  value ="off"></input>
+                      <button type="button" id="<?php echo $id_du_bouton ?>" class="bg-blue-950 font-PE_libre_baskerville text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton('<?php echo $id_du_bouton ?>')" value ="off"><?php echo $uneCollone['Field'] ?></button>
+
+                      <?php $index = $index +1;
+                
+                        $Tab_nom_de_collone[$index_affichage] = $uneCollone['Field'];
+                        $index_affichage = $index_affichage + 1;
+
+                    }
+                    $nomb_col_max_categorie = $index;
+
+                  ?>
+
+                </div>
               </fieldset>
+              
+              <div class="flex flex-col justify-around">
+                <fieldset class="flex justify-center border border-black items-center rounded p-5">
+                  <legend class=" border border-black flex text-center rounded p-4 font-PE_libre_baskerville_italique"> 
+                    Limitation  
+                  </legend>
+                    <select class="font-PE_libre_baskerville" name="Limite" class="h-5">
+                      <option class="font-PE_libre_baskerville" value = "Tout">-- Tous -- </option> 
+                      <option class="font-PE_libre_baskerville" value = "1">1</option>
+                      <option class="font-PE_libre_baskerville" value = "5">5</option>
+                      <option class="font-PE_libre_baskerville" value = "10">10</option>
+                      <option class="font-PE_libre_baskerville" value = "30">30</option>
+                    </select>
+                </fieldset>
+                <fieldset class="flex justify-around flex-col border border-black items-center rounded p-5">
+                  <legend class=" font-PE_libre_baskerville_italique border border-black flex text-center rounded p-4 ">Ordonée par collone</legend>
+                  <select class="font-PE_libre_baskerville" name="ordre_affichage" class="h-5">
+                      <option class="font-PE_libre_baskerville" value = "">-- Ne pas Ordonée -- </option> 
+                      <option class="font-PE_libre_baskerville" value = "id_favori">id_favori</option>
+                      <option class="font-PE_libre_baskerville" value = "libelle">libelle</option>
+                      <option class="font-PE_libre_baskerville" value = "date_creation">date_creation</option>
+                      <option class="font-PE_libre_baskerville" value = "url">url</option>
+                      <option class="font-PE_libre_baskerville" value = "nom_domaine">nom_domaine</option>
+                      <option class="font-PE_libre_baskerville" value = "liste_categorie">liste_Categorie</option>
+                  </select>
+                  <div class="flex mt-10 justify-between">
+                    <input type="hidden" id="btn_cacher_ordre_ASC" name="Ordre_ASC"   class="bg-blue-950  text-white p-2 mb-5 rounded " value ="on"></input>
+                    <button type="button" id="ordre_ASC" class=" text-white p-2 mb-5 font-PE_libre_baskerville rounded boutton_affichage_selectionner mr-4"  onclick="changerEtatBoutton_ordre('ordre_ASC')" value ="on">A -> Z</button>
+                    <input type="hidden" id="btn_cacher_ordre_DESC" name="Ordre_DESC"   class="bg-blue-950 text-white p-2 mb-5 rounded " value ="off"></input>
+                    <button type="button" id="ordre_DESC" class="bg-blue-950 font-PE_libre_baskerville text-white p-2 mb-5 rounded "  onclick="changerEtatBoutton_ordre('ordre_DESC')" value ="off"> Z -> A </button>
+                  <div>
+
+                </fieldset>
+              </div>
             </div>
-          </div>
-        </div>   
-        <div class="flex items-center justify-evenly mt-5 ">
-          <fieldset class = "flex flex-col justify-center w-1/2 border border-black items-center p-4 rounded">
-            <legend class="text-center border border-black rounded p-4 font-PE_libre_baskerville_italique"> 
-              Barre de recherche 
-            </legend>
-            <input type="search" name="Rechercher" id="default-search" class="font-PE_libre_baskerville block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 h-10" placeholder="Recherche par libelle..." >
-          </fieldset>
-          <button type="submit" class="bg-blue-950 mt-2 text-white p-6 font-PE_nunito rounded flex justify-center " >
+          </div>   
+          <div class="flex items-center justify-evenly mt-5 ">
+            <fieldset class = "flex flex-col justify-center w-1/2 border border-black items-center p-4 rounded">
+              <legend class="text-center border border-black rounded p-4 font-PE_libre_baskerville_italique"> 
+                Barre de recherche 
+              </legend>
+              <input type="search" name="Rechercher" id="default-search" class="font-PE_libre_baskerville block w-full ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 h-10" placeholder="Recherche par libelle..." >
+            </fieldset>
+           <button type="submit" class="bg-blue-950 mt-2 text-white p-6 font-PE_nunito rounded flex justify-center " >
             Appliquer les filtres
           </button> 
+        </div>
+        </div>
+         
         </div>  
       </form>
+    </div>
     </section>
-  </div>
+  
     
       
       
@@ -558,7 +569,6 @@ if (isset($_GET['filtre_domaine'])){
      * TODO : On ne met le where que si il y'a un filtre sur les catégorie ou le domaine ou la recherche
      */
 
-    echo $filtre_cat;
     if($filtre_cat == true || $filtre_dom == true || $presence_recherche == true){
    
       $Requete_SQL .= "WHERE";
@@ -614,13 +624,16 @@ if (isset($_GET['filtre_domaine'])){
      ** Version Future : Enlever les get et les remplacer par les variable de la partie 2 (fait)
      */
 
-    if($filtre_cat == true && $filtre_dom == true ){
+    if(($filtre_cat == true && $filtre_dom == true) ){
        /**if ($_GET['filtre_domaine'] != "aucun"){*/
         $Requete_SQL .= $condition_categorie_dom;
         $Requete_SQL .= " domaine.id_domaine = ".$_GET['filtre_domaine'];
       /** }*/
+ 
+    }
 
-      
+    if($filtre_dom == true &&  $filtre_cat == false){
+      $Requete_SQL .= " domaine.id_domaine = ".$_GET['filtre_domaine'];
     }
     /** 
     

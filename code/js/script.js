@@ -187,7 +187,7 @@ function AppliquerFiltre(){
     nom_domaine = document.getElementById("saisie_nom_domaine")
 
 
-    if (nom_domaine.value != ""){
+    if (nom_domaine.value != "" ){
         nom_domaine.classList.add("couleur-noir-custom")
         nom_domaine.classList.remove("text-[#9caabc]")
     }else{
@@ -204,12 +204,23 @@ function AppliquerFiltre(){
     champ_selectionner = document.getElementById(champ)
     icone = document.getElementById(champ+"_icone")
 
-
-    if (champ_selectionner.value != 0){
-        icone.classList.add("couleur_orange")
+    if(champ == "champ_libelle"){
         
+        limite = 100
     }else{
-        icone.classList.remove("couleur_orange")
+        limite = 1000
+    }
+    console.log(limite)
+    console.log(champ_selectionner.value.length)
+    console.log(champ_selectionner.value )
+    if (champ_selectionner.value != "" && champ_selectionner.value.length < limite){
+        icone.classList.add("couleur_verte")
+        icone.classList.remove("couleur_rouge")
+         
+    }else{
+         icone.classList.remove("couleur_verte")
+         icone.classList.add("couleur_rouge")
+
     }
 
  }
@@ -239,3 +250,19 @@ function AppliquerFiltre(){
 
 
  }
+
+
+ var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}

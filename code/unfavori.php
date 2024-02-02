@@ -18,30 +18,48 @@ $favoris = $result->fetch(PDO::FETCH_ASSOC);
 
 
 ?>
+
 <div class="flex justify-center font-PE_libre_baskerville">
-<div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black m-8 w-3/4">
+    
+<div class="informations  bg-orange-200  flex flex-col justify-center align-middle border border-black m-8 w-3/4">
+<div class="flex ">
+    <div class="w-1/4  bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>
+    <div class="flex justify-around bg-orange-100 w-full border border-b-black">
+        <form action="modifier.php" method="GET">
+                                <button class=" p-2 rounded m-2 bg-blue-950" name="id_du_favori" value="<?php echo $favoris['id_favori']?>">
+                                    <i class=" text-orange-600 fa-solid fa-pen-clip"></i><p class="text-orange-600"> Modifier</p>
+                                </button>
+        </form>
+        <form action="supprimer.php" method="GET">
+            <button type="submit" name="id_du_favori" class="m-2 p-2 rounded bg-blue-950" value="<?php echo $favoris['id_favori'] ?>">
+                <i class="text-rose-700 text-red fa-solid fa-file-circle-xmark"></i><p class="text-rose-700"> Effacer</p>
+            </button>
+         </form>
+    </div>
+</div>
     <div class="flex ">
-        <p class="w-1/4  bg-orange-200 h-max flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold">ID du favori </p>
+        <div class="w-1/4  bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>ID du favori </p><i class="text-green-600 fa-brands fa-readme"></i></div>
         <p class=" w-full pl-5 border-b bg-orange-100 border-black flex justify-start items-center"><?php echo $favoris['id_favori'] ?></p>
     </div>
     <div class="flex">
-        <p class="w-1/4 bg-orange-200 h-max flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold">Libelle du  favori </p>
+        <div class="w-1/4 bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Libelle du  favori </p><i class=" text-green-600 fa-brands fa-readme"></i> </div>
         <p class=" w-full pl-5 border-b bg-orange-100 border-black flex  items-center"><?php echo $favoris['libelle'] ?> </p>
     </div>
     <div class="flex">
-        <p class="w-1/4 h-max bg-orange-200 flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold">Date de création du favori </p>
+        <div class="w-1/4 h-max bg-orange-200 flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center">Date de création du favori </p><i class="text-green-600 fa-brands fa-readme"></i> </div>
+        
         <p class=" w-full pl-5 border-b bg-orange-100 border-black flex items-center"><?php echo $favoris['date_creation'] ?></p>
     </div>
     <div class="flex">
-        <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between"><p >URL</p> <a href="<?php echo  $favoris['url']?>"><i class=" text-[#78afd8]  fa-solid fa-arrow-up-right-from-square"></i></a> </div>
+        <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL</p><div class="flex items-center justify-center"> <a class="mr-5" href="<?php echo  $favoris['url']?>"><i class=" text-[#78afd8]  fa-solid fa-arrow-up-right-from-square"></i></a><i class=" text-green-600  fa-brands fa-readme"></i> </div></div>
         <p class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"><?php echo $favoris['url'] ?> </p>
     </div>
     <div class="flex">
-        <p class="w-1/4 bg-orange-200 h-max flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold">Domaine associées </p>
+        <div class="w-1/4 bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Domaine associées </p><i class="text-green-600 fa-brands fa-readme"></i></div>
         <p class="w-full pl-5 border-b bg-orange-100 border-black flex items-center"><?php echo $favoris['nom_domaine'] ?></p>
     </div>
     <div class="flex ">
-        <p class="w-1/4 flex bg-orange-200 justify-start font-PE_libre_baskerville_italique items-center p-4 font-bold"> Catégorie associées </p>
+        <div class="w-1/4 flex bg-orange-200 justify-start font-PE_libre_baskerville_italique items-center p-4 font-bold justify-between"><p> Catégorie associées </p><i class="text-green-600 fa-brands fa-readme"></i></div>
           <p class="w-full pl-5 flex bg-orange-100 flex-col  justify-center"><?php
          $TabCatégorie = explode("|", $favoris['liste_categorie']);
                       for ($index= 0 ; $index < count($TabCatégorie); $index++){

@@ -198,12 +198,12 @@ if ($formulaire_soumis == true){
         <div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black m-8 w-3/4">
             <div class="flex ">
                 <div class="w-1/4  bg-orange-200 h-max flex justify-between border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center"><p>ID du favori <span class="text-red-600">*</span></p><i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i></div>
-                <p type="text" class=" w-full pl-5 border-b bg-orange-100 border-black flex justify-start items-center">Générer autaumatiquement</p>
+                <p type="text" class=" w-full pl-5 border-b bg-orange-100 border-black flex justify-start items-center">Générer automatiquement</p>
             </div>
             <div class="flex flex-col">
                 <div class="flex">
                     <div class="w-1/4 bg-orange-200 h-max flex border-b font-PE_libre_baskerville_italique border-black p-4 font-bold justify-between items-center"><p>Libelle du  favori <span class="text-red-600">*</span></p><i id="champ_libelle_icone" class="fa-solid fa-pencil"></i> </div>
-                    <input type="text" name="saisie_libelle" class=" w-full pl-5 border-b bg-orange-100 border-black flex  items-center" onchange="ChangerCouleurIcone('champ_libelle')" placeholder="Entrer un nom de libelle" id="champ_libelle" value="<?php echo $valeur_du_libelle ?>"></input>
+                    <input type="text" name="saisie_libelle" class=" w-full pl-5 border-b bg-orange-100 border-black flex  items-center" onkeyup="ChangerCouleurIcone('champ_libelle')" placeholder="Entrer un nom de libelle" id="champ_libelle" value="<?php echo $valeur_du_libelle ?>"></input>
                 </div>
                     <?php if (!empty($erreur_libelle) && $formulaire_soumis == true ){ ?>
                     <div class="bg-red-600 flex justify-center">
@@ -217,14 +217,29 @@ if ($formulaire_soumis == true){
                     setlocale(LC_ALL, 'fr_FR.UTF8', 'fr_FR','fr','fr','fra','fr_FR@euro');
                     $date = date("d-F-Y");
                     $date_fr = strftime('%d %B %Y',strtotime($date));
+                    $mois = str_split(strftime('%B',strtotime($date)));
+                    $tab_lettre =  ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+                    for ($index = 0 ; $index < count($mois) ; $index++){
+                        if(in_array($mois[$index], $tab_lettre) == false){
+                            $mois[$index] = "é";
+                        }
+                    }
+                    $date_fr = strftime('%d',strtotime($date));
+                    $date_fr .= " ";
+                    $date_fr .= implode($mois);
+                    $date_fr .= " ";
+                    $date_fr .= strftime('%Y',strtotime($date));
 
+
+
+                   
                  ?>
-                <input type="text"  name="saisie_date_creation" disabled="disabled" class=" w-full pl-5 border-b bg-orange-100 border-black flex items-center" value="<?php echo $date_fr ?>"></input>
+                <input type="text"  name="saisie_date_creation" disabled="disabled" class=" w-full pl-5 border-b bg-orange-100 border-black flex items-center font-sans " value="<?php echo $date_fr ?>"></input>
             </div>
             <div class="flex flex-col">
                 <div class="flex">
                     <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i id="champ_url_icone" class="fa-solid fa-pencil"></i></div>
-                    <input id="champ_url" name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"  onchange="ChangerCouleurIcone('champ_url')" value ="<?php echo $valeur_du_url ?>"> </input>
+                    <input id="champ_url" name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"  onkeyup="ChangerCouleurIcone('champ_url')" value ="<?php echo $valeur_du_url ?>"> </input>
                 </div>
                     <?php if (!empty($erreur_url) && $formulaire_soumis == true ){ ?>
                         <div class="bg-red-600 flex justify-center">

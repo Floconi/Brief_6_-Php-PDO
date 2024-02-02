@@ -44,12 +44,12 @@ if (!empty($_POST)){
     }else{
         $valeur_de_url = "";
     }
-    /*if (!empty($_POST['saisie_nom_domaine'])){
+    if (!empty($_POST['saisie_nom_domaine'])){
         $presence_nom_domaine = true;
         $id_dom =  htmlspecialchars($_POST['saisie_nom_domaine']);
     }else{
         $presence_nom_domaine = false;
-    }*/
+    }
 
 
     $Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
@@ -144,7 +144,6 @@ if (!empty($_POST)){
 
                     $tab_id_categorie_en_base = explode("|",$favoris['liste_id_cat']);
 
-;
                     //print_r($tab_id_categorie_en_base);
                     //print_r($saisie_table_id_categorie);
                     
@@ -183,6 +182,7 @@ if (!empty($_POST)){
                         
                         
                     }
+                    header('Location: unfavori.php?id_du_favori='.$favoris['id_favori']);
 
                     /**for ($index = 0 ; $index < count($saisie_table_id_categorie); $index++){
                         $Requete_SQL_preparation = " UPDATE favori_categorie SET  id_categorie = :id_categorie WHERE id_favori = :id_favori" ;
@@ -441,10 +441,26 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
             </div>
             <div class="flex">
             <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >Date de création <span class="text-red-600">*</span></p> <i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i> </div>
-                <?php
+            <?php
                     setlocale(LC_ALL, 'fr_FR.UTF8', 'fr_FR','fr','fr','fra','fr_FR@euro');
-                    $date_fr = strftime('%d %B %Y',strtotime($favoris['date_creation']));
+                    $date = date("d-F-Y");
+                    $date_fr = strftime('%d %B %Y',strtotime($date));
+                    $mois = str_split(strftime('%B',strtotime($date)));
+                    $tab_lettre =  ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+                    for ($index = 0 ; $index < count($mois) ; $index++){
+                        if(in_array($mois[$index], $tab_lettre) == false){
+                            $mois[$index] = "é";
+                        }
+                    }
+                    $date_fr = strftime('%d',strtotime($date));
+                    $date_fr .= " ";
+                    $date_fr .= implode($mois);
+                    $date_fr .= " ";
+                    $date_fr .= strftime('%Y',strtotime($date));
 
+
+
+                   
                  ?>
                 <p type="text"  name="saisie_date_creation" disabled="disabled" class=" w-full pl-5 border-b bg-orange-100 border-black flex items-center" value=""><?php echo $date_fr ?></p>
             </div>
@@ -460,7 +476,7 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <div class="flex">
-                <div class="w-1/4 bg-orange-200 h-max flex justify-between border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center"><p>Domaine associées <span class="text-red-600"> *</span></p> <i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
+                <div class="w-1/4 bg-orange-200 h-max flex justify-between border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center"><p>Domaine associé <span class="text-red-600"> *</span></p> <i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
                 <?php 
                     $table_dom = "domaine" ;
                     $result = $pdo->query(" SELECT * 
@@ -477,21 +493,18 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                     <?php foreach($domaine as $unDomaine) { ?>
 
                         <?php
+                        $selection_active ="";
                         if ($formulaire_soumis == true){
+                            echo "<p>".$unDomaine['id_domaine']."</p>";
                                 if($unDomaine['id_domaine'] == $id_dom ){
                                     $selection_active = "selected='selected'";
                                 }else{
                                     $selection_active = "" ;
                                 } 
                         }else{
-                             if($formulaire_soumis == false){
                                 if($unDomaine['id_domaine'] == $favoris['id_domaine'] ){
                                     $selection_active = "selected='selected'";
                                 }
-                            }else{
-
-                                $selection_active = "" ;
-                            }
                         }
                            
                         
@@ -503,7 +516,7 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                 </select>
             </div>
             <div class="flex ">
-                <div class="w-1/4 flex bg-orange-200 justify-between font-PE_libre_baskerville_italique items-center p-4 font-bold "><p> Catégorie associées <span class="text-red-600">*</span> </p> <i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
+                <div class="w-1/4 flex bg-orange-200 justify-between font-PE_libre_baskerville_italique items-center p-4 font-bold "><p> Catégorie associés <span class="text-red-600">*</span> </p> <i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
                 <?php 
                     $table_cat = "categorie" ;
                     $result = $pdo->query(" SELECT * 
