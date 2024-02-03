@@ -11,10 +11,18 @@ FROM favori
 INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori 
 INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie 
 INNER JOIN domaine ON domaine.id_domaine = favori.id_dom 
-WHERE favori.id_favori =".$_GET['id_du_favori'].";";
+WHERE favori.id_favori = :id_favori";
 
-$result =  $pdo->query($Requete_SQL);
-$favoris = $result->fetch(PDO::FETCH_ASSOC);
+
+$RequetePreparer = $pdo->prepare($Requete_SQL);
+
+$Tableau_parametre = array(
+    ':id_favori' => htmlspecialchars($_GET['id_du_favori'])
+);
+
+$RequetePreparer -> execute($Tableau_parametre);
+
+$favoris = $RequetePreparer ->fetch(PDO::FETCH_ASSOC);
 
 
 ?>

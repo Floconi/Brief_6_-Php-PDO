@@ -450,7 +450,7 @@ if (isset($_GET['filtre_domaine'])){
     $presence_limite = false;
     if (isset($_GET['Limite'])){
       if ($_GET['Limite'] != "Tout"){
-        $Résultat_limite = $_GET['Limite'];
+        $resultat_limite = $_GET['Limite'];
         $presence_limite = true;
       }
 
@@ -564,6 +564,8 @@ if (isset($_GET['filtre_domaine'])){
     "INNER JOIN favori_categorie ON favori.id_favori = favori_categorie.id_favori 
      INNER JOIN categorie ON categorie.id_categorie = favori_categorie.id_categorie 
      INNER JOIN domaine ON domaine.id_domaine = favori.id_dom ";
+
+     $Tableau_parametre_filtre = array();
     
     /**
      * TODO : On ne met le where que si il y'a un filtre sur les catégorie ou le domaine ou la recherche
@@ -584,7 +586,10 @@ if (isset($_GET['filtre_domaine'])){
 
     if ($presence_recherche == true ){
 
-      $Requete_SQL .= " libelle LIKE '%".$resultat_recherche."%'"; 
+      $Requete_SQL .= " libelle LIKE '%:recherche%'"; 
+      $Tableau_parametre_filtre += [
+        ':recherche' => $resultat_recherche
+      ];
       
       if ( $filtre_dom  == true || $filtre_cat == true){
       $Requete_SQL .= " OR ";
@@ -604,11 +609,13 @@ if (isset($_GET['filtre_domaine'])){
     for ($index = 0 ; $index < count($table_id_categorie); $index++){
     if (count($table_id_categorie) >=2 && $index == 0){
           $Requete_SQL .= " ( ";
-      };   
-      $Requete_SQL .= " categorie.id_categorie = ".$table_id_categorie[$index]." ";
-
+      }; 
+      $Requete_SQL .= " categorie.id_categorie = :categorie".$index." ";
+      $Tableau_parametre_filtre += [
+        ":categorie$index" => $table_id_categorie[$index]
+      ];
       if ($index != count($table_id_categorie)-1 ){
-        $Requete_SQL .= "OR";
+        $Requete_SQL .= " OR ";
         
       }
 
@@ -627,13 +634,19 @@ if (isset($_GET['filtre_domaine'])){
     if(($filtre_cat == true && $filtre_dom == true) ){
        /**if ($_GET['filtre_domaine'] != "aucun"){*/
         $Requete_SQL .= $condition_categorie_dom;
-        $Requete_SQL .= " domaine.id_domaine = ".$_GET['filtre_domaine'];
+        $Requete_SQL .= " domaine.id_domaine = :domaine ";
+        $Tableau_parametre_filtre += [
+          ":domaine" => htmlspecialchars($_GET['filtre_domaine'])
+        ];
       /** }*/
  
     }
 
     if($filtre_dom == true &&  $filtre_cat == false){
-      $Requete_SQL .= " domaine.id_domaine = ".$_GET['filtre_domaine'];
+      $Requete_SQL .= " domaine.id_domaine = :domaine " ;
+      $Tableau_parametre_filtre += [
+        ":domaine" => htmlspecialchars($_GET['filtre_domaine'])
+      ];
     }
     /** 
     
@@ -655,14 +668,27 @@ if (isset($_GET['filtre_domaine'])){
     $Requete_SQL .= " GROUP BY favori.id_favori ORDER BY ";
 
     if ($filtre_ordre == true){
-      $Requete_SQL .= $collone_filtre_ordre." ".$Ordre_croissant_decroissant;
+      $Requete_SQL .=" :collone_filtre_ordre :Ordre_croissant_decroissant";
+      $Tableau_parametre_filtre += [
+        ":collone_filtre_ordre" => $collone_filtre_ordre,
+        ":Ordre_croissant_decroissant" => $Ordre_croissant_decroissant,
+
+      ];
+      
     }else{
       $Requete_SQL .= "favori.id_favori ASC";
     }
     
     
     if ($presence_limite == true ){
-      $Requete_SQL .= " LIMIT ". $Résultat_limite;
+      /* La requete préparé que j'ai utilisé comporte un souci, je n'arrive pas faire à faire passer un parametre qui soit lu sous forme d'entier */
+      /* il aurait fallu faire comme ceci */
+      /*$stmt->bind_param("is", $id, $label); // "is" means that $id is bound as an integer and $label as a string*/
+      $resultat_limite = intval($resultat_limite); // comme je vais utilisé cette variable directement je protège(un peu) par un intval()
+      $Requete_SQL .= " LIMIT   ".$resultat_limite;
+      /*$Tableau_parametre_filtre += [
+        ":abc" => $resultat_limite
+      ];*/
     }
     $Requete_SQL .= " ; "; /* FIN de l'instruction SQL */
 
@@ -689,8 +715,15 @@ if (isset($_GET['filtre_domaine'])){
      * TODO : Interogation de la base de données avec la requete SQL pour obtenir les résultats
      */
     echo $Requete_SQL;
-    $result = $pdo->query($Requete_SQL);
-    $favoris = $result->fetchAll(PDO::FETCH_ASSOC);
+    $RequetePreparer = $pdo->prepare($Requete_SQL);
+
+    echo "<pre>";
+    print_r($Tableau_parametre_filtre);
+    echo "</pre>";
+    $RequetePreparer -> execute($Tableau_parametre_filtre);
+    $favoris = $RequetePreparer->fetchAll(PDO::FETCH_ASSOC);
+    /*$result = $pdo->query($Requete_SQL);
+    $favoris = $result->fetchAll(PDO::FETCH_ASSOC);*/
     
     /*$Tab_nom_categorie = array();
     $index = 0;

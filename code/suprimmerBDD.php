@@ -1,10 +1,18 @@
 <?php 
 include("pdo.php");
-$Requete_SQL = "DELETE  FROM favori WHERE favori.id_favori =".$_GET['id_favori'] ;
+$Requete_SQL = "DELETE  FROM favori WHERE favori.id_favori = :id_favori ";
 
-$pdo->query($Requete_SQL);
+$RequetePreparer = $pdo->prepare($Requete_SQL);
 
-header('Location: index.php');
+$Tableau_parametre = array(
+    ':id_favori' => htmlspecialchars($_GET['id_favori'])
+);
+
+$RequetePreparer -> execute($Tableau_parametre);
+
+
+
+/* header('Location: index.php');*/
 
 
 ?>

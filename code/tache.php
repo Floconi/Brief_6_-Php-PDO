@@ -7,9 +7,9 @@
  * 
  * TODO : faire le responsive
  * TODO :  COMMENTAIRE
- * todo : Remplacer les isset par des empty 
+ * todo : Remplacer les isset par des empty en parie
  * TODO : indenter le code
- * todo : sécuriser les requete
+ * todo : sécuriser les requetes fait
  * 
  * 
  * 
