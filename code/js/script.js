@@ -225,7 +225,36 @@ function AppliquerFiltre(){
 
  }
 
+ function ChangerCouleurIcone_edit(champ){
+
+    console.log("hello")
+    
+    champ_selectionner = document.getElementById(champ)
+    icone = document.getElementById(champ+"_icone")
+
+    if(champ == "champ_libelle"){
+        
+        limite = 100
+    }else{
+        limite = 1000
+    }
+    console.log(limite)
+    console.log(champ_selectionner.value.length)
+    console.log(champ_selectionner.value )
+    if (champ_selectionner.value != "" && champ_selectionner.value.length < limite){
+        icone.classList.add("couleur_orange")
+        icone.classList.remove("couleur_rouge")
+         
+    }else{
+         icone.classList.remove("couleur_orange")
+         icone.classList.add("couleur_rouge")
+
+    }
+
+ }
+
  function changercouleur_categorie(nomb_cat){
+    console.log("hello")
     icone = document.getElementById("categorie_icone")
     console.log(icone)
     uneSelection = false;
@@ -239,11 +268,42 @@ function AppliquerFiltre(){
     }
     if (uneSelection == true){
 
+        icone.classList.remove("couleur_rouge")
+        icone.classList.add("couleur_verte")
+    
+    }else{
+
+        icone.classList.remove("couleur_verte")
+        icone.classList.add("couleur_rouge")
+
+    }
+
+
+
+ }
+
+ function changercouleur_categorie_edit(nomb_cat){
+    console.log("hello")
+    icone = document.getElementById("categorie_icone")
+    console.log(icone)
+    uneSelection = false;
+    for (index =1 ; index <= nomb_cat ; index++){
+        var uneCategorie = document.getElementById("categorie"+index)
+        console.log(uneCategorie)
+        if (uneCategorie.checked == true){
+            uneSelection = true;
+        }
+
+    }
+    if (uneSelection == true){
+
+        icone.classList.remove("couleur_rouge")
         icone.classList.add("couleur_orange")
     
     }else{
 
         icone.classList.remove("couleur_orange")
+        icone.classList.add("couleur_rouge")
 
     }
 

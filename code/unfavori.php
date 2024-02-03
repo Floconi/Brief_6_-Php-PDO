@@ -25,6 +25,11 @@ $favoris = $result->fetch(PDO::FETCH_ASSOC);
 <div class="flex ">
     <div class="w-1/4  bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>
     <div class="flex justify-around bg-orange-100 w-full border border-b-black">
+        <form action="index.php" method="GET">
+            <button type="submit"  class="m-2 p-2 rounded bg-blue-950" >
+                <i class="text-green-600 text-red fa-solid fa-solid fa-house-chimney"></i><p class="text-green-600"> Retour sur l'acceuil</p>
+            </button>
+         </form>
         <form action="modifier.php" method="GET">
                                 <button class=" p-2 rounded m-2 bg-blue-950" name="id_du_favori" value="<?php echo $favoris['id_favori']?>">
                                     <i class=" text-orange-600 fa-solid fa-pen-clip"></i><p class="text-orange-600"> Modifier</p>
@@ -59,7 +64,7 @@ $favoris = $result->fetch(PDO::FETCH_ASSOC);
         <p class="w-full pl-5 border-b bg-orange-100 border-black flex items-center"><?php echo $favoris['nom_domaine'] ?></p>
     </div>
     <div class="flex ">
-        <div class="w-1/4 flex bg-orange-200 justify-start font-PE_libre_baskerville_italique items-center p-4 font-bold justify-between"><p> Catégorie associées </p><i class="text-green-600 fa-brands fa-readme"></i></div>
+        <div class="w-1/4 flex bg-orange-200 font-PE_libre_baskerville_italique items-center p-4 font-bold justify-between"><p> Catégorie associées </p><i class="text-green-600 fa-brands fa-readme"></i></div>
           <p class="w-full pl-5 flex bg-orange-100 flex-col  justify-center"><?php
          $TabCatégorie = explode("|", $favoris['liste_categorie']);
                       for ($index= 0 ; $index < count($TabCatégorie); $index++){

@@ -613,7 +613,7 @@ if (isset($_GET['filtre_domaine'])){
       }
 
       if ( count($table_id_categorie) >=2 && $index == count($table_id_categorie)-1){
-        $Requete_SQL .= $Requete_SQL." ) ";
+        $Requete_SQL .= " ) ";
 
       }
     }
@@ -779,9 +779,15 @@ if (isset($_GET['filtre_domaine'])){
                             if ($Tab_nom_de_collone[$index] == "liste_categorie"){ ?>
                               <td class="border border-b-black font-PE_libre_baskerville"><?php 
                               
-                              $TabCatégorie_id = explode("|",$favoris_defaut[$index4]['liste_id_cat']);
-                              $TabCatégorie = explode("|", $favoris_defaut[$index4]['liste_categorie']);
-                              $index4 = $index4+1;
+                              for ($index5 = 0; $index5 <  count($favoris_defaut); $index5++){
+                                if ($favoris_defaut[$index5]['id_favori'] == $favori['id_favori'] ){
+                                  $numero_ligne = $index5;
+                                }
+                               
+                              } 
+                            
+                              $TabCatégorie_id = explode("|",$favoris_defaut[$numero_ligne]['liste_id_cat']);
+                              $TabCatégorie = explode("|", $favoris_defaut[$numero_ligne]['liste_categorie']);
                               for ($index2= 0 ; $index2 < count($TabCatégorie); $index2++){
                                 $texteEnValeur ="";
                                 for ($index3 = 0 ; $index3 < count($table_id_categorie); $index3++){

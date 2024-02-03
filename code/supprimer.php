@@ -20,12 +20,20 @@ $favoris = $result->fetch(PDO::FETCH_ASSOC);
 
 ?>
 <div class="flex flex-col justify-center items-center font-PE_libre_baskerville"> 
-    <p> Voulez vous vraiment suprimer les données ci-dessous ?<br> <span class="text-red-500">Attention cette action est définitive </p>
-    <form method="get" action="suprimmerBDD.php">
-        <button type="submit" name="id_favori" value="<?php echo  $id_favori ?>" class="bg-red-950 mt-2 text-white p-6 font-PE_nunito rounded flex justify-center " >
+    <p> Voulez vous vraiment suprimer les données ci-dessous ?<br> <span class="flex justify-center text-red-500">Attention cette action est définitive </p>
+    <div class="flex items-center">
+    <form action="index.php" method="GET">
+        <button type="submit"  class="m-2 p-4 h-full rounded bg-blue-950" >
+            <i class="text-green-600 text-red fa-solid fa-solid fa-house-chimney"></i><p class="text-green-600"> Retour sur l'acceuil</p>
+        </button>
+    </form>
+         <form method="get" action="suprimmerBDD.php">
+        <button type="submit" name="id_favori" value="<?php echo  $id_favori ?>" class="bg-red-950 mt-2 p-6 text-white  font-PE_nunito rounded flex justify-center " >
           SUPRIMMER
         </button>   
     </form>
+</div>
+    
 </div>
 <div class="flex justify-center font-PE_libre_baskerville">
 <div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black m-8 w-3/4">

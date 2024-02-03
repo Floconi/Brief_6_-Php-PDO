@@ -26,6 +26,10 @@ $Requete_preparer->execute($Tableau_parametre);
 $favoris = $Requete_preparer->fetch(PDO::FETCH_ASSOC);
 
 
+$Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
+    
+$result =  $pdo->query($Requete_SQL);
+$nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
 
 
 if (!empty($_POST)){
@@ -285,6 +289,7 @@ $Requete_SQL = "SELECT count(id_categorie) as nomb_categorie FROM categorie";
 $result =  $pdo->query($Requete_SQL);
 $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
 
+var_dump($nomb_categorie['nomb_categorie'])
 /*if ($formulaire_soumis == true){
 
     $formulaireValide = true;
@@ -420,18 +425,40 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
 ?>
 
 
-<form action="" method="POST">
+
     <div class="flex justify-center font-PE_libre_baskerville">
+        
         <div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black m-8 w-3/4">
+            <div class="flex ">
+                <div class="w-1/4  bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>
+                <div class="flex justify-around bg-orange-100 w-full border border-b-black">
+                <form action="index.php" method="GET">
+                        <button type="submit" class=" p-2 rounded m-2 bg-blue-950" >
+                        <i class="text-green-600 fa-solid fa-house-chimney"></i><p class="text-green-600"> Retour sur l'acceuil</p>
+                        </button>
+                    </form>
+                    <form action="unfavori.php" method="GET">
+                        <button type="submit" class=" p-2 rounded m-2 bg-blue-950" name="id_du_favori" value="<?php echo $favoris['id_favori']?>">
+                        <i class=" text-orange-600 fa-solid fa-reply"></i><p class="text-orange-600">Annuler la modification</p>
+                        </button>
+                    </form>
+                    <form action="supprimer.php" method="GET">
+                        <button type="submit" name="id_du_favori" class="m-2 p-2 rounded bg-blue-950" value="<?php echo $favoris['id_favori'] ?>">
+                            <i class="text-rose-700 text-red fa-solid fa-file-circle-xmark"></i><p class="text-rose-700"> Effacer</p>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <form action="" method="POST">
             <div class="flex ">
             <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >ID du favori <span class="text-red-600">*</span></p> <i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i> </div>
                 <p class=" w-full pl-5 border-b bg-orange-100 border-black flex justify-start items-center"><?php echo $favoris['id_favori'] ?></p>
               
             </div>
             <div class="flex">
-                <div class="w-1/4 bg-orange-200 h-max flex border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Libelle du  favori <span class="text-red-600">*</span></p><i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
+                <div class="w-1/4 bg-orange-200 h-max flex border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Libelle du  favori <span class="text-red-600">*</span></p><i id="saisie_libelle_icone" class="fa-solid fa-pencil"></i></div>
                 <div class="flex flex-col w-full ">
-                    <input type="text" name="saisie_libelle" class=" w-full pl-5 border-b h-full bg-orange-100 border-black flex  items-center" placeholder="Entrer un nom de libelle" value="<?php echo $valeur_du_libelle ?>"></input>
+                    <input onkeyup="ChangerCouleurIcone_edit('saisie_libelle')" type="text" id="saisie_libelle" name="saisie_libelle" onkeyup="changercouleur_categorie_edit()" class=" w-full pl-5 border-b h-full bg-orange-100 border-black flex  items-center" placeholder="Entrer un nom de libelle" value="<?php echo $valeur_du_libelle ?>"></input>
                     <?php if (!empty($erreur_libelle) && $formulaire_soumis == true ){ ?>
                             <div class="bg-red-600 flex justify-center">
                                 <?php echo $erreur_libelle ?>
@@ -465,9 +492,9 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                 <p type="text"  name="saisie_date_creation" disabled="disabled" class=" w-full pl-5 border-b bg-orange-100 border-black flex items-center" value=""><?php echo $date_fr ?></p>
             </div>
             <div class="flex">
-                <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i id="champ_url_icone" class="fa-solid fa-pencil"></i>  </div>
+                <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i id="saisie_url_icone" class="fa-solid fa-pencil"></i>  </div>
                 <div class="flex flex-col w-full ">
-                    <input name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full h-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center" value="<?php echo $valeur_de_url ?>"> </input>
+                    <input onkeyup="ChangerCouleurIcone_edit('saisie_url')" id="saisie_url" name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full h-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center" value="<?php echo $valeur_de_url ?>"> </input>
                     <?php if (!empty($erreur_url) && $formulaire_soumis == true ){ ?>
                             <div class="bg-red-600 flex justify-center">
                                 <?php echo $erreur_url ?>
@@ -476,7 +503,7 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <div class="flex">
-                <div class="w-1/4 bg-orange-200 h-max flex justify-between border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center"><p>Domaine associé <span class="text-red-600"> *</span></p> <i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
+                <div class="w-1/4 bg-orange-200 h-max flex justify-between border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center"><p>Domaine associé <span class="text-red-600"> *</span></p> <i id="saisie_nom_domaine_icone" class="fa-solid fa-pencil"></i></div>
                 <?php 
                     $table_dom = "domaine" ;
                     $result = $pdo->query(" SELECT * 
@@ -484,7 +511,7 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                     ;");
                     $domaine = $result->fetchAll(PDO::FETCH_ASSOC); 
                 ?>  
-                <select name="saisie_nom_domaine" class="w-full pl-5 border-b bg-orange-100 border-black flex items-center">
+                <select  id="saisie_nom_domaine" name="saisie_nom_domaine" class="w-full pl-5 border-b bg-orange-100 border-black flex items-center " onchange="ChangerCouleurIcone_edit('saisie_nom_domaine')">
                     <!-- /**
                     * ! Le domaine est obligatoire (voir le MCD)
                     */
@@ -516,7 +543,7 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                 </select>
             </div>
             <div class="flex ">
-                <div class="w-1/4 flex bg-orange-200 justify-between font-PE_libre_baskerville_italique items-center p-4 font-bold "><p> Catégorie associés <span class="text-red-600">*</span> </p> <i id="champ_libelle_icone" class="fa-solid fa-pencil"></i></div>
+                <div class="w-1/4 flex bg-orange-200 justify-between font-PE_libre_baskerville_italique items-center p-4 font-bold "><p> Catégorie associés <span class="text-red-600">*</span> </p> <i id="categorie_icone" class="fa-solid fa-pencil"></i></div>
                 <?php 
                     $table_cat = "categorie" ;
                     $result = $pdo->query(" SELECT * 
@@ -525,7 +552,7 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                     $categorie = $result->fetchAll(PDO::FETCH_ASSOC); 
                 ?>
                 <div class="flex flex-col w-full pl-5 border-b bg-orange-100  items-start">  
-                    <?php  $numero_cat = 0;
+                    <?php  $numero_cat = 1;
                         foreach($categorie as $uneCategorie) { ?>
                         <?php
                             if($formulaire_soumis == false){
@@ -548,7 +575,8 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
 
                         ?>
                         <div class="flex mr-5 "> 
-                            <input <?php echo $selection_cat ?> name="<?php echo "saisie_categorie_n°".$numero_cat?>" type="checkbox" id="<?php echo "categorie".$numero_cat ?>"  value="<?php echo $uneCategorie['id_categorie'] ?>" >
+                            <?php $nombre_de_categorie = $nomb_categorie['nomb_categorie'] ?>
+                            <input <?php echo $selection_cat ?> name="<?php echo "saisie_categorie_n°".$numero_cat?>" type="checkbox"  onchange="changercouleur_categorie_edit(<?php echo $nombre_de_categorie ?>)" id="<?php echo "categorie".$numero_cat ?>"  value="<?php echo $uneCategorie['id_categorie'] ?>" >
                             <label id="<?php echo "Label_categorie_n°".$numero_cat ?>" class="ml-2 font-PE_libre_baskerville" for="<?php echo "categorie_n°".$numero_cat ?>"><?php echo $uneCategorie['nom_categorie'] ?></label>
                         </div>
                         <?php $selection_cat = "";
@@ -569,6 +597,6 @@ $nomb_categorie = $result->fetch(PDO::FETCH_ASSOC);
                     </button> 
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-</form>
+</div>

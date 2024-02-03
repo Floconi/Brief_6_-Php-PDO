@@ -12,6 +12,9 @@
 .couleur_rouge{
     color : red
 }
+.couleur_orange{
+    color : #ea580c
+}
 @font-face {
     font-family: 'nunito_italic';
     src: url('../police_ecriture/police_Ninito/nunito-italic-variablefont_wght-webfont.woff2') format('woff2'),
