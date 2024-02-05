@@ -10,7 +10,7 @@ if (isset($_GET['filtre_domaine'])){
   include("header.php");
   include("pdo.php"); 
 
-  // Affichage (SELECT) :
+
 ?>
   
  

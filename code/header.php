@@ -25,4 +25,14 @@
             </div>
             </button> 
         </form>
+        <form method="GET" action="lecture_dom_cat.php">
+            <button type="submit" class="bg-blue-950  text-white p-6 font-PE_nunito rounded flex justify-center flex-col " >
+            <div>
+                <div class=" text-center">
+                    <i class="fa-solid fa-gear"></i>
+                </div>
+                <p>Gérer les domaines/catégorie<p>
+            </div>
+            </button> 
+        </form>
     </header>
