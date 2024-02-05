@@ -426,12 +426,12 @@ var_dump($nomb_categorie['nomb_categorie'])
 
 
 
-    <div class="flex justify-center font-PE_libre_baskerville">
+    <div class="flex justify-center font-PE_libre_baskerville m-2 md:m-8">
         
-        <div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black m-8 w-3/4">
-            <div class="flex ">
-                <div class="w-1/4  bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>
-                <div class="flex justify-around bg-orange-100 w-full border border-b-black">
+        <div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black  w-3/4">
+            <div class="flex flex-col md:flex-row mb-5 md:mb-0">
+                <div class="md:w-1/4 w-full  bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>
+                <div class="flex flex-col md:flex-row justify-around items-center bg-orange-100 w-full border border-b-black">
                 <form action="index.php" method="GET">
                         <button type="submit" class=" p-2 rounded m-2 bg-blue-950" >
                         <i class="text-green-600 fa-solid fa-house-chimney"></i><p class="text-green-600"> Retour sur l'acceuil</p>
@@ -450,13 +450,13 @@ var_dump($nomb_categorie['nomb_categorie'])
                 </div>
             </div>
             <form action="" method="POST">
-            <div class="flex ">
-            <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >ID du favori <span class="text-red-600">*</span></p> <i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i> </div>
+            <div class="flex flex-col md:flex-row mb-5 md:mb-0">
+            <div class="md:w-1/4 w-full h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >ID du favori <span class="text-red-600">*</span></p> <i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i> </div>
                 <p class=" w-full pl-5 border-b bg-orange-100 border-black flex justify-start items-center"><?php echo $favoris['id_favori'] ?></p>
               
             </div>
-            <div class="flex">
-                <div class="w-1/4 bg-orange-200 h-max flex border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Libelle du  favori <span class="text-red-600">*</span></p><i id="saisie_libelle_icone" class="fa-solid fa-pencil"></i></div>
+            <div class="flex flex-col md:flex-row mb-5 md:mb-0">
+                <div class="md:w-1/4 w-full bg-orange-200 h-max flex border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Libelle du  favori <span class="text-red-600">*</span></p><i id="saisie_libelle_icone" class="fa-solid fa-pencil"></i></div>
                 <div class="flex flex-col w-full ">
                     <input onkeyup="ChangerCouleurIcone_edit('saisie_libelle')" type="text" id="saisie_libelle" name="saisie_libelle" onkeyup="changercouleur_categorie_edit()" class=" w-full pl-5 border-b h-full bg-orange-100 border-black flex  items-center" placeholder="Entrer un nom de libelle" value="<?php echo $valeur_du_libelle ?>"></input>
                     <?php if (!empty($erreur_libelle) && $formulaire_soumis == true ){ ?>
@@ -466,8 +466,8 @@ var_dump($nomb_categorie['nomb_categorie'])
                     <?php } ?>
                 </div>
             </div>
-            <div class="flex">
-            <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >Date de création <span class="text-red-600">*</span></p> <i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i> </div>
+            <div class="flex flex-col md:flex-row mb-5 md:mb-0">
+            <div class="md:w-1/4 w-full  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >Date de création <span class="text-red-600">*</span></p> <i class="flex justify-center items-center text-red-600  fa-solid fa-lock"></i> </div>
             <?php
                     setlocale(LC_ALL, 'fr_FR.UTF8', 'fr_FR','fr','fr','fra','fr_FR@euro');
                     $date = date("d-F-Y");
@@ -491,8 +491,8 @@ var_dump($nomb_categorie['nomb_categorie'])
                  ?>
                 <p type="text"  name="saisie_date_creation" disabled="disabled" class=" w-full pl-5 border-b bg-orange-100 border-black flex items-center" value=""><?php echo $date_fr ?></p>
             </div>
-            <div class="flex">
-                <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i id="saisie_url_icone" class="fa-solid fa-pencil"></i>  </div>
+            <div class="flex flex-col md:flex-row mb-5 md:mb-0">
+                <div class="md:w-1/4 w-full  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL <span class="text-red-600">*</span></p><i id="saisie_url_icone" class="fa-solid fa-pencil"></i>  </div>
                 <div class="flex flex-col w-full ">
                     <input onkeyup="ChangerCouleurIcone_edit('saisie_url')" id="saisie_url" name="saisie_url" placeholder = "Entrer ou copier votre url..." class="w-full h-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center" value="<?php echo $valeur_de_url ?>"> </input>
                     <?php if (!empty($erreur_url) && $formulaire_soumis == true ){ ?>
@@ -502,8 +502,8 @@ var_dump($nomb_categorie['nomb_categorie'])
                     <?php } ?>
                 </div>
             </div>
-            <div class="flex">
-                <div class="w-1/4 bg-orange-200 h-max flex justify-between border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center"><p>Domaine associé <span class="text-red-600"> *</span></p> <i id="saisie_nom_domaine_icone" class="fa-solid fa-pencil"></i></div>
+            <div class="flex flex-col md:flex-row mb-5 md:mb-0">
+                <div class="md:w-1/4 w-full bg-orange-200 h-max flex justify-between border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center"><p>Domaine associé <span class="text-red-600"> *</span></p> <i id="saisie_nom_domaine_icone" class="fa-solid fa-pencil"></i></div>
                 <?php 
                     $table_dom = "domaine" ;
                     $result = $pdo->query(" SELECT * 
@@ -542,8 +542,8 @@ var_dump($nomb_categorie['nomb_categorie'])
                         <?php } ?>
                 </select>
             </div>
-            <div class="flex ">
-                <div class="w-1/4 flex bg-orange-200 justify-between font-PE_libre_baskerville_italique items-center p-4 font-bold "><p> Catégorie associés <span class="text-red-600">*</span> </p> <i id="categorie_icone" class="fa-solid fa-pencil"></i></div>
+            <div class="flex flex-col md:flex-row md:mb-0">
+                <div class="md:w-1/4 w-full flex bg-orange-200 justify-between font-PE_libre_baskerville_italique items-center p-4 font-bold "><p> Catégorie associés <span class="text-red-600">*</span> </p> <i id="categorie_icone" class="fa-solid fa-pencil"></i></div>
                 <?php 
                     $table_cat = "categorie" ;
                     $result = $pdo->query(" SELECT * 
@@ -589,8 +589,8 @@ var_dump($nomb_categorie['nomb_categorie'])
                     <?php } ?>
                 </div>
             </div>
-            <div class="flex ">
-                <p class="w-1/4  bg-orange-200  flex justify-start border-b font-PE_libre_baskerville_italique p-4 font-bold">Validation </p>
+            <div class="flex flex-col md:flex-row md:mb-0 ">
+                <p class="md:w-1/4 w-full hidden md:flex bg-orange-200   justify-start border-b font-PE_libre_baskerville_italique p-4 font-bold">Validation </p>
                 <div class="flex justify-center item-center w-full bg-orange-100">
                     <button type="submit"  class="bg-blue-950 items-center text-orange-600 mt-2 p-6 font-PE_nunito rounded flex justify-around mr-5 mb-5" >
                         <i class="mr-4 text-orange-600 fa-solid fa-pen-clip"></i>Editer le favori 

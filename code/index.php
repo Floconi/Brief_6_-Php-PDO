@@ -17,14 +17,14 @@ if (isset($_GET['filtre_domaine'])){
 
     <section class=" bg-gray-400  filtre flex flex-col justify-center m-8 p-5">
       <button type="button" class="collapsible">Filtres</button>
-      <div class="content">
+      <div class="content py-5">
       <form  method="get" action="index.php"> 
         
         <div class="flex partie-Filtre-données flex-col">
           <h2 class="flex justify-center underline font-PE_libre_baskerville_gras text-xl">
             Filtres sur les données 
           </h2>
-          <div class="flex justify-center">
+          <div class="flex flex-col md:flex-row justify-center items-center">
             <?php 
               $table_cat = "categorie" ;
               $result = $pdo->query(" SELECT * 
@@ -32,7 +32,7 @@ if (isset($_GET['filtre_domaine'])){
               ;");
               $categorie = $result->fetchAll(PDO::FETCH_ASSOC); 
             ?>
-            <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4 rounded">
+            <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4 rounded mb-5 md:mb-0">
               <legend class="text-center border border-black rounded p-4 font-PE_libre_baskerville_italique text-lg">
                 <?php 
                   $table_cat = " FILTRE sur les ".ucfirst($table_cat)."s "; 
@@ -90,7 +90,7 @@ if (isset($_GET['filtre_domaine'])){
               ;");
               $domaine = $result->fetchAll(PDO::FETCH_ASSOC); 
             ?>  
-            <fieldset class="flex flex-col border border-black p-4 m-4 justify-around rounded ">
+            <fieldset class="flex flex-col border border-black p-4 m-4 justify-around rounded mb-5 md:mb-0">
               <legend class="flex justify-center text-center border border-black rounded p-4 font-PE_libre_baskerville_italique"> 
                 FILTRE sur le Domaine 
               </legend>
@@ -118,11 +118,11 @@ if (isset($_GET['filtre_domaine'])){
                 </div>
               </div>
             </fieldset>
-            <div class="items-center flex ">
+            <div class=" flex md:justify-center items-center mb-5 md:mb-0">
               <button type="submit" class=" bg-blue-950 mt-2 text-white p-6 font-PE_nunito rounded flex justify-center " >
                 Appliquer les filtres
               </button>
-             </div> 
+            </div> 
           </div>
         </div>
           
@@ -130,14 +130,14 @@ if (isset($_GET['filtre_domaine'])){
         
         <?php /* Partie de filtre sur l'afichage */ ?>
         <button type="button" class="collapsible">Filtres Avancées</button>
-        <div class="content">
-          <div class="Filtre_sur_l'affichage">
+        <div class="content pt-5 pb-5">
+          <div class="Filtre_sur_l'affichage ">
             <h2 class="flex justify-center underline font-PE_libre_baskerville_gras p-4"> 
               FILTRE sur l'affichage 
             </h2>
               
-            <div class="flex justify-around">
-              <fieldset class = "flex justify-center border border-black  rounded"> 
+            <div class="flex justify-around flex-col lg:flex-row">
+              <fieldset class = "flex justify-center border border-black mb-5 md:mb-0 rounded"> 
                 <?php 
                   $nom_table = "favori"
                 ?> 
@@ -169,7 +169,7 @@ if (isset($_GET['filtre_domaine'])){
                   ?>
                 </div>
               </fieldset>
-              <fieldset class = "flex justify-center border border-black rounded "> 
+              <fieldset class = "flex justify-center border border-black rounded mb-5 md:mb-0 "> 
                 <?php 
                 $nom_table = "domaine"
                 ?>
@@ -199,7 +199,8 @@ if (isset($_GET['filtre_domaine'])){
                   ?>
                 </div>
               </fieldset>
-              <fieldset class = "flex justify-center border border-black rounded"> 
+              
+              <fieldset class = "flex justify-center border border-black rounded mb-5 md:mb-0"> 
                 <?php 
                   $nom_table = "categorie"
                 ?>
@@ -232,8 +233,8 @@ if (isset($_GET['filtre_domaine'])){
                 </div>
               </fieldset>
               
-              <div class="flex flex-col justify-around">
-                <fieldset class="flex justify-center border border-black items-center rounded p-5">
+              <div class="flex flex-col md:flex-row lg:flex-col md:mt-4 justify-around">
+                <fieldset class="flex justify-center border border-black items-center rounded p-5 mb-5 md:mb-0">
                   <legend class=" border border-black flex text-center rounded p-4 font-PE_libre_baskerville_italique"> 
                     Limitation  
                   </legend>
@@ -245,7 +246,7 @@ if (isset($_GET['filtre_domaine'])){
                       <option class="font-PE_libre_baskerville" value = "30">30</option>
                     </select>
                 </fieldset>
-                <fieldset class="flex justify-around flex-col border border-black items-center rounded p-5">
+                <fieldset class="flex justify-around flex-col border border-black items-center rounded p-5 mb-5 md:mb-0">
                   <legend class=" font-PE_libre_baskerville_italique border border-black flex text-center rounded p-4 ">Ordonée par collone</legend>
                   <select class="font-PE_libre_baskerville" name="ordre_affichage" class="h-5">
                       <option class="font-PE_libre_baskerville" value = "">-- Ne pas Ordonée -- </option> 
@@ -267,8 +268,8 @@ if (isset($_GET['filtre_domaine'])){
               </div>
             </div>
           </div>   
-          <div class="flex items-center justify-evenly mt-5 ">
-            <fieldset class = "flex flex-col justify-center w-1/2 border border-black items-center p-4 rounded">
+          <div class="flex items-center justify-evenly mt-5 md:flex-row flex-col ">
+            <fieldset class = "flex flex-col justify-center md:w-1/2 w-full  border border-black items-center p-4 rounded mb-5 md:mb-0">
               <legend class="text-center border border-black rounded p-4 font-PE_libre_baskerville_italique"> 
                 Barre de recherche 
               </legend>
@@ -806,7 +807,7 @@ if (isset($_GET['filtre_domaine'])){
 
                     if ($afficherligne == true) { 
                       if ($FiltreSurAffichage == true){ ?>
-                        <tr class="border-solid  odd:bg-orange-100 even:bg-orange-300 hover:bg-green-200 "> 
+                        <tr class="border-solid  odd:bg-orange-100 even:bg-orange-300 hover:bg-green-200 h-max"> 
                         <?php for ($index=0; $index < count($Tab_affichage) ; $index++){
                           if ($Tab_affichage[$index] == "on" ){
                             if ($Tab_nom_de_collone[$index] == "liste_categorie"){ ?>
@@ -955,7 +956,7 @@ if (isset($_GET['filtre_domaine'])){
     
                         }?></td>
                         
-                        
+                    
                       <?php } ?>
                     
 

@@ -29,10 +29,10 @@ $favoris = $RequetePreparer ->fetch(PDO::FETCH_ASSOC);
 
 <div class="flex justify-center font-PE_libre_baskerville">
     
-<div class="informations  bg-orange-200  flex flex-col justify-center align-middle border border-black m-8 w-3/4">
-<div class="flex ">
-    <div class="w-1/4  bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>
-    <div class="flex justify-around bg-orange-100 w-full border border-b-black">
+<div class="informations  bg-orange-200  flex flex-col justify-center align-middle border border-black m-2 md:m-8  w-3/4">
+<div class="flex flex-col md:flex-row  md:mb-0 ">
+    <div class="md:w-1/4 w-full bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>
+    <div class="flex md:flex-row flex-col justify-around bg-orange-100 w-full border border-b-black items-center">
         <form action="index.php" method="GET">
             <button type="submit"  class="m-2 p-2 rounded bg-blue-950" >
                 <i class="text-green-600 text-red fa-solid fa-solid fa-house-chimney"></i><p class="text-green-600"> Retour sur l'acceuil</p>
@@ -50,29 +50,29 @@ $favoris = $RequetePreparer ->fetch(PDO::FETCH_ASSOC);
          </form>
     </div>
 </div>
-    <div class="flex ">
-        <div class="w-1/4  bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>ID du favori </p><i class="text-green-600 fa-brands fa-readme"></i></div>
+    <div class="flex flex-col md:flex-row md:mb-0 ">
+        <div class="md:w-1/4 w-full  bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>ID du favori </p><i class="text-green-600 fa-brands fa-readme"></i></div>
         <p class=" w-full pl-5 border-b bg-orange-100 border-black flex justify-start items-center"><?php echo $favoris['id_favori'] ?></p>
     </div>
-    <div class="flex">
-        <div class="w-1/4 bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Libelle du  favori </p><i class=" text-green-600 fa-brands fa-readme"></i> </div>
+    <div class="flex flex-col md:flex-row md:mb-0 ">
+        <div class="md:w-1/4 w-full bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Libelle du  favori </p><i class=" text-green-600 fa-brands fa-readme"></i> </div>
         <p class=" w-full pl-5 border-b bg-orange-100 border-black flex  items-center"><?php echo $favoris['libelle'] ?> </p>
     </div>
-    <div class="flex">
-        <div class="w-1/4 h-max bg-orange-200 flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center">Date de création du favori </p><i class="text-green-600 fa-brands fa-readme"></i> </div>
+    <div class="flex flex-col md:flex-row  md:mb-0 ">
+        <div class="md:w-1/4 w-full h-max bg-orange-200 flex justify-start border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center">Date de création du favori </p><i class="text-green-600 fa-brands fa-readme"></i> </div>
         
         <p class=" w-full pl-5 border-b bg-orange-100 border-black flex items-center"><?php echo $favoris['date_creation'] ?></p>
     </div>
-    <div class="flex">
-        <div class="w-1/4  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL</p><div class="flex items-center justify-center"> <a class="mr-5" href="<?php echo  $favoris['url']?>"><i class=" text-[#78afd8]  fa-solid fa-arrow-up-right-from-square"></i></a><i class=" text-green-600  fa-brands fa-readme"></i> </div></div>
-        <p class="w-full pl-5 border-b bg-orange-100 border-black flex justify-start  items-center"><?php echo $favoris['url'] ?> </p>
+    <div class="flex flex-col md:flex-row  md:mb-0 ">
+        <div class="md:w-1/4 w-full  h-max bg-orange-200  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold flex justify-between items-center"><p >URL</p><div class="flex items-center justify-center"> <a class="mr-5" href="<?php echo  $favoris['url']?>"><i class=" text-[#78afd8]  fa-solid fa-arrow-up-right-from-square"></i></a><i class=" text-green-600  fa-brands fa-readme"></i> </div></div>
+        <p class="w-full pl-5 border-b bg-orange-100 border-black flex  md:text-clip justify-start  items-center truncate text-clip "><?php echo $favoris['url'] ?> </p>
     </div>
-    <div class="flex">
-        <div class="w-1/4 bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Domaine associées </p><i class="text-green-600 fa-brands fa-readme"></i></div>
+    <div class="flex flex-col md:flex-row md:mb-0 ">
+        <div class="md:w-1/4 w-full bg-orange-200 h-max flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Domaine associées </p><i class="text-green-600 fa-brands fa-readme"></i></div>
         <p class="w-full pl-5 border-b bg-orange-100 border-black flex items-center"><?php echo $favoris['nom_domaine'] ?></p>
     </div>
-    <div class="flex ">
-        <div class="w-1/4 flex bg-orange-200 font-PE_libre_baskerville_italique items-center p-4 font-bold justify-between"><p> Catégorie associées </p><i class="text-green-600 fa-brands fa-readme"></i></div>
+    <div class="flex flex-col md:flex-row  md:mb-0  ">
+        <div class="md:w-1/4 w-full flex bg-orange-200 font-PE_libre_baskerville_italique items-center p-4 font-bold justify-between"><p> Catégorie associées </p><i class="text-green-600 fa-brands fa-readme"></i></div>
           <p class="w-full pl-5 flex bg-orange-100 flex-col  justify-center"><?php
          $TabCatégorie = explode("|", $favoris['liste_categorie']);
                       for ($index= 0 ; $index < count($TabCatégorie); $index++){
