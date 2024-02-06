@@ -1,40 +1,48 @@
-<?php 
-
-if (isset($_GET['filtre_domaine'])){
-  
-}
-
-
-?>
 <?php
+
+/* On inclu le header pour qu'il soit présent dans cette page 
+ et le pdo  pour faire des requetes sql*/
   include("header.php");
   include("pdo.php"); 
 
 
 ?>
-  
+  <!-- /**
+  * ? PARTIE 1 : Zone de création des filtres / 
+  * ? et affichage en dynamique selon les collones sur la table
+  -->
  
 
-    <section class=" bg-gray-400  filtre flex flex-col justify-center m-8 p-5">
-      <button type="button" class="collapsible">Filtres</button>
-      <div class="content py-5">
-      <form  method="get" action="index.php"> 
+    <section class=" bg-gray-400  filtre flex flex-col justify-center m-8 p-5"><!-- Création de la section des filtres -->
+
+      <button type="button" class="collapsible">Filtres</button> <!-- On créer le  le menu déroulant -->
+      <div class="content py-5"> <!--  Ce que va contenir le menu déroulant quant il est ouvert -->
+      <form  method="get" action="index.php"> <!-- Form qui va récupérer l'entiereter des information des filtres -->
         
-        <div class="flex partie-Filtre-données flex-col">
-          <h2 class="flex justify-center underline font-PE_libre_baskerville_gras text-xl">
+        <div class="flex partie-Filtre-données flex-col"> <!-- Partie filtre sur les données -->
+          <h2 class="flex justify-center underline font-PE_libre_baskerville_gras text-xl"> <!-- Titre -->
             Filtres sur les données 
           </h2>
+
           <div class="flex flex-col md:flex-row justify-center items-center">
+            
             <?php 
+            /**
+            * TODO : On récupère la liste de toutes la table catégorie (id et nom [Table]) et on les place dans la variable 
+             */
               $table_cat = "categorie" ;
               $result = $pdo->query(" SELECT * 
               FROM $table_cat 
               ;");
               $categorie = $result->fetchAll(PDO::FETCH_ASSOC); 
             ?>
+            <!-- Les fielset correspondent à un filtre -->
             <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4 rounded mb-5 md:mb-0">
               <legend class="text-center border border-black rounded p-4 font-PE_libre_baskerville_italique text-lg">
                 <?php 
+                 /**
+                * TODO : defini un titre 
+                */
                   $table_cat = " FILTRE sur les ".ucfirst($table_cat)."s ";
                   echo $table_cat
                 ?>
@@ -42,6 +50,10 @@ if (isset($_GET['filtre_domaine'])){
               <div class="flex flex-col">  
                 <?php
                   $numero_cat = 1;
+                  /**
+                   * TODO : On assosie une checkbox à une catégorie et ceci pour toute les catégorie
+                   * TODO : Le name est dynamique pour pouvoir faire des boucles
+                   */
                   foreach($categorie as $uneCategorie) { ?>
                     <div class="flex mr-5 "> 
                       <input name="<?php echo "categorie_n°".$numero_cat ?>" type="checkbox" id="<?php echo "categor".$numero_cat ?>" >
@@ -53,6 +65,10 @@ if (isset($_GET['filtre_domaine'])){
                 ?>   
                 <?php 
                   $numero_cat = 1;
+                    /**
+                   * TODO :  code ??? ne servant pas mais je ne le suprimme pas 
+                   * 
+                   */
                   foreach ($categorie as $uneCategorie){ ?>
                     <!--<select id="<?php echo "categorie_n°".$numero_cat ?>" name="<?php echo "flitre_categorie_n°".$numero_cat ?>">
                     <?php
@@ -68,7 +84,11 @@ if (isset($_GET['filtre_domaine'])){
                   <?php } 
                 ?>
               </div>
-
+                  <!-- /**
+                   * TODO :  Condition Et Ou sur les catégorie
+                   * 
+                   */ -->
+                    
               <div class=" flex justify-center flex-col items-center">
                 <h3> Conditions entre les catégories  : <h3>
                 <div class="flex justify-center item-center flex-col ">
@@ -83,6 +103,7 @@ if (isset($_GET['filtre_domaine'])){
                 </div>
               </div>     
             </fieldset>
+
             <?php 
               $table_dom = "domaine" ;
               $result = $pdo->query(" SELECT * 
@@ -587,9 +608,9 @@ if (isset($_GET['filtre_domaine'])){
 
     if ($presence_recherche == true ){
 
-      $Requete_SQL .= " libelle LIKE '%:recherche%'"; 
+      $Requete_SQL .= " libelle LIKE :recherche"; 
       $Tableau_parametre_filtre += [
-        ':recherche' => $resultat_recherche
+        ':recherche' => '%'.$resultat_recherche.'%'
       ];
       
       if ( $filtre_dom  == true || $filtre_cat == true){
@@ -715,6 +736,7 @@ if (isset($_GET['filtre_domaine'])){
     /**
      * TODO : Interogation de la base de données avec la requete SQL pour obtenir les résultats
      */
+    
     $RequetePreparer = $pdo->prepare($Requete_SQL);
 
     
@@ -877,7 +899,7 @@ if (isset($_GET['filtre_domaine'])){
                               <?php }elseif($Tab_nom_de_collone[$index] == "date_creation"){
                                  ?>
                                  
-                                <td class="hidden md:block border min-w-[120px] border-b-black font-PE_libre_baskerville  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
+                                <td class="border min-w-[120px] border-b-black font-PE_libre_baskerville  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
                                 <?php }elseif($Tab_nom_de_collone[$index] == "id_favori"){ ?>
                                   <td class=" border border-b-black font-PE_libre_baskerville_gras  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
 

@@ -12,7 +12,7 @@ $RequetePreparer -> execute($Tableau_parametre);
 
 
 
-/* header('Location: index.php');*/
+ header('Location: index.php');
 
 
 ?>
