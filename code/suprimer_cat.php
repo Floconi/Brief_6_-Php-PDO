@@ -36,9 +36,7 @@ $RequetePreparer -> execute($Tableau_parametre);
 
 $categorie_assosier_favori = $RequetePreparer->fetchAll(PDO::FETCH_ASSOC);
 
-echo "<pre>";
-echo print_r($categorie_assosier_favori);
-echo "</pre>";
+
 
 $index = 0;
 $supression_favori = false;
@@ -61,7 +59,7 @@ $RequetePreparer -> execute($Tableau_parametre);
 $nomb_de_cat_unID_favori = $RequetePreparer->fetchAll(PDO::FETCH_ASSOC);
 
     if(count($nomb_de_cat_unID_favori) == 1){
-        echo "vrai";
+       
         $supression_favori = true;
         $Tab_id_supression_favori[$index] = $unIDfavori['id_favori'];
         $index = $index + 1 ;
@@ -86,10 +84,7 @@ WHERE (";
 
     }
     $Requete_SQL .= " )";
-    echo $Requete_SQL;
-    echo "<pre>";
-    echo print_r($Tableau_parametre);
-    echo "</pre>";
+   
 
 
     $RequetePreparer = $pdo->prepare($Requete_SQL);
@@ -128,10 +123,7 @@ if (!empty($_POST)){
     
         }
         $Requete_SQL .= " )";
-        echo $Requete_SQL;
-        echo "<pre>";
-        echo print_r($Tableau_parametre);
-        echo "</pre>";
+       
     
     
         $RequetePreparer = $pdo->prepare($Requete_SQL);
@@ -139,9 +131,9 @@ if (!empty($_POST)){
         $favori_a_suprim = $RequetePreparer->fetchAll(PDO::FETCH_ASSOC);
     
     
+        } 
 
-
-        echo "vrai";
+  
         $Requete_SQL = "DELETE 
         FROM favori_categorie
         WHERE id_categorie = :id_categorie;";
@@ -168,7 +160,7 @@ if (!empty($_POST)){
     $RequetePreparer -> execute($Tableau_parametre);
 
     header('Location: lecture_dom_cat.php');
-    } 
+    
 }
 
 
@@ -209,7 +201,7 @@ if (!empty($_POST)){
 <section class ="bookmark <?php echo $cacher_favori_tab ?>">
     <h2 class="text-red-600 text-xl text-center bg-blue-950 flex justify-center"> Vous allez également suprimer tout les favoris ci dessous !<br>
 A cause de la règle suivante : Un favori doit posséder au minimum 1 categorie  <br>
-Si vous souhaitez conservez ces favoris et supprimer cette categorie : aller sur la page d'acceuil et modifier les categories  de chaque favori 
+Si vous souhaitez conservez ces favoris et supprimer cette categorie : aller sur la page d'acceuil et modifier ou ajouter des categories  pour chaque favori 
 </h2>
     <table class="flex justify-center table_favori">
         <tr class="odd:bg-white even:bg-slate-50">

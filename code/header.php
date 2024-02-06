@@ -12,7 +12,7 @@
     <title> ^^--favoriti--^^ </title>
 </head>
 <body class="bg-neutral-500">
-    <header class="flex justify-around items-center p-3">
+    <header class="flex justify-around items-center p-3 mb-10">
         <h1 class="flex justify-center  text-amber-500 font-PE_nunito text-5xl">Mes favoris</h1>
         <form method="GET" action="AjoutFavori.php">
             <button type="submit" class="bg-blue-950  text-white p-6 font-PE_nunito rounded flex justify-center flex-col " >

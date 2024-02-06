@@ -51,7 +51,7 @@ if ($formulaire_soumis == true){
         $index_id_cat =0;
         for ($index = 1 ; $index <= $nomb_categorie['nomb_categorie']; $index++){
             if (!empty($_POST['saisie_categorie_n°'.$index])){
-            $saisie_table_id_categorie[$index_id_cat] = $index;
+            $saisie_table_id_categorie[$index_id_cat] = $_POST['saisie_categorie_n°'.$index];
             $index_id_cat = $index_id_cat + 1 ;
 
             };
@@ -133,6 +133,8 @@ if ($formulaire_soumis == true){
             $pdo->query($Requete_SQL);*/
         
             $dernier_id = $pdo -> lastInsertId();
+
+            print_r($saisie_table_id_categorie);
 
             for ($index = 0 ; $index < count($saisie_table_id_categorie); $index++){
                 $Requete_SQL_preparation = " INSERT INTO favori_categorie VALUES (:dernier_id,:id_categorie_assosier)";

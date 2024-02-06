@@ -12,7 +12,7 @@
 
 
   
-  $table_cat = "categorie" ;
+$table_cat = "categorie" ;
   $result = $pdo->query(" SELECT * 
   FROM $table_cat 
   ;");

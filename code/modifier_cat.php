@@ -25,7 +25,7 @@ if (!empty($_POST)){
 
     if (!empty($_POST['saisie_categorie'])){
         $valeur_du_categorie = htmlspecialchars($_POST['saisie_categorie']);
-        echo strlen($_POST['saisie_categorie']);
+      
         if (strlen($_POST['saisie_categorie']) > 50){
             $erreur_nom_dom = "Le nom de categorie ne doit pas exéder 50 caractères";
             $formulaireValide = false;
@@ -38,7 +38,7 @@ if (!empty($_POST)){
 
             if ($formulaireValide == true){
 
-                    echo "hello";
+                  
         
                     $Requete_SQL_Preparation = "UPDATE categorie SET nom_categorie = :nom_categorie WHERE id_categorie = :id_categorie";
         
@@ -97,8 +97,8 @@ if (!empty($_POST)){
                         <i class=" text-orange-600 fa-solid fa-reply"></i><p class="text-orange-600">Annuler la modification</p>
                         </button>
                     </form>
-                    <form action="supprimer.php" method="GET">
-                        <button type="submit" name="id_du_favori" class="m-2 p-2 rounded bg-blue-950" value="<?php echo $categorie['id_categorie'] ?>">
+                    <form action="suprimer_cat.php" method="GET">
+                        <button type="submit" name="id_du_categorie" class="m-2 p-2 rounded bg-blue-950" value="<?php echo $categorie['id_categorie'] ?>">
                             <i class="text-rose-700 text-red fa-solid fa-file-circle-xmark"></i><p class="text-rose-700"> Effacer</p>
                         </button>
                     </form>

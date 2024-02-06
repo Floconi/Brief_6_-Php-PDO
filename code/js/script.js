@@ -204,9 +204,12 @@ function AppliquerFiltre(){
     champ_selectionner = document.getElementById(champ)
     icone = document.getElementById(champ+"_icone")
 
+    console.log(champ)
     if(champ == "champ_libelle"){
         
         limite = 100
+    } else if ( champ == 'saisie_libelle_cat' ||champ == "saisie_libelle_dom"){
+        limite = 50
     }else{
         limite = 1000
     }
@@ -235,6 +238,8 @@ function AppliquerFiltre(){
     if(champ == "champ_libelle"){
         
         limite = 100
+    }else if ( champ == 'saisie_libelle_cat' ||champ == "saisie_libelle_dom"){
+        limite = 50
     }else{
         limite = 1000
     }
