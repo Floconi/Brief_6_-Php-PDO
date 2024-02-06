@@ -11,11 +11,13 @@
 
 
 
+
   
 $table_cat = "categorie" ;
   $result = $pdo->query(" SELECT * 
   FROM $table_cat 
   ;");
+ 
   $categories = $result->fetchAll(PDO::FETCH_ASSOC); 
 
 ?>  

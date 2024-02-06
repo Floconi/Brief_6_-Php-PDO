@@ -35,8 +35,8 @@ if (isset($_GET['filtre_domaine'])){
             <fieldset id="categorie_filtre" class="flex  border border-black p-4 m-4 rounded mb-5 md:mb-0">
               <legend class="text-center border border-black rounded p-4 font-PE_libre_baskerville_italique text-lg">
                 <?php 
-                  $table_cat = " FILTRE sur les ".ucfirst($table_cat)."s "; 
-                  echo $table_cat;
+                  $table_cat = " FILTRE sur les ".ucfirst($table_cat)."s ";
+                  echo $table_cat
                 ?>
               </legend>
               <div class="flex flex-col">  
@@ -715,12 +715,9 @@ if (isset($_GET['filtre_domaine'])){
     /**
      * TODO : Interogation de la base de données avec la requete SQL pour obtenir les résultats
      */
-    echo $Requete_SQL;
     $RequetePreparer = $pdo->prepare($Requete_SQL);
 
-    echo "<pre>";
-    print_r($Tableau_parametre_filtre);
-    echo "</pre>";
+    
     $RequetePreparer -> execute($Tableau_parametre_filtre);
     $favoris = $RequetePreparer->fetchAll(PDO::FETCH_ASSOC);
     /*$result = $pdo->query($Requete_SQL);
@@ -880,7 +877,7 @@ if (isset($_GET['filtre_domaine'])){
                               <?php }elseif($Tab_nom_de_collone[$index] == "date_creation"){
                                  ?>
                                  
-                                <td class=" border min-w-[120px] border-b-black font-PE_libre_baskerville  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
+                                <td class="hidden md:block border min-w-[120px] border-b-black font-PE_libre_baskerville  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
                                 <?php }elseif($Tab_nom_de_collone[$index] == "id_favori"){ ?>
                                   <td class=" border border-b-black font-PE_libre_baskerville_gras  h-full text-center"><?php echo $favori[$Tab_nom_de_collone[$index]] ?></th>
 

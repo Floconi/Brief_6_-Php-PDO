@@ -1041,6 +1041,12 @@ video {
   background-color: rgb(127 29 29 / var(--tw-bg-opacity));
 }
 
+@media (min-width: 640px) {
+  .sm\:hidden {
+    display: none;
+  }
+}
+
 @media (min-width: 768px) {
   .md\:m-8 {
     margin: 2rem;
@@ -1056,6 +1062,10 @@ video {
 
   .md\:mt-4 {
     margin-top: 1rem;
+  }
+
+  .md\:block {
+    display: block;
   }
 
   .md\:flex {
