@@ -59,32 +59,23 @@ if (!empty($_POST)){
 
 
 }else{
-    $valeur_du_categorie = htmlspecialchars($categorie['nom_categorie']);
+    $valeur_du_categorie = "";
     $formulaire_soumis = false;
 }
 ?>
-
+<div class="flex" ><h2 class="text-green-600 flex font-PE_libre_baskerville_italique justify-center rounded m-auto p-4 bg-white">Ajouter une categorie</h2></div>
     <div class="flex justify-center font-PE_libre_baskerville m-2 md:m-8">
         
         <div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black  w-3/4">
             <div class="flex flex-col md:flex-row mb-5 md:mb-0">
-                <div class="md:w-1/4 w-full  bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>
+                <div class="md:w-1/4 w-full  bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"></div>
                 <div class="flex flex-col md:flex-row justify-around items-center bg-orange-100 w-full border border-b-black">
                 <form action="index.php" method="GET">
                         <button type="submit" class=" p-2 rounded m-2 bg-blue-950" >
                         <i class="text-green-600 fa-solid fa-house-chimney"></i><p class="text-green-600"> Retour sur l'acceuil</p>
                         </button>
                     </form>
-                    <form action="lecture_dom_cat.php" method="GET">
-                        <button type="submit" class=" p-2 rounded m-2 bg-blue-950"  value="">
-                        <i class=" text-orange-600 fa-solid fa-reply"></i><p class="text-orange-600">Annuler la modification</p>
-                        </button>
-                    </form>
-                    <form action="supprimer.php" method="GET">
-                        <button type="submit" name="id_du_favori" class="m-2 p-2 rounded bg-blue-950" value="<?php echo $categorie['id_categorie'] ?>">
-                            <i class="text-rose-700 text-red fa-solid fa-file-circle-xmark"></i><p class="text-rose-700"> Effacer</p>
-                        </button>
-                    </form>
+                    
                 </div>
             </div>
             <form action="" method="POST">
@@ -108,7 +99,7 @@ if (!empty($_POST)){
                 <p class="md:w-1/4 w-full hidden md:flex bg-orange-200   justify-start border-b font-PE_libre_baskerville_italique p-4 font-bold">Validation </p>
                 <div class="flex justify-center item-center w-full bg-orange-100">
                     <button type="submit"  class="bg-blue-950 items-center text-orange-600 mt-2 p-6 font-PE_nunito rounded flex justify-around mr-5 mb-5" >
-                        <i class="mr-4 text-orange-600 fa-solid fa-pen-clip"></i>Editer le favori 
+                        <i class="mr-4 text-orange-600 fa-solid fa-pen-clip"></i>Editer la catégorie
                     </button> 
                 </div>
             </div>

@@ -81,6 +81,7 @@ if (!empty($_POST)){
 
 
 ?>
+<div class="flex" ><h2 class="text-green-600 flex font-PE_libre_baskerville_italique justify-center rounded m-auto p-4 bg-white">Suprimer un domaine</h2></div>
 <div class="flex flex-col justify-center items-center font-PE_libre_baskerville"> 
     <p> Voulez vous vraiment suprimer les données ci-dessous ?<br> <span class="flex justify-center text-red-500">Attention cette action est définitive </p>
     <div class="flex items-center">

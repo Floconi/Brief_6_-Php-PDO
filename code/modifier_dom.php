@@ -80,7 +80,7 @@ if (!empty($_POST)){
     $formulaire_soumis = false;
 }
 ?>
-
+<div class="flex" ><h2 class="text-green-600 flex font-PE_libre_baskerville_italique justify-center rounded m-auto p-4 bg-white">Ajouter un domaine</h2></div>
     <div class="flex justify-center font-PE_libre_baskerville m-2 md:m-8">
         
         <div class="informations  bg-orange-200border flex flex-col justify-center align-middle border border-black  w-3/4">

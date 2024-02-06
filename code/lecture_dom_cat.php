@@ -19,9 +19,9 @@
   $categories = $result->fetchAll(PDO::FETCH_ASSOC); 
 
 ?>  
-
-    <form action="index.php" method="GET">
-                        <button type="submit" class=" p-2 rounded m-2 bg-blue-950" >
+<div class="flex" ><h2 class="text-green-600 flex font-PE_libre_baskerville_italique justify-center rounded m-auto p-4 bg-white">Gérer les favoris et catégorie</h2></div>
+    <form action="index.php" method="GET" class="flex justify-center">
+                        <button type="submit" class=" p-2 rounded m-2 bg-blue-950 " >
                         <i class="text-green-600 fa-solid fa-house-chimney"></i><p class="text-green-600"> Retour sur l'acceuil</p>
                         </button>
     </form>
@@ -57,10 +57,10 @@
                 <?php 
                 foreach($domaines as $domaine){ ?>
                     <tr class="border-solid  odd:bg-orange-100 even:bg-orange-300 hover:bg-green-200" >
-                        <td class=" border justify-center items-center align-middle border-black ">
+                        <td class=" border  justify-center items-center align-middle border-black text-center">
                             <?php echo   $domaine['id_domaine']  ?>    
                         </td>
-                        <td class=" border justify-center items-center align-middle border-black ">
+                        <td class=" border justify-center  align-middle border-black  text-center">
                             <?php echo   $domaine['nom_domaine']  ?>    
                         </td>
                         <td class=" border justify-center items-center align-middle border-black ">
@@ -110,10 +110,10 @@
                 <?php 
                 foreach($categories as $categorie){ ?>
                     <tr class="border-solid  odd:bg-orange-100 even:bg-orange-300 hover:bg-green-200" >
-                        <td class=" border justify-center items-center align-middle border-black ">
+                        <td class=" border justify-center items-center align-middle border-black text-center">
                             <?php echo   $categorie['id_categorie']  ?>    
                         </td>
-                        <td class=" border justify-center items-center align-middle border-black ">
+                        <td class=" border justify-center items-center align-middle border-black text-center">
                             <?php echo   $categorie['nom_categorie']  ?>    
                         </td>
                         <td class=" border justify-center items-center align-middle border-black ">

@@ -29,6 +29,7 @@ $favoris = $RequetePreparer ->fetch(PDO::FETCH_ASSOC);
 
 <div class="flex justify-center font-PE_libre_baskerville">
     
+<div class="flex" ><h2 class="text-green-600 flex font-PE_libre_baskerville_italique justify-center rounded m-auto p-4 bg-white">affichage un favori</h2></div>
 <div class="informations  bg-orange-200  flex flex-col justify-center align-middle border border-black m-2 md:m-8  w-3/4">
 <div class="flex flex-col md:flex-row  md:mb-0 ">
     <div class="md:w-1/4 w-full bg-orange-200 h-full flex  border-b font-PE_libre_baskerville_italique border-black p-4 font-bold items-center justify-between"><p>Gérer ce favori </p><i class="fa-solid fa-gear"></i></i></div>

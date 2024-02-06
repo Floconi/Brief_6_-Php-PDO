@@ -76,7 +76,7 @@ if($supression_favori == true){
     INNER JOIN domaine ON domaine.id_domaine = favori.id_dom
 WHERE (";
     for($index =0 ; $index < count($Tab_id_supression_favori); $index++){
-        $Requete_SQL .= "favori.categorie.id_favori = :idfavori".$index;
+        $Requete_SQL .= "favori_categorie.id_favori = :id_favori".$index;
         $Tableau_parametre += array(
             ":id_favori$index" => htmlspecialchars($Tab_id_supression_favori[$index])
         );
@@ -85,6 +85,7 @@ WHERE (";
         }
 
     }
+    $Requete_SQL .= " )";
     echo $Requete_SQL;
     echo "<pre>";
     echo print_r($Tableau_parametre);
@@ -92,34 +93,58 @@ WHERE (";
 
 
     $RequetePreparer = $pdo->prepare($Requete_SQL);
-    $favori_a_suprim = $RequetePreparer -> execute($Tableau_parametre);
-
+    $RequetePreparer -> execute($Tableau_parametre);
+    $favori_a_suprim = $RequetePreparer->fetchAll(PDO::FETCH_ASSOC);
 }
 
 
 
-
-
-
-
-
-$suppresion_favori = 0;
-/*if (count($categorie_fav) == 0){
+if ($supression_favori== false){
     $cacher_favori_tab = "hidden";
     $afficher_message_pas_de_sup_favori ="";
 
 }else{
-    $suppresion_favori = 1;
     $afficher_message_pas_de_sup_favori ="hidden";
     $cacher_favori_tab = "";
-}*/
+}
 
 if (!empty($_POST)){
-    /*if ($suppresion_favori == 1 ){
+
+
+    if($supression_favori == true){
+
+        $Tableau_parametre = array();
+        $Requete_SQL = "DELETE 
+        FROM favori WHERE (";
+
+        for($index =0 ; $index < count($Tab_id_supression_favori); $index++){
+            $Requete_SQL .= "id_favori = :id_favori".$index;
+            $Tableau_parametre += array(
+                ":id_favori$index" => htmlspecialchars($Tab_id_supression_favori[$index])
+            );
+            if ($index != (count($Tab_id_supression_favori)-1)){
+                $Requete_SQL .= " OR ";
+            }
+    
+        }
+        $Requete_SQL .= " )";
+        echo $Requete_SQL;
+        echo "<pre>";
+        echo print_r($Tableau_parametre);
+        echo "</pre>";
+    
+    
+        $RequetePreparer = $pdo->prepare($Requete_SQL);
+        $RequetePreparer -> execute($Tableau_parametre);
+        $favori_a_suprim = $RequetePreparer->fetchAll(PDO::FETCH_ASSOC);
+    
+    
+
+
         echo "vrai";
         $Requete_SQL = "DELETE 
-        FROM favori
-        WHERE id_dom = :id_categorie;";
+        FROM favori_categorie
+        WHERE id_categorie = :id_categorie;";
 
         $RequetePreparer = $pdo->prepare($Requete_SQL);
 
@@ -128,7 +153,7 @@ if (!empty($_POST)){
         );
 
         $RequetePreparer -> execute($Tableau_parametre);
-    }
+   
         
     $Requete_SQL = "DELETE
     FROM categorie
@@ -142,12 +167,14 @@ if (!empty($_POST)){
 
     $RequetePreparer -> execute($Tableau_parametre);
 
-    header('Location: lecture_dom_cat.php');*/
-
+    header('Location: lecture_dom_cat.php');
+    } 
 }
 
 
+
 ?>
+<div class="flex" ><h2 class="text-green-600 flex font-PE_libre_baskerville_italique justify-center rounded m-auto p-4 bg-white">Suprimer une categorie</h2></div>
 <div class="flex flex-col justify-center items-center font-PE_libre_baskerville"> 
     <p> Voulez vous vraiment suprimer les données ci-dessous ?<br> <span class="flex justify-center text-red-500">Attention cette action est définitive </p>
     <div class="flex items-center">
@@ -181,8 +208,8 @@ if (!empty($_POST)){
 
 <section class ="bookmark <?php echo $cacher_favori_tab ?>">
     <h2 class="text-red-600 text-xl text-center bg-blue-950 flex justify-center"> Vous allez également suprimer tout les favoris ci dessous !<br>
-A cause de la règle suivante : Un favori doit posséder au minimum 1 categorie <br>
-Si vous souhaitez conservez ces favoris et supprimer ce categorie : aller sur la page d'acceuil et modifier le categorie de chaque favori 
+A cause de la règle suivante : Un favori doit posséder au minimum 1 categorie  <br>
+Si vous souhaitez conservez ces favoris et supprimer cette categorie : aller sur la page d'acceuil et modifier les categories  de chaque favori 
 </h2>
     <table class="flex justify-center table_favori">
         <tr class="odd:bg-white even:bg-slate-50">
